@@ -1,0 +1,30 @@
+{
+    "name": "helori/laravel-crudui",
+    "description": "UI tools to perform CRUD operations on Eloquent models",
+    "keywords": ["laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Helori Lanos",
+            "email": "helori@algoart.fr",
+            "homepage": "http://www.algoart.fr"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/helori/laravel-crudui.git"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Helori\\LaravelCrudui\\": "../../../../_packages_/laravel-crudui/src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        
+    }
+}
