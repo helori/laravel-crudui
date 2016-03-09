@@ -7,7 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 
-use Helori\LaravelCrudui\Utilities\CrudUtilities;
+use Helori\LaravelCrudui\CrudUtilities;
 
 
 class CrudBaseController extends Controller

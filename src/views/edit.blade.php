@@ -11,11 +11,11 @@
             {!! csrf_field() !!}
 
             @foreach($edit_fields as $i => $field)
-                @if(view()->exists('crudui::field-'.$field["type"]))
+                @if(view()->exists('laravel-crudui::field-'.$field["type"]))
                     <div class="form-group">
                         <label for="<% $field['name'] %>" class="control-label col-sm-4"><% $field['title'] %> :</label>
                         <div class="col-sm-8">
-                            @include('crudui::field-'.$field["type"], ['fieldData' => $item])
+                            @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item])
                         </div>
                     </div>
                 @endif

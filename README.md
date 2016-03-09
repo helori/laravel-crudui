@@ -106,7 +106,7 @@ return [
 
 	    	'fields' => [
 	            ['type' => 'text', 'name' => 'title', 'title' => 'Title', 'list' => true, 'edit' => true, 'filter' => true],
-	            ['type' => 'alias', 'name' => 'alias', 'src' => 'title', 'use_id' => true, 'list' => false, 'edit' => true, 'filter' => false],
+	            'filter' => false],
 	            ['type' => 'checkbox', 'name' => 'published', 'title' => 'Published', 'list' => false, 'edit' => true, 'filter' => false],
 	            ['type' => 'textarea', 'name' => 'content', 'title' => 'COntent', 'list' => false, 'edit' => true, 'filter' => false],
 	        ]
