@@ -1,6 +1,6 @@
 <?php
 
-namespace Algoart\Crudui\Controllers;
+namespace Helori\LaravelCrudui\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Route;
 
-use Algoart\Crudui\Controllers\CrudBaseController;
+use Helori\LaravelCrudui\Controllers\CrudBaseController;
 
 
 class CrudController extends CrudBaseController
@@ -16,7 +16,7 @@ class CrudController extends CrudBaseController
     public function __construct()
     {
         $routeParams = Route::current()->parameters();
-        $section = config('crudui.sections.'.$routeParams['section']);
+        $section = config('laravel-crudui.sections.'.$routeParams['section']);
 
         parent::__construct($section['model_class']);
 

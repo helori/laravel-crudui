@@ -1,0 +1,170 @@
+#crud-table{
+	h1{
+		margin: 0 0 15px 0;
+		line-height: 34px;
+		font-size: 22px;
+		font-weight: 300;
+		text-align: left;
+	}
+	.items{
+		margin: 0 0 15px 0;
+		.item{
+			line-height: 34px;
+			.sortable{
+				width: 60px;
+				line-height: 34px;
+				font-size: 19px;
+				color: #888;
+				text-align: center;
+				cursor: move;
+			}
+			.actions{
+				width: 92px;
+			}
+		}
+		.image img{
+			max-height: 80px;
+			max-width: 100%;
+		}
+	}
+	.pagination{
+		margin: 0 0 15px 0;
+	}
+}
+
+#crud-form{
+	.image{
+		img{
+			max-height: 80px;
+		}
+	}
+}
+
+#crud-filters{
+	margin: 15px 0;
+	padding: 15px;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	h3{
+		margin: 0 0 30px 0;
+		text-align: center;
+		font-weight: 300;
+		font-size: 20px;
+	}
+}
+
+.row.narrow{
+	margin-left: -5px;
+	margin-right: -5px;
+	.col{
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+}
+
+.btn{
+  position: relative;
+  padding-left: 46px;
+  font-weight: 300;
+  height: 34px;
+  //letter-spacing: 0.025em;
+  i{
+    display: block;
+    position: absolute;
+    left: 0; top: 0;
+    width: 34px;
+    height: 100%;
+    line-height: 34px;
+    font-size: 18px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+.btn.icon-only{
+	width: 34px;
+	padding-left: 0;
+	overflow: hidden;
+}
+
+// -------------------------------------------------------------
+//	Checkboxes
+// -------------------------------------------------------------
+// On cache la checkbox originale
+[type="checkbox"].toogle:not(:checked),
+[type="checkbox"].toogle:checked {
+  	position: absolute;
+  	left: -9999px;
+}
+// Le label est décalé à droite : on va dessiner la custom checkbox à gauche
+[type="checkbox"].toogle:not(:checked) + label,
+[type="checkbox"].toogle:checked + label {
+	display: inline-block;
+	height: 34px;
+	margin: 0;
+  	position: relative;
+	padding-left: 90px;
+	padding-top: 0;
+	cursor: pointer;
+}
+// On utilise le "before" et le "after" pour la case à cocher
+[type="checkbox"].toogle:not(:checked) + label:before,
+[type="checkbox"].toogle:checked + label:before,
+[type="checkbox"].toogle:not(:checked) + label:after,
+[type="checkbox"].toogle:checked + label:after {
+	content: '';
+  	position: absolute;
+}
+// Le "before" (background) : aspect général
+[type="checkbox"].toogle:not(:checked) + label:before,
+[type="checkbox"].toogle:checked + label:before{
+	left: 0;
+    top: 0;
+    width: 80px;
+    height: 34px;
+    background: #DDDDDD;
+    border-radius: 17px;
+    transition: background-color .2s;
+}
+// Le "before" : aspect coché
+[type="checkbox"].toogle:checked + label:before {
+    background: #34495E;
+}
+// Le "after" (curseur) : aspect général
+[type="checkbox"].toogle:not(:checked) + label:after,
+[type="checkbox"].toogle:checked + label:after{
+	top: 5px;
+    left: 5px;
+	width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #7F8C9A;
+    transition: all .2s;
+}
+// Le "after" : aspect coché
+[type="checkbox"].toogle:checked + label:after {
+    background: #39D2B4;
+    left: 51px;
+}
+
+//[type="checkbox"].toogle:checked + label .ui, 
+[type="checkbox"].toogle:not(:checked) + label .ui:before, 
+[type="checkbox"].toogle:checked + label .ui:after {
+	display: block;
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    width: 40px;
+    line-height: 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: all .2s;
+}
+[type="checkbox"].toogle:checked + label .ui:after {
+    content: "oui";
+    color: #39D2B4;
+}
+[type="checkbox"].toogle:not(:checked) + label .ui:before {
+    content: "non";
+    left: 34px;
+    color: #7F8C9A;
+}

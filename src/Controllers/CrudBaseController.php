@@ -1,13 +1,13 @@
 <?php
 
-namespace Algoart\Crudui\Controllers;
+namespace Helori\LaravelCrudui\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 
-use Algoart\Crudui\Utilities\CrudUtilities;
+use Helori\LaravelCrudui\Utilities\CrudUtilities;
 
 
 class CrudBaseController extends Controller
@@ -34,9 +34,9 @@ class CrudBaseController extends Controller
 
         $this->fields = [];
 
-        $this->layout_view = 'crudui::layout';
-        $this->list_view = 'crudui::list';
-        $this->edit_view = 'crudui::edit';
+        $this->layout_view = 'laravel-crudui::layout';
+        $this->list_view = 'laravel-crudui::list';
+        $this->edit_view = 'laravel-crudui::edit';
     }
 
     protected function initFields()

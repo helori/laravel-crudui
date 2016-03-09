@@ -1,12 +1,12 @@
 <?php
 
-namespace Algoart\Crudui\Utilities;
+namespace Helori\LaravelCrudui;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Str;
 use Image;
-use Algoart\Crudui\Model\Media;
+//use Algoart\Crudui\Model\Media;
 
 
 class CrudUtilities

@@ -1,13 +1,13 @@
 <?php
 
-namespace Algoart\Crudui\Controllers;
+namespace Helori\LaravelCrudui\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 
-use Algoart\Crudui\Utilities\CrudUtilities;
+use Helori\LaravelCrudui\CrudUtilities;
 
 
 class CrudSingleBaseController extends Controller
@@ -26,8 +26,8 @@ class CrudSingleBaseController extends Controller
         $this->edit_title = "Éditer l'élément";
         $this->fields = [];
 
-        $this->layout_view = 'crudui::layout';
-        $this->edit_view = 'crudui::edit';
+        $this->layout_view = 'laravel-crudui::layout';
+        $this->edit_view = 'laravel-crudui::edit';
     }
 
     public function getItems(Request $request)

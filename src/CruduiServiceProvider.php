@@ -1,6 +1,6 @@
 <?php
 
-namespace Algoart\Crudui;
+namespace Helori\LaravelCrudui;
 
 use Illuminate\Support\ServiceProvider;
 
