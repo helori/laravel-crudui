@@ -1,2 +1,2 @@
 # laravel-crudui
-User interface to manage website content using a simple configuration file
+UI tools to perform CRUD operations on Eloquent models

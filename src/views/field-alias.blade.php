@@ -1,0 +1,1 @@
+<p class="form-control-static"><% isset($fieldData[$field['name']]) ? $fieldData[$field['name']] : '' %></p>
