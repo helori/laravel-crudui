@@ -8,7 +8,9 @@ class CruduiServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        
+        $this->mergeConfigFrom(
+            __DIR__.'/config/laravel-crudui.php', 'laravel-crudui'
+        );
     }
     
     public function boot()
