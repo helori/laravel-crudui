@@ -74,21 +74,21 @@ gulp
 ## How to use
 
 There are to ways to use this module:
-- use the config file to list the tables you want to manage in the UI
-- create your own controllers by inheriting CrudBaseController. You can then customize views and define your own routes.
+- Use the config file to define the models to be managed.
+- Create your own controllers by inheriting CrudBaseController.
 
 ### Using the config file
 
-First, you need to publish the config file:
+Publish the config file:
 ```bash
 php artisan vendor:publish --provider="Helori\LaravelCrudui\CruduiServiceProvider" --tag="config"
 ```
 
-Then, define the database tables you want to manage:
+Define the models to be managed:
 ```php
 // config/laravel-crudui.php
 return [
-    'sections' => [
+    'models' => [
         'articles' => [
 	    	'model_class' => \App\Article::class,
 	    	'page_name' => 'grarticlesoups',
@@ -166,27 +166,27 @@ class Article extends Model
 ```
 
 Add this list of generic routes to your routes.php.
-Note that the routes can be customized as you need but they must contain the {section} and optionally the {id} parameters in this order.
-Also note that the chosen route path must match the one you use in your menu (see below).
+Note that the routes can be customized as you need but they must contain the {model} and optionally the {id} parameters in this order.
+Also note that chosen paths must match paths used in your menu view (see below).
 ```php
 // app/Http/routes.php
-Route::get('/crud/{section}/items', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getItems'));
-Route::get('/crud/{section}/create-item', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getCreateItem'));
-Route::post('/crud/{section}/store-item', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@postStoreItem'));
-Route::get('/crud/{section}/edit-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getEditItem'));
-Route::post('/crud/{section}/update-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@postUpdateItem'));
-Route::get('/crud/{section}/delete-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getDeleteItem'));
-Route::post('/crud/{section}/update-position', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@postUpdatePosition'));
-Route::get('/ru/{section}/items', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudSingleController@getItems'));
-Route::post('/ru/{section}/update-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudSingleController@postUpdateItem'));
+Route::get('/crud/{model}/items', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getItems'));
+Route::get('/crud/{model}/create-item', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getCreateItem'));
+Route::post('/crud/{model}/store-item', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@postStoreItem'));
+Route::get('/crud/{model}/edit-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getEditItem'));
+Route::post('/crud/{model}/update-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@postUpdateItem'));
+Route::get('/crud/{model}/delete-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@getDeleteItem'));
+Route::post('/crud/{model}/update-position', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudController@postUpdatePosition'));
+Route::get('/ru/{model}/items', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudSingleController@getItems'));
+Route::post('/ru/{model}/update-item/{id}', array('uses' => '\Helori\LaravelCrudui\Controllers\CrudSingleController@postUpdateItem'));
 ```
 
 Create the links to access each table management (for example in a navigation bar):
 ```html
 // e.g. : resources/views/menu.blade.php
-@foreach(config('laravel-crudui.sections') as $key => $section)
-    <li class="<% (isset($page_name) && $page_name == $section['page_name']) ? ' active' : '' %>">
-        <a href="<% $section['route_url'] %>/items"><% $section['menu_title'] %></a>
+@foreach(config('laravel-crudui.models') as $key => $model)
+    <li class="<% (isset($page_name) && $page_name == $model['page_name']) ? ' active' : '' %>">
+        <a href="<% $model['route_url'] %>/items"><% $model['menu_title'] %></a>
     </li>
 @endforeach
 ```
@@ -196,16 +196,16 @@ Create the links to access each table management (for example in a navigation ba
 
 If your controllers inherits CrudBaseController, create the routes by adding :
 ```php
-$tables = ['medias', 'articles'];
-foreach($tables as $table)
+$models = ['medias', 'articles'];
+foreach($models as $model)
 {   
-    $controller = ucfirst(camel_case($table)).'Controller';
-    Route::get('/crudbase/'.$table.'/items', array('uses' => $controller.'@getItems'));
-    Route::get('/crudbase/'.$table.'/create-item', array('uses' => $controller.'@getCreateItem'));
-    Route::post('/crudbase/'.$table.'/store-item', array('uses' => $controller.'@postStoreItem'));
-    Route::get('/crudbase/'.$table.'/edit-item/{id}', array('uses' => $controller.'@getEditItem'));
-    Route::post('/crudbase/'.$table.'/update-item/{id}', array('uses' => $controller.'@postUpdateItem'));
-    Route::get('/crudbase/'.$table.'/delete-item/{id}', array('uses' => $controller.'@getDeleteItem'));
-    Route::post('/crudbase/'.$table.'/update-position', array('uses' => $controller.'@postUpdatePosition'));
+    $controller = ucfirst(camel_case($model)).'Controller';
+    Route::get('/crudbase/'.$model.'/items', array('uses' => $controller.'@getItems'));
+    Route::get('/crudbase/'.$model.'/create-item', array('uses' => $controller.'@getCreateItem'));
+    Route::post('/crudbase/'.$model.'/store-item', array('uses' => $controller.'@postStoreItem'));
+    Route::get('/crudbase/'.$model.'/edit-item/{id}', array('uses' => $controller.'@getEditItem'));
+    Route::post('/crudbase/'.$model.'/update-item/{id}', array('uses' => $controller.'@postUpdateItem'));
+    Route::get('/crudbase/'.$model.'/delete-item/{id}', array('uses' => $controller.'@getDeleteItem'));
+    Route::post('/crudbase/'.$model.'/update-position', array('uses' => $controller.'@postUpdatePosition'));
 }
 ```

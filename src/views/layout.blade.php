@@ -20,6 +20,5 @@
 @yield('content')
 
 <script src="<% elixir("js/crudui.js") %>"></script>
-<script src="<% url('tinymce/tinymce.min.js') %>"></script>
 
 </body>

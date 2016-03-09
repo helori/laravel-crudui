@@ -49,7 +49,7 @@ class CrudSingleBaseController extends Controller
     }
 
     // Update item
-    public function postUpdateItem(Request $request, $section, $id)
+    public function postUpdateItem(Request $request, $model, $id)
     {
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         CrudUtilities::fillItem($request, $item, $this->fields, $this->uploads_dir);

@@ -16,39 +16,39 @@ class CrudController extends CrudBaseController
     public function __construct()
     {
         $routeParams = Route::current()->parameters();
-        $section = config('laravel-crudui.sections.'.$routeParams['section']);
+        $model = config('laravel-crudui.models.'.$routeParams['model']);
 
-        parent::__construct($section['model_class']);
+        parent::__construct($model['model_class']);
 
-        $this->page_name = $section['page_name'];
-        $this->route_url = $section['route_url'];
-        $this->uploads_dir = $section['uploads_dir'];
+        $this->page_name = $model['page_name'];
+        $this->route_url = $model['route_url'];
+        $this->uploads_dir = $model['uploads_dir'];
 
-        $this->list_title = $section['list_title'];
-        $this->edit_title = $section['edit_title'];
-        $this->add_text = $section['add_text'];
+        $this->list_title = $model['list_title'];
+        $this->edit_title = $model['edit_title'];
+        $this->add_text = $model['add_text'];
 
-        $this->sort_by = $section['sort_by'];
-        $this->sort_dir = $section['sort_dir'];
-        $this->sortable = $section['sortable'];
-        $this->limit = $section['limit'];
+        $this->sort_by = $model['sort_by'];
+        $this->sort_dir = $model['sort_dir'];
+        $this->sortable = $model['sortable'];
+        $this->limit = $model['limit'];
 
-        $this->fields = $section['fields'];
+        $this->fields = $model['fields'];
         
         $this->initFields();
     }
 
-    public function getEditItem(Request $request, $section, $id = null)
+    public function getEditItem(Request $request, $model, $id = null)
     {
         return parent::getEditItem($request, $id);
     }
 
-    public function postUpdateItem(Request $request, $section, $id = null)
+    public function postUpdateItem(Request $request, $model, $id = null)
     {
         return parent::postUpdateItem($request, $id);
     }
 
-    public function getDeleteItem(Request $request, $section, $id = null)
+    public function getDeleteItem(Request $request, $model, $id = null)
     {
         return parent::getDeleteItem($request, $id);
     }

@@ -2,7 +2,7 @@
 
 return [
     
-    'sections' => [
+    'models' => [
         
     ],
     

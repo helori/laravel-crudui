@@ -146,7 +146,7 @@ class CrudBaseController extends Controller
     }
 
     // Show the form
-    public function getEditItem(Request $request, $id, $section = null)
+    public function getEditItem(Request $request, $id, $model = null)
     {
         $this->data['item'] = call_user_func(array($this->class_name, 'findOrFail'), $id);
         
@@ -160,14 +160,14 @@ class CrudBaseController extends Controller
     }
 
     // Update item
-    public function postUpdateItem(Request $request, $id, $section = null)
+    public function postUpdateItem(Request $request, $id, $model = null)
     {
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         CrudUtilities::fillItem($request, $item, $this->fields, $this->uploads_dir);
         return redirect($this->route_url.'/items');
     }
 
-    public function getDeleteItem(Request $request, $id, $section = null)
+    public function getDeleteItem(Request $request, $id, $model = null)
     {
         if($this->sortable)
         {
