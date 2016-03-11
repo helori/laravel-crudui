@@ -1,6 +1,6 @@
 @extends($layout_view)
+@section('content')   
 
-@section('content')    
 <div id="crud-form">
     <div class="container">
 

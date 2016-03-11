@@ -25,5 +25,6 @@ class CrudSingleController extends CrudSingleBaseController
         $this->uploads_dir = $model['uploads_dir'];
         $this->edit_title = $model['edit_title'];
         $this->fields = $model['fields'];
+        $this->layout_view = isset($model['layout']) ? $model['layout'] : $this->layout_view;
     }
 }

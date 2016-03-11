@@ -1,4 +1,4 @@
-<div class="row narrow">
+<!--div class="row narrow">
     @if(isset($fieldData) && $fieldData->image && is_file($fieldData->image->filepath))
         <div class="col col-xs-4">
             <div class="image">
@@ -18,32 +18,7 @@
         name="<% $field['name'] %>" 
         class="form-control">
     </div>
-</div>
+</div-->
 
-<!--uploader>
-    <div class="row narrow">
-        <div class="col col-xs-8">
-            <input type="file" 
-                multiple
-                item-id="<% isset($fieldData['id']) ? $fieldData['id'] : '' %>"
-                class="form-control file-input" 
-                ng-disabled="status == 'loading'">
-        </div>
-        <div class="col col-xs-4">
-            <button type="button" 
-                ng-click="upload(doc)" 
-                class="btn btn-block btn-default" 
-                ng-disabled="status == 'loading'">
-                <i class="fa fa-upload"></i> Envoyer
-            </button>
-        </div>
-        {{status}} {{file}}
-        <div ng-show="status == 'loading'">
-            <div class="progress" ng-repeat="file in files">
-                <div class="progress-bar" role="progressbar" style="width: {{100 * file.loaded / file.size}}%;">
-                    <span class="sr-only">{{100 * file.loaded / file.size}}% Complete</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</uploader-->
+
+@include('laravel-medias::image-manager-trigger', [])

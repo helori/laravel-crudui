@@ -34,6 +34,8 @@ class CrudController extends CrudBaseController
         $this->limit = $model['limit'];
 
         $this->fields = $model['fields'];
+
+        $this->layout_view = isset($model['layout']) ? $model['layout'] : $this->layout_view;
         
         $this->initFields();
     }

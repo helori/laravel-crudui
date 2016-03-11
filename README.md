@@ -45,7 +45,8 @@ elixir(function(mix)
             "bower_components/angular/angular.min.js",
             "bower_components/jquery-ui/jquery-ui.min.js",
             "bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"
-            "bower_components/tinymce/tinymce.min.js"
+            "bower_components/tinymce/tinymce.min.js",
+            "vendor/helori/laravel-crudui/src/assets/js/**/*.js"
         ],
         "public/js/crudui.js", "."
     ).styles(

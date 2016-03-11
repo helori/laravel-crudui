@@ -18,6 +18,10 @@ class CruduiServiceProvider extends ServiceProvider
 		$this->loadViewsFrom(__DIR__.'/views', 'laravel-crudui');
 
 		$this->publishes([
+            __DIR__.'/views' => base_path('resources/views/vendor/laravel-crudui'),
+        ], 'views');
+
+		$this->publishes([
             __DIR__.'/config/laravel-crudui.php' => config_path('laravel-crudui.php')
         ], 'config');
 	}
