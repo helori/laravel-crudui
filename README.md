@@ -4,7 +4,7 @@ UI tools to perform CRUD operations on Eloquent models
 ## Installation and setup
 
 ```bash
-composer require helori/laravel-admin
+composer require helori/laravel-crudui
 ```
 
 Configure your application:

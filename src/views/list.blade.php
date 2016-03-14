@@ -110,9 +110,9 @@
                         <input type="hidden" name="sort_by" value="<% $sort_by %>">
                         <input type="hidden" name="sort_dir" value="<% $sort_dir %>">
                         @foreach($filters as $i => $field)
-                            @if(view()->exists('crud.field-'.$field["type"]))
+                            @if(view()->exists('laravel-crudui::field-'.$field["type"]))
                                 <div class="form-group">
-                                    @include('crud.field-'.$field["type"], ['fieldData' => $filters_data])
+                                    @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $filters_data])
                                 </div>
                             @endif
                         @endforeach

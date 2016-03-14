@@ -1,24 +1,32 @@
-<!--div class="row narrow">
-    @if(isset($fieldData) && $fieldData->image && is_file($fieldData->image->filepath))
+<?php $hasImage = isset($fieldData[$field['name']]) && is_array($fieldData[$field['name']]) ?>
+<?php if($hasImage) $image = $fieldData[$field['name']] ?>
+
+
+@if($hasImage)
+    <div class="row narrow">
         <div class="col col-xs-4">
             <div class="image">
-                <img src="<% $fieldData->image->filepath.'?'.filemtime($fieldData->image->filepath) %>" alt="<% $fieldData->image->title %>">
+                <img src="<% $image['path'].'?'.filemtime($image['path']) %>" alt="<% $field['title'] %>">
             </div>
-            <% $fieldData->image->mime %>
-            | <% $fieldData->image->width.'x'.$fieldData->image->height %>
-            | <% floor(filesize($fieldData->image->filepath)/1000).' ko' %>
         </div>
         <div class="col col-xs-8">
-    @else
-        <div class="col col-xs-12">
-    @endif
+            <input <% $i == 0 ? 'autofocus' : '' %>
+                type="file" 
+                id="<% $field['name'] %>" 
+                name="<% $field['name'] %>" 
+                class="form-control">
+            <div class="infos">
+                <% $image['mime'] %>
+                <% $image['width'].' x '.$image['height'].' px' %>
+                <% floor(filesize($image['path'])/1000).' kb' %>
+            </div>
+            <!--a href="" class="btn btn-danger btn-block"><i class="fa fa-trash"></i></a-->
+        </div>
+    </div>
+@else
     <input <% $i == 0 ? 'autofocus' : '' %>
         type="file" 
         id="<% $field['name'] %>" 
         name="<% $field['name'] %>" 
         class="form-control">
-    </div>
-</div-->
-
-
-@include('laravel-medias::image-manager-trigger', [])
+@endif

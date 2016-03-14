@@ -18,7 +18,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Helori\\LaravelCrudui\\": "../../../../_packages_/laravel-crudui/src/"
+            "Helori\\LaravelCrudui\\": "src/"
         }
     },
     "require": {

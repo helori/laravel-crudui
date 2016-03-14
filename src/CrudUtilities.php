@@ -25,8 +25,10 @@ class CrudUtilities
                 $item->$field['name'] = $request->input($field['name']);
             else if($field['type'] == 'file')
                 self::setFile($request, $item, $field['name'], $uploads_dir, isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
-            else if($field['type'] == 'image')
-                self::setImage($request, $item, $field['name'], $field['options']);
+            else if($field['type'] == 'image'){
+                self::setFile($request, $item, $field['name'], $uploads_dir, isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
+                //self::setImage($request, $item, $field['name'], $field['options']);
+            }
             else if($field['type'] == 'alias')
                 $item->alias = Str::slug(($field['use_id'] ? $item->id.'-' : '').$item->$field['src'], '-');
             else if($field['type'] == 'json')
