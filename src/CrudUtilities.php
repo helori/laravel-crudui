@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Str;
 use Image;
-//use Algoart\Crudui\Model\Media;
+use Helori\LaravelMedias\Media;
 
 
 class CrudUtilities
@@ -25,9 +25,14 @@ class CrudUtilities
                 $item->$field['name'] = $request->input($field['name']);
             else if($field['type'] == 'file')
                 self::setFile($request, $item, $field['name'], $uploads_dir, isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
-            else if($field['type'] == 'image'){
+            else if($field['type'] == 'image')
+            {
                 self::setFile($request, $item, $field['name'], $uploads_dir, isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
-                //self::setImage($request, $item, $field['name'], $field['options']);
+            }
+            else if($field['type'] == 'image-advanced')
+            {
+                // done with ajax for upload progress
+                // check uploadImage()
             }
             else if($field['type'] == 'alias')
                 $item->alias = Str::slug(($field['use_id'] ? $item->id.'-' : '').$item->$field['src'], '-');
@@ -40,9 +45,17 @@ class CrudUtilities
         $item->save();
     }
 
-    protected static function setImage(&$request, &$item, $field_name, $options)
+    public static function uploadMedia(&$request, &$item, $multiple)
     {
-        if($request->hasFile($field_name) && $request->file($field_name)->isValid())
+        $title = $request->input('title');
+        $collection = $request->input('collection');
+        $width = $request->input('width');
+        $height = $request->input('height');
+        $modified = $request->input('modified');
+        $mime = $request->input('mime');
+        $format = $request->input('format');
+
+        if($request->hasFile($collection) && $request->file($collection)->isValid())
         {
             $file_path = 'uploads/medias';
             // -----------------------------------------------------------
@@ -53,27 +66,27 @@ class CrudUtilities
             // -----------------------------------------------------------
             //  Get uploaded file infos
             // -----------------------------------------------------------
-            $file = $request->file($field_name);
+            $file = $request->file($collection);
             $file_ext = $file->guessExtension();
 
             // -----------------------------------------------------------
             //  Create or update the image
             // -----------------------------------------------------------
-            if(!$item->image){
+            if(!$multiple)
+                $media = $item->getMedia($collection);
+
+            if(!isset($media) || !$media){
                 $media = new Media();
+                $media->collection = $collection;
+                $media->save();
             }
             else{
-                $media = $item->image;
                 $old_file = public_path().'/'.$media->filepath;
                 if(is_file($old_file))
                     unlink($old_file);
             }
-            $media->collection = $field_name;
-            $media->save();
 
-            $file_name = $media->id.'_'.$field_name;
-            if(isset($options['name_src_field']))
-                $file_name .= '_'.Str::slug('_'.$item->{$options['name_src_field']}, '_');
+            $file_name = Str::slug($media->id.'_'.$title, '_');
 
             // -----------------------------------------------------------
             //  Move the image
@@ -88,31 +101,34 @@ class CrudUtilities
             $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
             $img = Image::make($abs_path);
 
-            $width = isset($options['width']) ? intVal($options['width']) : null;
-            $height = isset($options['height']) ? intVal($options['height']) : null;
-            if($width !== null){
-                $img = $img->resize($width, null, function($constraint){
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            }
-            if($height !== null){
-                $img = $img->resize(null, $height, function($constraint){
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            }
-            if(isset($options['format'])){
-                $quality = isset($options['quality']) ? intVal($options['quality']) : 90;
-                $img = $img->encode($options['format'], $quality);
-                $file_ext = trim(strtolower($options['format']));
-                $old_abs_path = $abs_path;
-                $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
-            }
-            $img->save($abs_path);
-            if(isset($old_abs_path) && $old_abs_path != $abs_path && is_file($old_abs_path)){
-                unlink($old_abs_path);
-            }
+            /*if(false)
+            {
+                $width = isset($options['width']) ? intVal($options['width']) : null;
+                $height = isset($options['height']) ? intVal($options['height']) : null;
+                if($width !== null){
+                    $img = $img->resize($width, null, function($constraint){
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+                if($height !== null){
+                    $img = $img->resize(null, $height, function($constraint){
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+                }
+                if(isset($options['format'])){
+                    $quality = isset($options['quality']) ? intVal($options['quality']) : 90;
+                    $img = $img->encode($options['format'], $quality);
+                    $file_ext = trim(strtolower($options['format']));
+                    $old_abs_path = $abs_path;
+                    $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
+                }
+                $img->save($abs_path);
+                if(isset($old_abs_path) && $old_abs_path != $abs_path && is_file($old_abs_path)){
+                    unlink($old_abs_path);
+                }    
+            }*/
 
             // -----------------------------------------------------------
             //  Save the media
@@ -126,12 +142,27 @@ class CrudUtilities
             $media->width = $img->width();
             $media->height = $img->height();
             $media->size = filesize($abs_path);
-            $media->save();
 
             // -----------------------------------------------------------
             //  Associate the media to the item
             // -----------------------------------------------------------
-            $item->image()->save($media);
+            $media->mediable()->associate($item);
+
+            if($multiple){
+                $medias = $item->getMedias($collection);
+                foreach($medias as &$m){
+                    ++$m->position;
+                    $m->save();
+                }
+                $media->position = 0;
+                $media->save();
+                
+                return $medias = $item->getMedias($collection);
+            }
+            else{
+                $media->save();
+                return $item->getMedia($collection);
+            }
         }
     }
 

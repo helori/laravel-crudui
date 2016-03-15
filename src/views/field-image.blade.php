@@ -6,7 +6,7 @@
     <div class="row narrow">
         <div class="col col-xs-4">
             <div class="image">
-                <img src="<% $image['path'].'?'.filemtime($image['path']) %>" alt="<% $field['title'] %>">
+                <img src="<% $image['path'].'?'.@filemtime($image['path']) %>" alt="<% $field['title'] %>">
             </div>
         </div>
         <div class="col col-xs-8">

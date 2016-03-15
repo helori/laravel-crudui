@@ -1,7 +1,7 @@
 @extends($layout_view)
 @section('content')   
 
-<div id="crud-table">
+<div id="crud-table" ng-controller="CrudListController">
     <div class="container-fluid">
 
     	<div class="row">
@@ -48,6 +48,8 @@
                                     <td>
                                         @if($field["type"] == "text")
                                             <% $item->$field["name"] %>
+                                        @elseif($field["type"] == "date")
+                                            <% $item->$field["name"]->format('Y-m-d h:i:s') %>
                                         @elseif($field["type"] == "select")
                                             <% isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' %>
                                         @elseif($field["type"] == "textarea")
@@ -64,6 +66,11 @@
                                             <div class="image">
                                                 <img src="<% isset($item->{$field["name"]}['path']) ? $item->{$field["name"]}['path'] : '' %>">
                                             </div>
+                                        @elseif($field["type"] == "image-advanced")
+                                            <div class="image" style="background-image: url(<% $item->hasMedia($field["name"]) ? $item->getMedia($field["name"])->filepath.'?'.@filemtime($item->getMedia($field["name"])->filepath) : '' %>)"></div>
+                                        @elseif($field["type"] == "images-advanced")
+                                            <div class="image" style="background-image: url(<% $item->hasMedias($field["name"]) ? $item->getMedias($field["name"])[0]->filepath.'?'.@filemtime($item->getMedias($field["name"])[0]->filepath) : '' %>)"></div>
+                                            <% count($item->getMedias($field["name"])) %> image(s)
                                         @endif
                                     </td>
                                 @endforeach
@@ -98,7 +105,7 @@
             @endif
             
                 <div id="crud-add">
-                    <a href="<% $route_url %>/create-item" class="btn btn-primary btn-block">
+                    <a ng-click="openCreateDialog($event)" href="<% $route_url %>/create-item" class="btn btn-primary btn-block">
                         <i class="fa fa-plus"></i> <% $add_text %>
                     </a>
                 </div>
@@ -137,5 +144,45 @@
         </div>
 
     </div>
+
+    <div id="create-dialog" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><% $add_text %></h4>
+                </div>
+                <form method="post" action="<% $route_url %>/store-item" class="form-horizontal" enctype="multipart/form-data">
+                    {!! csrf_field() !!}
+                    <div class="modal-body">
+                         @foreach($create_fields as $i => $field)
+                            @if($field['type'] == 'separator')
+                                <hr>
+                            @elseif(view()->exists('laravel-crudui::field-'.$field["type"]))
+                                <div class="form-group">
+                                    <label for="<% $field['name'] %>" class="control-label col-sm-4"><% $field['title'] %> :</label>
+                                    <div class="col-sm-8">
+                                        @include('laravel-crudui::field-'.$field["type"])
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <i class="fa fa-close"></i> Annuler
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
+
 @endsection

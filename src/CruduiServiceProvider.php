@@ -24,5 +24,13 @@ class CruduiServiceProvider extends ServiceProvider
 		$this->publishes([
             __DIR__.'/config/laravel-crudui.php' => config_path('laravel-crudui.php')
         ], 'config');
+
+        if(!class_exists('CreateMediasTable'))
+        {
+            $timestamp = date('Y_m_d_His', time());
+            $this->publishes([
+                __DIR__.'/migrations/create_medias_table.php' => database_path('migrations/'.$timestamp.'_create_medias_table.php'),
+            ], 'migrations');
+        }
 	}
 }

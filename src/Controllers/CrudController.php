@@ -54,4 +54,29 @@ class CrudController extends CrudBaseController
     {
         return parent::getDeleteItem($request, $id);
     }
+
+    public function postUploadMedia(Request $request, $model, $id = null)
+    {
+        return parent::postUploadMedia($request, $id);
+    }
+
+    public function postUploadMedias(Request $request, $model, $id = null)
+    {
+        return parent::postUploadMedias($request, $id);
+    }
+
+    public function postDeleteMedia(Request $request, $model, $id = null)
+    {
+        return parent::postDeleteMedia($request, $id);
+    }
+    
+    public function getMedia(Request $request, $model, $id, $collection = null)
+    {
+        return parent::getMedia($request, $id, $collection);
+    }
+
+    public function getMedias(Request $request, $model, $id, $collection = null)
+    {
+        return parent::getMedias($request, $id, $collection);
+    }
 }

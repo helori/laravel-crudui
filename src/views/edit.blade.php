@@ -11,7 +11,9 @@
             {!! csrf_field() !!}
 
             @foreach($edit_fields as $i => $field)
-                @if(view()->exists('laravel-crudui::field-'.$field["type"]))
+                @if($field['type'] == 'separator')
+                    <hr>
+                @elseif(view()->exists('laravel-crudui::field-'.$field["type"]))
                     <div class="form-group">
                         <label for="<% $field['name'] %>" class="control-label col-sm-4"><% $field['title'] %> :</label>
                         <div class="col-sm-8">

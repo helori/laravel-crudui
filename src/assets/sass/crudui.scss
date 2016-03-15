@@ -1,3 +1,5 @@
+@import "medias.scss";
+
 #crud-table{
 	h1{
 		margin: 0 0 15px 0;
@@ -22,9 +24,17 @@
 				width: 92px;
 			}
 		}
-		.image img{
-			max-height: 80px;
-			max-width: 100%;
+		.image {
+			width: 120px;
+			height: 90px;
+			background-color: black;
+			background-size: contain;
+			background-position: center center;
+			background-repeat: no-repeat;
+			img{
+				max-height: 80px;
+				max-width: 100%;
+			}
 		}
 	}
 	.pagination{
@@ -86,9 +96,12 @@
   }
 }
 .btn.icon-only{
-	width: 34px;
+	min-width: 36px;
 	padding-left: 0;
 	overflow: hidden;
+	i{
+		width: 100%;
+	}
 }
 
 // -------------------------------------------------------------

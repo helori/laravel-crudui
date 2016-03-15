@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 
 use Helori\LaravelCrudui\CrudUtilities;
+use Helori\LaravelMedias\Media;
 
 
 class CrudBaseController extends Controller
@@ -52,16 +53,20 @@ class CrudBaseController extends Controller
             }
         }
 
-        $this->list_fields = array_where($this->fields, function ($key, $item){
-            return isset($item['list']) && $item['list'];
+        $this->list_fields = array_where($this->fields, function ($key, $field){
+            return isset($field['list']) && $field['list'];
         });
 
-        $this->edit_fields = array_where($this->fields, function ($key, $item){
-            return isset($item['edit']) && $item['edit'];
+        $this->edit_fields = array_where($this->fields, function ($key, $field){
+            return (isset($field['edit']) && $field['edit']) || $field['type'] == 'separator';
         });
 
-        $this->filters = array_where($this->fields, function ($key, $item){
-            return isset($item['filter']) && $item['filter'];
+        $this->create_fields = array_where($this->fields, function ($key, $field){
+            return (isset($field['create']) && $field['create']);
+        });
+
+        $this->filters = array_where($this->fields, function ($key, $field){
+            return isset($field['filter']) && $field['filter'];
         });
 
         if($this->sortable)
@@ -110,6 +115,7 @@ class CrudBaseController extends Controller
         $this->data['sortable'] = $this->sortable;
         
         $this->data['list_fields'] = $this->list_fields;
+        $this->data['create_fields'] = $this->create_fields;
         $this->data['filters'] = $this->filters;
 
         $this->data['layout_view'] = $this->layout_view;
@@ -141,7 +147,7 @@ class CrudBaseController extends Controller
             $item->position = 0;
             $items = call_user_func(array($this->class_name, 'increment'), 'position');
         }
-        CrudUtilities::fillItem($request, $item, $this->fields, $this->uploads_dir);
+        CrudUtilities::fillItem($request, $item, $this->create_fields, $this->uploads_dir);
         return redirect($this->route_url.'/items');
     }
 
@@ -177,6 +183,90 @@ class CrudBaseController extends Controller
         }
         call_user_func(array($this->class_name, 'destroy'), $id);
         return redirect($this->route_url.'/items');
+    }
+
+    public function postUploadMedia(Request $request, $id, $model = null)
+    {
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+        return CrudUtilities::uploadMedia($request, $item, false);
+    }
+
+    public function postUploadMedias(Request $request, $id, $model = null)
+    {
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+        return CrudUtilities::uploadMedia($request, $item, true);
+    }
+
+    public function postDeleteMedia(Request $request, $id, $model = null)
+    {
+        $mediaId = $request->input('mediaId');
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+        $media = $item->medias()->where('id', $mediaId)->first();
+        $collection = $media->collection;
+        if($media){
+            $old_file = public_path().'/'.$media->filepath;
+            if(is_file($old_file))
+                unlink($old_file);
+            $media->delete();
+        }
+        return $item->getMedias($collection);
+    }
+
+    public function getMedia(Request $request, $id, $collection, $model = null)
+    {
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+        return $item->getMedia($collection);
+    }
+
+    public function getMedias(Request $request, $id, $collection, $model = null)
+    {
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+        return $item->getMedias($collection);
+    }
+
+    public function postUpdateMediasPosition(Request $request)
+    {
+        $itemId = intVal($request->input('id'));
+        $mediaId = intVal($request->input('mediaId'));
+
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $itemId);
+        $media = Media::findOrFail($mediaId);
+        $collection = $media->collection;
+        $medias = $item->getMedias($collection);
+
+        $oldPos = $media->position;
+        $newPos = intVal($request->input('position'));
+
+        if($oldPos != $newPos)
+        {
+            if($oldPos < $newPos)
+                $range = [$oldPos + 1, $newPos];
+            else
+                $range = [$newPos, $oldPos - 1];
+
+            // whereBetween does not exist for collections as Laravel 5.2!
+            //$medias = $medias->whereBetween('position', $range);
+
+            $rangeList = [];
+            for($i=$range[0]; $i<=$range[1]; ++$i)
+                $rangeList[] = $i;
+            $medias = $medias->whereIn('position', $rangeList);
+            
+            // increment and devrement does not exist for collections as Laravel 5.2!
+            if($oldPos < $newPos){
+                foreach($medias as &$m){
+                    --$m->position;
+                    $m->save();
+                }
+            }else{
+                foreach($medias as &$m){
+                    ++$m->position;
+                    $m->save();
+                }
+            }
+            $media->position = $newPos;
+            $media->save();
+        }
     }
 
     public function postUpdatePosition(Request $request)

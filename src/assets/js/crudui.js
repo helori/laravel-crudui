@@ -43,6 +43,14 @@ crudui.directive('sortable', ['$http', function($http){
     };
 }]);
 
+crudui.controller('CrudListController', ['$scope', function($scope)
+{
+    $scope.openCreateDialog = function(e){
+        e.preventDefault();
+        $("#create-dialog").modal('show');
+    };
+}]);
+
 crudui.controller('JsonController', ['$scope', function($scope)
 {
     $scope.items = [];

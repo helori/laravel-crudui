@@ -1,0 +1,1 @@
+<% isset($fieldData[$field['name']]) ? $fieldData[$field['name']]->format('Y-m-d h:i:s') : '' %>

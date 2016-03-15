@@ -4,4 +4,5 @@
 	name="<% $field['name'] %>" 
 	class="form-control" 
 	placeholder="<% $field['title'] %>"
-	value="<% isset($fieldData[$field['name']]) ? $fieldData[$field['name']] : '' %>">
+	value="<% isset($fieldData[$field['name']]) ? $fieldData[$field['name']] : '' %>"
+	<% isset($field['required']) && $field['required'] ? 'required' : '' %> >
