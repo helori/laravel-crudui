@@ -1,6 +1,6 @@
 <?php
 
-namespace Helori\LaravelMedias;
+namespace Helori\LaravelCrudui;
 
 trait HasMedia
 {

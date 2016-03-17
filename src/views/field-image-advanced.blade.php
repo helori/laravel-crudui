@@ -1,4 +1,4 @@
-<uploader route-url="<% $route_url %>" item-id="<% $fieldData['id'] %>" collection="<% $field['name'] %>">
+<uploader route-url="<% $medias_url %>" item-id="<% $fieldData['id'] %>" collection="<% $field['name'] %>">
 
 	<div class="uploader-wrapper">
 

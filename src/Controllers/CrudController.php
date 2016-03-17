@@ -22,6 +22,7 @@ class CrudController extends CrudBaseController
 
         $this->page_name = $model['page_name'];
         $this->route_url = $model['route_url'];
+        $this->medias_url = isset($model['medias_url']) ? $model['medias_url'] : 'models';
         $this->uploads_dir = $model['uploads_dir'];
 
         $this->list_title = $model['list_title'];
@@ -53,30 +54,5 @@ class CrudController extends CrudBaseController
     public function getDeleteItem(Request $request, $model, $id = null)
     {
         return parent::getDeleteItem($request, $id);
-    }
-
-    public function postUploadMedia(Request $request, $model, $id = null)
-    {
-        return parent::postUploadMedia($request, $id);
-    }
-
-    public function postUploadMedias(Request $request, $model, $id = null)
-    {
-        return parent::postUploadMedias($request, $id);
-    }
-
-    public function postDeleteMedia(Request $request, $model, $id = null)
-    {
-        return parent::postDeleteMedia($request, $id);
-    }
-    
-    public function getMedia(Request $request, $model, $id, $collection = null)
-    {
-        return parent::getMedia($request, $id, $collection);
-    }
-
-    public function getMedias(Request $request, $model, $id, $collection = null)
-    {
-        return parent::getMedias($request, $id, $collection);
     }
 }

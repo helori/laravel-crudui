@@ -158,7 +158,7 @@
                          @foreach($create_fields as $i => $field)
                             @if($field['type'] == 'separator')
                                 <hr>
-                            @elseif(view()->exists('laravel-crudui::field-'.$field["type"]))
+                            @elseif($field['type'] != 'alias' && view()->exists('laravel-crudui::field-'.$field["type"]))
                                 <div class="form-group">
                                     <label for="<% $field['name'] %>" class="control-label col-sm-4"><% $field['title'] %> :</label>
                                     <div class="col-sm-8">

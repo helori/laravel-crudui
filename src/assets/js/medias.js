@@ -354,6 +354,7 @@ medias.directive('uploader', ['$http', '$sce', '$timeout', function($http, $sce,
                 scope.upload_total = 0;
 
                 var data = {
+                    id: attrs.itemId,
                     collection: attrs.collection,
                     mime: scope.file.type,
                     title: scope.title,
@@ -367,7 +368,7 @@ medias.directive('uploader', ['$http', '$sce', '$timeout', function($http, $sce,
                 
                 $http({
                     method: 'POST',
-                    url: attrs.routeUrl + (attrs.multiple ? '/upload-medias/' : '/upload-media/') + attrs.itemId,
+                    url: attrs.routeUrl + (attrs.multiple ? '/upload-medias' : '/upload-media'),
                     headers: {
                         'Content-Type': undefined, // Manually setting ‘Content-Type’: multipart/form-data will fail to fill in the boundary parameter of the request.
                         '__XHR__': function(){
@@ -409,7 +410,7 @@ medias.directive('uploader', ['$http', '$sce', '$timeout', function($http, $sce,
 
             scope.deleteMedia = function(mediaId)
             {
-                $http.post(attrs.routeUrl + '/delete-media/' + attrs.itemId, {mediaId: mediaId}).then(function(r){
+                $http.post(attrs.routeUrl + '/delete-media', {id: attrs.itemId, mediaId: mediaId}).then(function(r){
                     if(attrs.multiple)
                         scope.medias = r.data;
                     else

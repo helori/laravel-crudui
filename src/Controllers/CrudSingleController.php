@@ -20,8 +20,10 @@ class CrudSingleController extends CrudSingleBaseController
 
         parent::__construct($model['model_class']);
 
+        $this->item_id = isset($model['item_id']) ? $model['item_id'] : 1;
         $this->page_name = $model['page_name'];
         $this->route_url = $model['route_url'];
+        $this->medias_url = $model['medias_url'];
         $this->uploads_dir = $model['uploads_dir'];
         $this->edit_title = $model['edit_title'];
         $this->fields = $model['fields'];

@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 
 use Helori\LaravelCrudui\CrudUtilities;
-use Helori\LaravelMedias\Media;
 
 
 class CrudBaseController extends Controller
@@ -22,6 +21,7 @@ class CrudBaseController extends Controller
 
         $this->page_name = "model";
         $this->route_url = "/model";
+        $this->medias_url = "/medias";
         $this->uploads_dir = 'uploads';
 
         $this->list_title = "Titre de la liste";
@@ -106,6 +106,7 @@ class CrudBaseController extends Controller
 
         $this->data['page_name'] = $this->page_name;
         $this->data['route_url'] = $this->route_url;
+        $this->data['medias_url'] = $this->medias_url;
 
         $this->data['list_title'] = $this->list_title.' ('.(($items->currentPage()-1) * $items->perPage() + 1).' à '.min($items->currentPage() * $items->perPage(), $items->total()).' sur '.$items->total().')';
         $this->data['add_text'] = $this->add_text;
@@ -157,6 +158,7 @@ class CrudBaseController extends Controller
         $this->data['item'] = call_user_func(array($this->class_name, 'findOrFail'), $id);
         
         $this->data['route_url'] = $this->route_url;
+        $this->data['medias_url'] = $this->medias_url;
         $this->data['page_name'] = $this->page_name;
         $this->data['edit_title'] = $this->edit_title;
         $this->data['edit_fields'] = $this->edit_fields;
@@ -183,90 +185,6 @@ class CrudBaseController extends Controller
         }
         call_user_func(array($this->class_name, 'destroy'), $id);
         return redirect($this->route_url.'/items');
-    }
-
-    public function postUploadMedia(Request $request, $id, $model = null)
-    {
-        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        return CrudUtilities::uploadMedia($request, $item, false);
-    }
-
-    public function postUploadMedias(Request $request, $id, $model = null)
-    {
-        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        return CrudUtilities::uploadMedia($request, $item, true);
-    }
-
-    public function postDeleteMedia(Request $request, $id, $model = null)
-    {
-        $mediaId = $request->input('mediaId');
-        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        $media = $item->medias()->where('id', $mediaId)->first();
-        $collection = $media->collection;
-        if($media){
-            $old_file = public_path().'/'.$media->filepath;
-            if(is_file($old_file))
-                unlink($old_file);
-            $media->delete();
-        }
-        return $item->getMedias($collection);
-    }
-
-    public function getMedia(Request $request, $id, $collection, $model = null)
-    {
-        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        return $item->getMedia($collection);
-    }
-
-    public function getMedias(Request $request, $id, $collection, $model = null)
-    {
-        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        return $item->getMedias($collection);
-    }
-
-    public function postUpdateMediasPosition(Request $request)
-    {
-        $itemId = intVal($request->input('id'));
-        $mediaId = intVal($request->input('mediaId'));
-
-        $item = call_user_func(array($this->class_name, 'findOrFail'), $itemId);
-        $media = Media::findOrFail($mediaId);
-        $collection = $media->collection;
-        $medias = $item->getMedias($collection);
-
-        $oldPos = $media->position;
-        $newPos = intVal($request->input('position'));
-
-        if($oldPos != $newPos)
-        {
-            if($oldPos < $newPos)
-                $range = [$oldPos + 1, $newPos];
-            else
-                $range = [$newPos, $oldPos - 1];
-
-            // whereBetween does not exist for collections as Laravel 5.2!
-            //$medias = $medias->whereBetween('position', $range);
-
-            $rangeList = [];
-            for($i=$range[0]; $i<=$range[1]; ++$i)
-                $rangeList[] = $i;
-            $medias = $medias->whereIn('position', $rangeList);
-            
-            // increment and devrement does not exist for collections as Laravel 5.2!
-            if($oldPos < $newPos){
-                foreach($medias as &$m){
-                    --$m->position;
-                    $m->save();
-                }
-            }else{
-                foreach($medias as &$m){
-                    ++$m->position;
-                    $m->save();
-                }
-            }
-            $media->position = $newPos;
-            $media->save();
-        }
     }
 
     public function postUpdatePosition(Request $request)

@@ -162,7 +162,7 @@ crudui.directive('tinymce', ['$http', function($http)
                     schema: "html5",
                     inline: false,
                     statusbar: false,
-                    forced_root_block: 'p',
+                    forced_root_block: false, // 'p'
                     //media_filter_html: true,
                     //extended_valid_elements:"iframe[src|title|width|height|allowfullscreen|frameborder|class|id],object[classid|width|height|codebase|*],param[name|value|_value|*],embed[type|width|height|src|*]",
                     //extended_valid_elements : "iframe[src|width|height|name|align|allowfullscreen|frameborder]",
@@ -177,7 +177,7 @@ crudui.directive('tinymce', ['$http', function($http)
                     //menubar: "tools table format view insert edit",
                     menubar: false,
                     //toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-                    toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | code",
+                    toolbar: "undo redo | bold italic | fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | code",
                     //toolbar2: "fontsizeselect | forecolor backcolor | charmap | emoticons | media",
                     /*style_formats: [
                      {title: 'Bold text', inline: 'b'},

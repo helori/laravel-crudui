@@ -16,8 +16,8 @@
                 name="<% $field['name'] %>" 
                 class="form-control">
             <div class="infos">
-                <% $image['mime'] %>
-                <% $image['width'].' x '.$image['height'].' px' %>
+                <% isset($image['mime']) ? $image['mime'] : '' %>
+                <% (isset($image['width']) ? $image['width'] : '').' x '.(isset($image['height']) ? $image['height'] : '').' px' %>
                 <% floor(filesize($image['path'])/1000).' kb' %>
             </div>
             <!--a href="" class="btn btn-danger btn-block"><i class="fa fa-trash"></i></a-->
