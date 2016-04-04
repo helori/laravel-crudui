@@ -69,6 +69,11 @@ class CrudBaseController extends Controller
             return isset($field['filter']) && $field['filter'];
         });
 
+        foreach($this->filters as &$filter){
+            if(isset($filter['required']))
+                unset($filter['required']);
+        }
+
         if($this->sortable)
             $this->limit = 10000;
     }
