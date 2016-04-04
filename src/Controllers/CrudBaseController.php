@@ -32,6 +32,7 @@ class CrudBaseController extends Controller
         $this->sort_dir = "asc";
         $this->sortable = false;
         $this->limit = 5;
+        $this->where = [];
 
         $this->fields = [];
 
@@ -90,6 +91,11 @@ class CrudBaseController extends Controller
             $this->sort_dir = $request->has('sort_dir') ? $request->input('sort_dir') : $this->sort_dir;
         }
         $items = call_user_func(array($this->class_name, 'orderBy'), $this->sort_by, $this->sort_dir);
+
+        foreach($this->where as $column => $value)
+        {
+            $items->where($column, '=', $value);
+        }
 
         foreach($this->filters as $filter)
         {
