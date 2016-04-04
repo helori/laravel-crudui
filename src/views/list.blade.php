@@ -50,6 +50,12 @@
                                             <% $item->$field["name"] %>
                                         @elseif($field["type"] == "date")
                                             <% $item->$field["name"]->format('Y-m-d h:i:s') %>
+                                        @elseif($field["type"] == "checkbox")
+                                            @if($item->$field["name"])
+                                                <i class="fa fa-check-circle" style="font-size: 20px; color: green"></i>
+                                            @else
+                                                <i class="fa fa-minus-circle" style="font-size: 20px; color: red"></i>
+                                            @endif
                                         @elseif($field["type"] == "select")
                                             <% isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' %>
                                         @elseif($field["type"] == "textarea")
