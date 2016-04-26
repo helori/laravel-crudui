@@ -2,6 +2,11 @@
 @section('content')   
 
 <div id="crud-table" ng-controller="CrudListController">
+
+    <div id="saving" ng-class="{'active': savingPosition}">
+        <i class="fa fa-cog fa-spin"></i> Saving...
+    </div>
+
     <div class="container-fluid">
 
     	<div class="row">
@@ -9,10 +14,14 @@
             @if(count($filters) > 0)
             <div class="col-md-8">
             @else
-            <div class="col-md-10">
+            <div class="col-md-12">
             @endif
 
                 <h1><% $list_title %></h1>
+
+                @if($sortable)
+                    <div class="alert alert-success">Aide : Glisser / Déposer les lignes pour trier les éléments</div>
+                @endif
 
                 <div class="items">
                     <table class="table table-striped table-bordered table-hover" <% $sortable ? 'sortable' : '' %>>
@@ -35,10 +44,13 @@
                                         @endif
                                     </th>
                                 @endforeach
-                                @if($sortable)
-                                    <th></th>
-                                @endif
-                                <th></th>
+                                <th>
+                                    @if($can_create)
+                                       <a ng-click="openCreateDialog($event)" href="<% $route_url %>/create-item" class="btn btn-primary btn-block">
+                                            <i class="fa fa-plus"></i> <% $add_text %>
+                                        </a>
+                                    @endif
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,10 +63,27 @@
                                         @elseif($field["type"] == "date")
                                             <% $item->$field["name"]->format('Y-m-d h:i:s') %>
                                         @elseif($field["type"] == "checkbox")
-                                            @if($item->$field["name"])
-                                                <i class="fa fa-check-circle" style="font-size: 20px; color: green"></i>
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <div class="checkbox">
+                                                        <label for="<% $field['name'] %>">
+                                                            <input list-checkbox 
+                                                                type="checkbox"
+                                                                value="true" 
+                                                                field-type="<% $field['type'] %>"
+                                                                field-name="<% $field['name'] %>"
+                                                                item-id="<% $item->id %>"
+                                                                update-url="<% $route_url %>/update-field"
+                                                                <% $item[$field['name']] ? 'checked' : '' %>>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             @else
-                                                <i class="fa fa-minus-circle" style="font-size: 20px; color: red"></i>
+                                                @if($item->$field["name"])
+                                                    <div class="text-center"><i class="fa fa-check-circle" style="font-size: 20px; color: green"></i></div>
+                                                @else
+                                                    <div class="text-center"><i class="fa fa-minus-circle" style="font-size: 20px; color: red"></i></div>
+                                                @endif
                                             @endif
                                         @elseif($field["type"] == "select")
                                             <% isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' %>
@@ -80,19 +109,23 @@
                                         @endif
                                     </td>
                                 @endforeach
-                                @if($sortable)
-                                    <td class="sortable">
-                                        <i class="fa fa-arrows" ng-show="!savingPosition"></i>
-                                        <i class="fa fa-cog fa-spin" ng-show="savingPosition"></i>
-                                    </td>
-                                @endif
                                 <td class="actions">
-                                    <a href="<% $route_url %>/edit-item/<% $item->id %>" class="btn btn-success icon-only">
-                                        <i class="fa fa-edit"></i>
-                                    </a>    
-                                    <a href="<% $route_url %>/delete-item/<% $item->id %>" class="btn btn-danger icon-only" onclick="confirm('Êtes-vous sûr?')">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
+                                    <div class="row narrow">
+                                        @if($can_update)
+                                        <div class="col col-xs-<% $can_delete ? '6' : '12' %>">
+                                            <a href="<% $route_url %>/edit-item/<% $item->id %>" class="btn btn-success icon-only btn-block">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </div>
+                                        @endif
+                                        @if($can_delete)
+                                        <div class="col col-xs-<% $can_update ? '6' : '12' %>">
+                                            <a href="<% $route_url %>/delete-item/<% $item->id %>" class="btn btn-danger icon-only btn-block" onclick="confirm('Êtes-vous sûr?')">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -106,17 +139,6 @@
 
             @if(count($filters) > 0)
             <div class="col-md-4">
-            @else
-            <div class="col-md-2">
-            @endif
-            
-                <div id="crud-add">
-                    <a ng-click="openCreateDialog($event)" href="<% $route_url %>/create-item" class="btn btn-primary btn-block">
-                        <i class="fa fa-plus"></i> <% $add_text %>
-                    </a>
-                </div>
-
-                @if(count($filters) > 0)
                 <div id="crud-filters">
                     <h3>Filtrer les résultats</h3>
                     <form method="get" action="<% $route_url %>/items" class="form">
@@ -143,9 +165,8 @@
                         </div>
                     </form>
                 </div>
-                @endif
-
             </div>
+            @endif
 
         </div>
 

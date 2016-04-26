@@ -29,7 +29,7 @@ crudui.directive('sortable', ['$http', function($http){
                 element.find("tbody").disableSelection().sortable({
                     update: function( event, ui ){
                         scope.savingPosition = true;
-                        console.log(ui.item.attr('update-url'));
+                        //console.log(ui.item.attr('update-url'));
                         $http.post(ui.item.attr('update-url'), {id: ui.item.attr('id'), position: ui.item.index()}).then(function(r){
                             scope.savingPosition = false;
                             console.log(r);
@@ -43,7 +43,27 @@ crudui.directive('sortable', ['$http', function($http){
     };
 }]);
 
-crudui.controller('CrudListController', ['$scope', function($scope)
+crudui.directive('listCheckbox', ['$http', function($http){
+    return{
+        restrict: 'A',
+        link: function(scope, elt, attrs){
+            var data = {
+                id: attrs.itemId,
+                type: attrs.fieldType,
+                name: attrs.fieldName
+            }
+            var url = attrs.updateUrl;
+            elt.change(function(){
+                data.value = $(this).is(':checked');
+                $http.post(url, data).then(function(r){
+                    //console.log(r);
+                });
+            });
+        }
+    };
+}]);
+
+crudui.controller('CrudListController', ['$scope', '$http', function($scope, $http)
 {
     $scope.openCreateDialog = function(e){
         e.preventDefault();

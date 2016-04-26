@@ -1,4 +1,4 @@
-<input <% $i == 0 ? 'autofocus' : '' %>
+<input <% (isset($i) && ($i == 0)) ? 'autofocus' : '' %>
 	type="checkbox" 
 	id="<% $field['name'] %>" 
 	name="<% $field['name'] %>" 

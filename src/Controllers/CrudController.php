@@ -24,6 +24,10 @@ class CrudController extends CrudBaseController
         $this->route_url = $model['route_url'];
         $this->medias_url = isset($model['medias_url']) ? $model['medias_url'] : 'models';
         $this->uploads_dir = $model['uploads_dir'];
+        
+        $this->can_create = isset($model['can_create']) ? $model['can_create'] : $this->can_create;
+        $this->can_delete = isset($model['can_delete']) ? $model['can_delete'] : $this->can_delete;
+        $this->can_update = isset($model['can_update']) ? $model['can_update'] : $this->can_update;
 
         $this->list_title = $model['list_title'];
         $this->edit_title = $model['edit_title'];

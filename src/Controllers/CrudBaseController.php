@@ -24,6 +24,10 @@ class CrudBaseController extends Controller
         $this->medias_url = "/medias";
         $this->uploads_dir = 'uploads';
 
+        $this->can_create = true;
+        $this->can_delete = true;
+        $this->can_update = true;
+
         $this->list_title = "Titre de la liste";
         $this->edit_title = "Éditer l'élément";
         $this->add_text = "Ajouter un élément";
@@ -119,6 +123,10 @@ class CrudBaseController extends Controller
         $this->data['route_url'] = $this->route_url;
         $this->data['medias_url'] = $this->medias_url;
 
+        $this->data['can_create'] = $this->can_create;
+        $this->data['can_delete'] = $this->can_delete;
+        $this->data['can_update'] = $this->can_update;
+
         $this->data['list_title'] = $this->list_title.' ('.(($items->currentPage()-1) * $items->perPage() + 1).' à '.min($items->currentPage() * $items->perPage(), $items->total()).' sur '.$items->total().')';
         $this->data['add_text'] = $this->add_text;
 
@@ -184,6 +192,21 @@ class CrudBaseController extends Controller
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         CrudUtilities::fillItem($request, $item, $this->fields, $this->uploads_dir);
         return redirect($this->route_url.'/items');
+    }
+
+    public function postUpdateField(Request $request)
+    {
+        $id = intVal($request->input('id'));
+        $fieldType = $request->input('type');
+        $fieldName = $request->input('name');
+        $fieldValue = $request->input('value');
+        
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+        
+        if($fieldType == 'checkbox'){
+            $item->$fieldName = ($fieldValue == 'true');
+        }
+        $item->save();
     }
 
     public function getDeleteItem(Request $request, $id, $model = null)

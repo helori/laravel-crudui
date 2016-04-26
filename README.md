@@ -16,6 +16,12 @@ Configure your application:
 ];
 ```
 
+Publish and run the migrations:
+```bash
+php artisan vendor:publish --provider="Helori\LaravelCrudui\CruduiServiceProvider" --tag="migrations"
+php artisan migrate
+```
+
 Install frontend dependencies:
 ```bash
 bower init
