@@ -195,7 +195,7 @@ class CrudBaseController extends Controller
     public function postUpdateItem(Request $request, $id, $model = null)
     {
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        CrudUtilities::fillItem($request, $item, $this->fields, $this->uploads_dir);
+        CrudUtilities::fillItem($request, $item, $this->edit_fields, $this->uploads_dir);
         return redirect($this->route_url.'/items');
     }
 

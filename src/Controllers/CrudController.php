@@ -37,8 +37,8 @@ class CrudController extends CrudBaseController
         $this->sort_dir = $model['sort_dir'];
         $this->sortable = $model['sortable'];
         $this->limit = $model['limit'];
-        $this->where = $model['where'];
-        $this->defaults = $model['defaults'];
+        $this->where = isset($model['where']) ? $model['where'] : [];
+        $this->defaults = isset($model['defaults']) ? $model['defaults'] : [];
 
         $this->fields = $model['fields'];
 
