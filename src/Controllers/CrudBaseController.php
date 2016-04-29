@@ -37,6 +37,7 @@ class CrudBaseController extends Controller
         $this->sortable = false;
         $this->limit = 5;
         $this->where = [];
+        $this->defaults = [];
 
         $this->fields = [];
 
@@ -166,6 +167,10 @@ class CrudBaseController extends Controller
         if($this->sortable){
             $item->position = 0;
             $items = call_user_func(array($this->class_name, 'increment'), 'position');
+        }
+        foreach($this->defaults as $column => $value)
+        {
+            $item->$column = $value;
         }
         CrudUtilities::fillItem($request, $item, $this->create_fields, $this->uploads_dir);
         return redirect($this->route_url.'/items');
