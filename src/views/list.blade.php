@@ -44,13 +44,15 @@
                                         @endif
                                     </th>
                                 @endforeach
-                                <th>
-                                    @if($can_create)
-                                       <a ng-click="openCreateDialog($event)" href="<% $route_url %>/create-item" class="btn btn-primary btn-block">
-                                            <i class="fa fa-plus"></i> <% $add_text %>
-                                        </a>
-                                    @endif
-                                </th>
+                                @if($can_create || $can_delete || $can_update)
+                                    <th>
+                                        @if($can_create)
+                                           <a ng-click="openCreateDialog($event)" href="<% $route_url %>/create-item" class="btn btn-primary btn-block">
+                                                <i class="fa fa-plus"></i> <% $add_text %>
+                                            </a>
+                                        @endif
+                                    </th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -109,24 +111,26 @@
                                         @endif
                                     </td>
                                 @endforeach
-                                <td class="actions">
-                                    <div class="row narrow">
-                                        @if($can_update)
-                                        <div class="col col-xs-<% $can_delete ? '6' : '12' %>">
-                                            <a href="<% $route_url %>/edit-item/<% $item->id %>" class="btn btn-success icon-only btn-block">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
+                                @if($can_create || $can_delete || $can_update)
+                                    <td class="actions">
+                                        <div class="row narrow">
+                                            @if($can_update)
+                                            <div class="col col-xs-<% $can_delete ? '6' : '12' %>">
+                                                <a href="<% $route_url %>/edit-item/<% $item->id %>" class="btn btn-success icon-only btn-block">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </div>
+                                            @endif
+                                            @if($can_delete)
+                                            <div class="col col-xs-<% $can_update ? '6' : '12' %>">
+                                                <a href="<% $route_url %>/delete-item/<% $item->id %>" class="btn btn-danger icon-only btn-block" onclick="confirm('Êtes-vous sûr?')">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </div>
+                                            @endif
                                         </div>
-                                        @endif
-                                        @if($can_delete)
-                                        <div class="col col-xs-<% $can_update ? '6' : '12' %>">
-                                            <a href="<% $route_url %>/delete-item/<% $item->id %>" class="btn btn-danger icon-only btn-block" onclick="confirm('Êtes-vous sûr?')">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </td>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>
