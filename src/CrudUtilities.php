@@ -10,7 +10,7 @@ use Image;
 
 class CrudUtilities
 {
-    public static function fillItem($request, $item, $fields, $uploads_dir)
+    public static function fillItem($request, $item, $fields)
     {
         foreach($fields as $field)
         {
@@ -23,10 +23,10 @@ class CrudUtilities
             else if($field['type'] == 'date' || $field['type'] == 'datetime')
                 $item->$field['name'] = $request->input($field['name']);
             else if($field['type'] == 'file')
-                self::setFile($request, $item, $field['name'], $uploads_dir, isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
+                self::setFile($request, $item, $field['name'], isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
             else if($field['type'] == 'image')
             {
-                self::setFile($request, $item, $field['name'], $uploads_dir, isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
+                self::setFile($request, $item, $field['name'], isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
             }
             else if($field['type'] == 'image-advanced')
             {
@@ -44,10 +44,11 @@ class CrudUtilities
         $item->save();
     }
 
-    protected static function setFile(&$request, &$item, $field_name, $file_path, $name_src_field)
+    protected static function setFile(&$request, &$item, $field_name, $name_src_field)
     {
         if($request->hasFile($field_name) && $request->file($field_name)->isValid())
         {
+            $file_path = 'uploads';
             if(!is_dir($file_path))
                 mkdir($file_path, 0777, true);
 

@@ -18,6 +18,9 @@
                         <label for="<% $field['name'] %>" class="control-label col-sm-4"><% $field['title'] %> :</label>
                         <div class="col-sm-8">
                             @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item])
+                            @if(isset($field['help']) && $field['help'])
+                                <p class="help-block"><% $field['help'] %></p>
+                            @endif
                         </div>
                     </div>
                 @endif

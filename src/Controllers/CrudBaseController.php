@@ -22,7 +22,7 @@ class CrudBaseController extends Controller
         $this->page_name = "model";
         $this->route_url = "/model";
         $this->medias_url = "/medias";
-        $this->uploads_dir = 'uploads';
+        $this->global_medias_url = config('laravel-crudui.global_medias.route_url');
 
         $this->can_create = true;
         $this->can_delete = true;
@@ -123,6 +123,7 @@ class CrudBaseController extends Controller
         $this->data['page_name'] = $this->page_name;
         $this->data['route_url'] = $this->route_url;
         $this->data['medias_url'] = $this->medias_url;
+        $this->data['global_medias_url'] = $this->global_medias_url;
 
         $this->data['can_create'] = $this->can_create;
         $this->data['can_delete'] = $this->can_delete;
@@ -172,7 +173,7 @@ class CrudBaseController extends Controller
         {
             $item->$column = $value;
         }
-        CrudUtilities::fillItem($request, $item, $this->create_fields, $this->uploads_dir);
+        CrudUtilities::fillItem($request, $item, $this->create_fields);
         return redirect($this->route_url.'/items');
     }
 
@@ -183,6 +184,7 @@ class CrudBaseController extends Controller
         
         $this->data['route_url'] = $this->route_url;
         $this->data['medias_url'] = $this->medias_url;
+        $this->data['global_medias_url'] = $this->global_medias_url;
         $this->data['page_name'] = $this->page_name;
         $this->data['edit_title'] = $this->edit_title;
         $this->data['edit_fields'] = $this->edit_fields;
@@ -195,7 +197,7 @@ class CrudBaseController extends Controller
     public function postUpdateItem(Request $request, $id, $model = null)
     {
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        CrudUtilities::fillItem($request, $item, $this->edit_fields, $this->uploads_dir);
+        CrudUtilities::fillItem($request, $item, $this->edit_fields);
         return redirect($this->route_url.'/items');
     }
 

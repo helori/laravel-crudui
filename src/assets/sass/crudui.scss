@@ -210,3 +210,52 @@
     left: 34px;
     color: #7F8C9A;
 }
+
+// ---------------------------------------------------
+//  Global medias
+// ---------------------------------------------------
+.file-input-wrapper{
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	vertical-align: bottom;
+	input{
+		position: absolute;
+		left: -9999px;
+	}
+	label{
+		display: inline-block;
+	}
+}
+#global-medias{
+	.btn{
+		margin: 0 5px 5px 0;
+	}
+	.media-upload{
+		margin: 0 0 5px 0;
+		padding: 5px;
+		background: #F0F0F0;
+		border: 1px solid #ddd;
+	}
+	.file-type {
+	    margin: 0 0 5px 0;
+	    color: #888;
+	    font-size: 12px;
+	    font-style: italic;
+	}
+	.media-left .image {
+		line-height: 80px;
+	    width: 80px;
+	    height: 80px;
+	    text-align: center;
+	    background: #3E4149;
+	    border: 1px solid #3E4149;
+	    color: #fff;
+	    font-size: 16px;
+	    img {
+		    max-width: 100%;
+		    max-height: 100%;
+		    vertical-align: middle;
+		}
+	}
+}

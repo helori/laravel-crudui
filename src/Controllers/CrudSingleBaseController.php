@@ -23,7 +23,7 @@ class CrudSingleBaseController extends Controller
         $this->page_name = "model";
         $this->route_url = "/model";
         $this->medias_url = "/medias";
-        $this->uploads_dir = 'uploads';
+        $this->global_medias_url = "/global-medias";
 
         $this->edit_title = "Éditer l'élément";
         $this->fields = [];
@@ -44,6 +44,7 @@ class CrudSingleBaseController extends Controller
         $this->data['item'] = $item;
         $this->data['route_url'] = $this->route_url;
         $this->data['medias_url'] = $this->medias_url;
+        $this->data['global_medias_url'] = $this->global_medias_url;
         $this->data['page_name'] = $this->page_name;
         $this->data['edit_title'] = $this->edit_title;
         $this->data['edit_fields'] = $this->fields;
@@ -60,7 +61,7 @@ class CrudSingleBaseController extends Controller
             $item = new $this->class_name();
             $item->id = $this->item_id;
         }
-        CrudUtilities::fillItem($request, $item, $this->fields, $this->uploads_dir);
+        CrudUtilities::fillItem($request, $item, $this->fields);
         return redirect($this->route_url.'/items');
     }
 }

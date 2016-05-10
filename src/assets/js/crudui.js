@@ -136,31 +136,34 @@ crudui.directive('multicheck', ['$interval', '$filter', function($interval, $fil
 }]);
 
 
-crudui.directive('tinymce', ['$http', function($http)
+crudui.directive('tinymce', ['$rootScope', '$http', function($rootScope, $http)
 {
     return{
         restrict: 'A',
         replace: true,
         link: function(scope, element, attrs)
         {
-            console.log("textarea#" + attrs.id);
+            //console.log("textarea#" + attrs.id);
 
             tinyMCE.baseURL = 'tinymce';
-            console.log('TinyMCE base url : ' + tinyMCE.baseURL);
+            //console.log('TinyMCE base url : ' + tinyMCE.baseURL);
 
             // ----------------------------------------------------
             //  TinyMCE images and links from "medias" table
             // ----------------------------------------------------
-            //$http.post(apiUrl + "/tiny-mce-medias").then(function(d){
-                //console.log('medias', d.data);
-
+            var url = attrs.globalMediasUrl;
+            if(!attrs.globalMediasUrl){
+                console.log('Tinymce directive : global medias url missing !', attrs.globalMediasUrl);
+            }
+            $http.get(url + '/read-all').then(function(r){
+                console.log('medias', r.data);
                 var medias = [];
-                /*angular.forEach(d.data, function(media){
+                angular.forEach(r.data, function(media){
                     medias.push({
-                        title: media.name + ' (' + utils.mimeTypeToText(media.fileType) + ')',
-                        value: media.filePath
+                        title: media.title + ' (' + media.mime + ')',
+                        value: media.filepath
                     });
-                });*/
+                });
                 var tinyMceImages = medias;
                 var tinyMceLinks = medias;
 
@@ -187,8 +190,8 @@ crudui.directive('tinymce', ['$http', function($http)
                     //extended_valid_elements:"iframe[src|title|width|height|allowfullscreen|frameborder|class|id],object[classid|width|height|codebase|*],param[name|value|_value|*],embed[type|width|height|src|*]",
                     //extended_valid_elements : "iframe[src|width|height|name|align|allowfullscreen|frameborder]",
                     //fontsize_formats: "8px 9px 10px 11px 12px 13px 14px 15px 16px 18px 20px 22px 24px 26px 28px 30px 36px 42px",
-                    //image_list: tinyMceImages,
-                    //link_list: tinyMceLinks,
+                    image_list: tinyMceImages,
+                    link_list: tinyMceLinks,
                     plugins: [
                         "textcolor advlist autolink lists link image charmap print preview anchor emoticons", // media
                         "searchreplace visualblocks code fullscreen charmap",
@@ -210,18 +213,117 @@ crudui.directive('tinymce', ['$http', function($http)
                      ],*/
                     setup: function(editor) {
                         editor.on('init', function(e) {
-                            console.log('Editor initialized', e);
-                            /*if(scope.model){
-                                editor.setContent(scope.model, {format : "raw"});
-                                console.log("Editor filled", scope.model);
-                            }*/
+                            //console.log('Editor initialized', e);
                         });
                     }
                 };
-                //angular.extend(scope.tinyMCE_options, scope.options);
+                if($rootScope.editorOpts != '')
+                    angular.extend(scope.tinyMCE_options, $rootScope.editorOpts);
                 tinymce.init(scope.tinyMCE_options);
-            //});
+            });
         }
     };
 }]);
+
+crudui.controller('GlobalMediasController', ['$scope', '$http', function($scope, $http)
+{
+    $scope.items = [];
+    $scope.route_url = '';
+    $scope.files = null;
+    $scope.uploading = true;
+    $scope.upload_progress = 0;
+    $scope.upload_total = 0;
+    $scope.decache = new Date().getTime();
+    $scope.filters = [];
+
+    $scope.init = function(route_url){
+        $scope.route_url = route_url;
+        $scope.refresh();
+    };
+
+    $scope.refresh = function()
+    {
+        $http.get($scope.route_url + '/read-all').then(function(r){
+            $scope.items = r.data;
+            console.log(r.data);
+        });
+    };
+
+    var input = $('#global-medias-file-input');
+    input.change(function()
+    {
+        $scope.files = this.files;
+        $scope.title = $scope.files[0].name.replace(/\.[^/.]+$/, "");       
+        console.log('Files ready', $scope.files);
+        $scope.$apply();
+    });
+
+    $scope.upload = function(e)
+    {
+        e.preventDefault();
+        $scope.uploading = true;
+        $scope.upload_progress = 0;
+        $scope.upload_total = 0;
+        
+        $http({
+            method: 'POST',
+            url: $scope.route_url + '/upload',
+            headers: {
+                'Content-Type': undefined, // Manually setting ‘Content-Type’: multipart/form-data will fail to fill in the boundary parameter of the request.
+                '__XHR__': function(){
+                    return function(xhr) {
+                        xhr.upload.addEventListener("progress", function(event) {
+                            console.log("upload progress " + ((event.loaded / event.total) * 100) + "%", xhr, event);
+                            $scope.upload_progress = event.loaded;
+                            $scope.upload_total = event.total;
+                            $scope.$apply();
+                        });
+                    }
+                }
+            },
+            data: {
+                title: $scope.title
+            },
+            transformRequest: function (data, headersGetter) {
+                var formData = new FormData();
+                angular.forEach(data, function (value, key) {
+                    formData.append(key, value);
+                }); 
+                //formData.append(attrs.collection, blob);
+                formData.append('file', $scope.files[0], $scope.files[0].name);
+                return formData;
+            }
+        })
+        .then(function (r) {
+            console.log('upload completed', r);
+            $scope.decache = new Date().getTime();
+            $scope.uploading = false;
+            $scope.refresh();
+        }, function (r) {
+            console.log('upload error', r);
+            $scope.uploading = false;
+        });
+    }
+
+    $scope.delete = function(mediaId)
+    {
+        $http.post($scope.route_url + '/delete', {id: mediaId}).then(function(r){
+            $scope.decache = new Date().getTime();
+            $scope.refresh();
+        });
+    }
+
+    $scope.update = function(mediaId, title)
+    {
+        $http.post($scope.route_url + '/update', {id: mediaId, title: title}).then(function(r){
+            console.log(r);
+        });
+    }
+
+    $scope.download = function(mediaId)
+    {
+        window.location.href = $scope.route_url + '/download/' + mediaId;
+    }
+}]);
+
 
