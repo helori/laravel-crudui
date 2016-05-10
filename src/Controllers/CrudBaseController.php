@@ -85,6 +85,7 @@ class CrudBaseController extends Controller
     }
 
     protected function onGetItems(Request $request){}
+    protected function onUpdateItem(Request $request, &$item){}
 
     public function getItems(Request $request)
     {
@@ -198,6 +199,7 @@ class CrudBaseController extends Controller
     {
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         CrudUtilities::fillItem($request, $item, $this->edit_fields);
+        $this->onUpdateItem($request, $item);
         return redirect($this->route_url.'/items');
     }
 
