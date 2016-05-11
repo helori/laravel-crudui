@@ -18,13 +18,23 @@ class CrudController extends CrudBaseController
         $routeParams = Route::current()->parameters();
         $model = config('laravel-crudui.models.'.$routeParams['model']);
 
-        parent::__construct($model['model_class']);
+        $parent_model = null;
+        if(isset($routeParams['parent_model']))
+        {
+            $parent_model = config('laravel-crudui.models.'.$routeParams['parent_model']);
+            $parent_field = $model['parent_field'];
+            $parent_id = $routeParams['parent_id'];
+        }
+
+        parent::__construct($model['model_class'], $parent_model['model_class']);
 
         $this->page_name = $model['page_name'];
         $this->route_url = $model['route_url'];
         $this->medias_url = isset($model['medias_url']) ? $model['medias_url'] : $this->medias_url;
         $this->global_medias_url = isset($model['global_medias_url']) ? $model['global_medias_url'] : $this->global_medias_url;
         
+        $this->route_url = $model['route_url'];
+
         $this->can_create = isset($model['can_create']) ? $model['can_create'] : $this->can_create;
         $this->can_delete = isset($model['can_delete']) ? $model['can_delete'] : $this->can_delete;
         $this->can_update = isset($model['can_update']) ? $model['can_update'] : $this->can_update;
@@ -43,16 +53,31 @@ class CrudController extends CrudBaseController
         $this->fields = $model['fields'];
 
         $this->layout_view = isset($model['layout']) ? $model['layout'] : $this->layout_view;
+        $this->list_view = isset($model['list_view']) ? $model['list_view'] : $this->list_view;
+        $this->edit_view = isset($model['edit_view']) ? $model['edit_view'] : $this->edit_view;
         
         $this->initFields();
+
+        if($parent_model)
+        {
+            $this->where[$parent_field] = $parent_id;
+            $this->defaults[$parent_field] = $parent_id;
+
+            $route_url = $this->route_url;
+            $route_url = substr($route_url, 0, strripos($route_url, '/'));
+            $route_url .= '/'.$routeParams['parent_model'].'/'.$parent_id.'/'.$routeParams['model'];
+            $this->route_url = $route_url;
+            //var_dump($route_url);
+            //exit;
+        }
     }
 
-    public function getEditItem(Request $request, $model, $id = null)
+    /*public function getEditItem(Request $request, $model = null, $id)
     {
-        return parent::getEditItem($request, $id);
-    }
+        return parent::getEditItem($request);
+    }*/
 
-    public function postUpdateItem(Request $request, $model, $id = null)
+    /*public function postUpdateItem(Request $request, $model, $id = null)
     {
         return parent::postUpdateItem($request, $id);
     }
@@ -60,5 +85,5 @@ class CrudController extends CrudBaseController
     public function getDeleteItem(Request $request, $model, $id = null)
     {
         return parent::getDeleteItem($request, $id);
-    }
+    }*/
 }

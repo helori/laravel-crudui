@@ -62,8 +62,6 @@
                                     <td>
                                         @if($field["type"] == "text")
                                             <% $item->$field["name"] %>
-                                        @elseif($field["type"] == "date")
-                                            <% $item->$field["name"]->format('Y-m-d h:i:s') %>
                                         @elseif($field["type"] == "checkbox")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <div class="text-center">
@@ -92,11 +90,13 @@
                                         @elseif($field["type"] == "textarea")
                                             <% $item->$field["name"] %>
                                         @elseif($field["type"] == "date")
-                                            <% $item->$field["name"]->format('d/m/Y') %>
+                                            <% $item->$field["name"]->format('d F Y') %>
                                         @elseif($field["type"] == "datetime")
-                                            <% $item->$field["name"]->format('d/m/Y H:i:s') %>
+                                            {!! $item->$field["name"]->format('d F Y<\b\r>H:i:s') !!}
                                         @elseif($field["type"] == "url")
                                             <% $item->$field["name"] %>
+                                        @elseif($field["type"] == "currency")
+                                            <% number_format($item->$field["name"], 2, ',', ' ') %> €
                                         @elseif($field["type"] == "file")
                                             <a class="btn btn-default btn-block" target="_blank" href="<% $item->$field["name"] %>">Ouvrir</a>
                                         @elseif($field["type"] == "image")
@@ -108,6 +108,12 @@
                                         @elseif($field["type"] == "images-advanced")
                                             <div class="image" style="background-image: url(<% $item->hasMedias($field["name"]) ? $item->getMedias($field["name"])[0]->filepath.'?'.@filemtime($item->getMedias($field["name"])[0]->filepath) : '' %>)"></div>
                                             <% count($item->getMedias($field["name"])) %> image(s)
+                                        @elseif($field["type"] == "link")
+                                            <a href="<% $route_url.'/'.$item->id.'/shop-properties/items' %>" class="btn btn-primary btn-block">
+                                                <i class="fa fa-arrow-right"></i> <% $field['title'] %>
+                                            </a>
+                                        @elseif($field["type"] == "relation")
+                                            <% $item->$field["relation"]->$field["name"] %>
                                         @endif
                                     </td>
                                 @endforeach

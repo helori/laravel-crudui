@@ -10,7 +10,9 @@
 			<div class="row narrow">
 				<div class="col col-sm-4 col-md-3" ng-repeat="m in medias" media-id="{{m.id}}">
 					<div class="media">
-						<div class="thumb" style="background-image: url({{m.filepath}}?{{decache}})"></div>
+						<div class="thumb">
+							<div class="thumb-inside" style="background-image: url({{m.filepath}}?{{decache}})"></div>
+						</div>
 						<div class="actions">
 							<div class="row narrow">
 								<div class="col col-xs-6">

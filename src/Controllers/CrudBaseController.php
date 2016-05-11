@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Route;
 
 use Helori\LaravelCrudui\CrudUtilities;
 
@@ -15,9 +16,10 @@ class CrudBaseController extends Controller
     protected $data = [];
     protected $class_name;
 
-    public function __construct($class_name)
+    public function __construct($class_name, $sub_class_name = null)
     {
         $this->class_name = $class_name;
+        $this->sub_class_name = $sub_class_name;
 
         $this->page_name = "model";
         $this->route_url = "/model";
@@ -179,8 +181,11 @@ class CrudBaseController extends Controller
     }
 
     // Show the form
-    public function getEditItem(Request $request, $id, $model = null)
+    public function getEditItem(Request $request)
     {
+        $routeParams = Route::current()->parameters();
+        $id = $routeParams['id'];
+        
         $this->data['item'] = call_user_func(array($this->class_name, 'findOrFail'), $id);
         
         $this->data['route_url'] = $this->route_url;
@@ -195,8 +200,11 @@ class CrudBaseController extends Controller
     }
 
     // Update item
-    public function postUpdateItem(Request $request, $id, $model = null)
+    public function postUpdateItem(Request $request)
     {
+        $routeParams = Route::current()->parameters();
+        $id = $routeParams['id'];
+
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         CrudUtilities::fillItem($request, $item, $this->edit_fields);
         $this->onUpdateItem($request, $item);
@@ -218,8 +226,11 @@ class CrudBaseController extends Controller
         $item->save();
     }
 
-    public function getDeleteItem(Request $request, $id, $model = null)
+    public function getDeleteItem(Request $request)
     {
+        $routeParams = Route::current()->parameters();
+        $id = $routeParams['id'];
+
         if($this->sortable)
         {
             $item = call_user_func(array($this->class_name, 'findOrFail'), $id);

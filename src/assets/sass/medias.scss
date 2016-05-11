@@ -15,6 +15,12 @@ $grab-side: 20px;
   .thumb{
     height: 0;
     padding-bottom: 56%;
+    background: url(/images/image-back-alpha.png) repeat left top;
+  }
+  .thumb-inside{
+    width: 100%;
+    height: 0;
+    padding-bottom: 56%;
     background-color: black;
     background-position: center center;
     background-repeat: no-repeat;
