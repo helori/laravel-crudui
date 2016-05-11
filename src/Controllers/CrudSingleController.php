@@ -23,8 +23,8 @@ class CrudSingleController extends CrudSingleBaseController
         $this->item_id = isset($model['item_id']) ? $model['item_id'] : 1;
         $this->page_name = $model['page_name'];
         $this->route_url = $model['route_url'];
-        $this->medias_url = $model['medias_url'];
-        $this->global_medias_url = $model['global_medias_url'];
+        $this->medias_url = isset($model['medias_url']) ? $model['medias_url'] : $this->medias_url;
+        $this->global_medias_url = isset($model['global_medias_url']) ? $model['global_medias_url'] : $this->global_medias_url;
         $this->edit_title = $model['edit_title'];
         $this->fields = $model['fields'];
         $this->layout_view = isset($model['layout']) ? $model['layout'] : $this->layout_view;
