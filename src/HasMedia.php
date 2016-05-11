@@ -5,9 +5,17 @@ namespace Helori\LaravelCrudui;
 trait HasMedia
 {
     // Polymorphic relation
-	public function medias()
+    public function medias()
     {
         return $this->morphMany(Media::class, 'mediable');
+    }
+
+    // --------------------------------------------------------------
+    //  Single Media
+    // --------------------------------------------------------------
+    public function hasMedia($collection)
+    {
+        return $this->getMedia($collection) != false;
     }
 
     public function getMedia($collection)
@@ -15,14 +23,20 @@ trait HasMedia
         return $this->medias()->where('collection', $collection)->first();
     }
 
+    public function mediaPath($collection)
+    {
+        $media = $this->getMedia($collection);
+        if($media && is_file($media->filepath)){
+            return url($media->filepath.'?'.filemtime($media->filepath));
+        }
+    }
+
+    // --------------------------------------------------------------
+    //  Multiple Medias
+    // --------------------------------------------------------------
     public function getMedias($collection)
     {
         return $this->medias()->where('collection', $collection)->orderBy('position', 'asc')->get();
-    }
-
-    public function hasMedia($collection)
-    {
-        return $this->getMedia($collection) != false;
     }
 
     public function hasMedias($collection)
