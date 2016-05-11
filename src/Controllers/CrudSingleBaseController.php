@@ -23,7 +23,7 @@ class CrudSingleBaseController extends Controller
         $this->page_name = "model";
         $this->route_url = "/model";
         $this->medias_url = "/medias";
-        $this->global_medias_url = "/global-medias";
+        $this->global_medias_url = config('laravel-crudui.global_medias.route_url');
 
         $this->edit_title = "Éditer l'élément";
         $this->fields = [];
