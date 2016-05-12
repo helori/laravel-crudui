@@ -116,7 +116,7 @@
                                                 </div>
                                             </div>
                                         @elseif($field["type"] == "link")
-                                            <a href="<% $route_url.'/'.$item->id.'/shop-properties/items' %>" class="btn btn-primary btn-block">
+                                            <a href="<% $route_url.'/'.$item->id.'/'.$field['model'].'/items' %>" class="btn btn-primary btn-block">
                                                 <i class="fa fa-arrow-right"></i> <% $field['title'] %>
                                             </a>
                                         @elseif($field["type"] == "relation")
