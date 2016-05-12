@@ -21,7 +21,7 @@ $grab-side: 20px;
     width: 100%;
     height: 0;
     padding-bottom: 56%;
-    background-color: black;
+    //background-color: black;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -110,7 +110,7 @@ $grab-side: 20px;
     canvas{
       position: relative;
       left: 0; top: 0;
-      background: black;
+      background: url(/images/image-back-alpha.png);
     }
     .cropper-overlay{
       position: absolute;

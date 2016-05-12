@@ -100,20 +100,34 @@
                                         @elseif($field["type"] == "file")
                                             <a class="btn btn-default btn-block" target="_blank" href="<% $item->$field["name"] %>">Ouvrir</a>
                                         @elseif($field["type"] == "image")
-                                            <div class="image">
-                                                <img src="<% isset($item->{$field["name"]}['path']) ? $item->{$field["name"]}['path'] : '' %>">
+                                            <div class="image-wrapper">
+                                                <div class="image">
+                                                    <img src="<% isset($item->{$field["name"]}['path']) ? $item->{$field["name"]}['path'] : '' %>">
+                                                </div>
                                             </div>
                                         @elseif($field["type"] == "image-advanced")
-                                            <div class="image" style="background-image: url(<% $item->hasMedia($field["name"]) ? $item->getMedia($field["name"])->filepath.'?'.@filemtime($item->getMedia($field["name"])->filepath) : '' %>)"></div>
+                                            <div class="image-wrapper">
+                                                <div class="image" style="background-image: url(<% $item->hasMedia($field["name"]) ? $item->getMedia($field["name"])->filepath.'?'.@filemtime($item->getMedia($field["name"])->filepath) : '' %>)"></div>
+                                            </div>
                                         @elseif($field["type"] == "images-advanced")
-                                            <div class="image" style="background-image: url(<% $item->hasMedias($field["name"]) ? $item->getMedias($field["name"])[0]->filepath.'?'.@filemtime($item->getMedias($field["name"])[0]->filepath) : '' %>)"></div>
-                                            <% count($item->getMedias($field["name"])) %> image(s)
+                                            <div class="image-wrapper">
+                                                <div class="image" style="background-image: url(<% $item->hasMedias($field["name"]) ? $item->getMedias($field["name"])[0]->filepath.'?'.@filemtime($item->getMedias($field["name"])[0]->filepath) : '' %>)">
+                                                    <div class="text"><% count($item->getMedias($field["name"])) %> image(s)</div>
+                                                </div>
+                                            </div>
                                         @elseif($field["type"] == "link")
                                             <a href="<% $route_url.'/'.$item->id.'/shop-properties/items' %>" class="btn btn-primary btn-block">
                                                 <i class="fa fa-arrow-right"></i> <% $field['title'] %>
                                             </a>
                                         @elseif($field["type"] == "relation")
-                                            <% $item->$field["relation"]->$field["name"] %>
+                                            <?php
+                                                $relations = explode('.', $field["relation"]);
+                                                $related = $item;
+                                                foreach($relations as $relation){
+                                                    $related = $related->$relation;
+                                                }
+                                            ?>
+                                            <% $related->$field["name"] %>
                                         @endif
                                     </td>
                                 @endforeach

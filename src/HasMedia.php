@@ -43,4 +43,16 @@ trait HasMedia
     {
         return count($this->getMedias($collection)) > 0;
     }
+
+    public function mediasPath($collection)
+    {
+        $medias = $this->getMedias($collection);
+        $paths = [];
+        foreach($medias as $media){
+            if(is_file($media->filepath)){
+                $paths[] = url($media->filepath.'?'.filemtime($media->filepath));
+            }
+        }
+        return $paths;
+    }
 }

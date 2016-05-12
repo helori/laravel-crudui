@@ -29,18 +29,35 @@
 				width: 100px;
 			}
 		}
-		.image {
-			width: 120px;
-			height: 90px;
-			background-color: black;
-			background-size: contain;
-			background-position: center center;
-			background-repeat: no-repeat;
-			img{
-				max-height: 80px;
-				max-width: 100%;
+		.image-wrapper{
+			display: table;
+		    background: url(/images/image-back-alpha.png) repeat left top;
+		    .image {
+		    	position: relative;
+		    	display: table-cell;
+				width: 120px;
+				height: 90px;
+				vertical-align: middle;
+      			text-align: center;
+				//background-color: black;
+				background-size: contain;
+				background-position: center center;
+				background-repeat: no-repeat;
+				.text{
+					position: absolute;
+					bottom: 0;
+					left: 0; right: 0;
+					width: 100%;
+					padding: 5px;
+					background: rgba(0, 0, 0, 0.9);
+					color: white;
+				}
+				/*img{
+					max-height: 80px;
+					max-width: 100%;
+				}*/
 			}
-		}
+		 }
 	}
 	.pagination{
 		margin: 0 0 15px 0;
