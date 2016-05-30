@@ -220,7 +220,10 @@ class CrudBaseController extends Controller
         
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         
-        if($fieldType == 'checkbox'){
+        if($fieldType == 'text' || $fieldType == 'number'){
+            $item->$fieldName = $fieldValue;
+        }
+        else if($fieldType == 'checkbox'){
             $item->$fieldName = ($fieldValue == 'true');
         }
         $item->save();

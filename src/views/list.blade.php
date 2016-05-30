@@ -61,7 +61,37 @@
                                 @foreach($list_fields as $field)
                                     <td>
                                         @if($field["type"] == "text")
-                                            <% $item->$field["name"] %>
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <input list-input 
+                                                        class="form-control"
+                                                        type="text"
+                                                        value="<% $item->$field["name"] %>" 
+                                                        field-type="<% $field['type'] %>"
+                                                        field-name="<% $field['name'] %>"
+                                                        item-id="<% $item->id %>"
+                                                        update-url="<% $route_url %>/update-field">
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <% $item->$field["name"] %>
+                                            @endif
+                                        @elseif($field["type"] == "number")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <input list-input 
+                                                        class="form-control"
+                                                        type="number"
+                                                        value="<% $item->$field["name"] %>" 
+                                                        field-type="<% $field['type'] %>"
+                                                        field-name="<% $field['name'] %>"
+                                                        item-id="<% $item->id %>"
+                                                        update-url="<% $route_url %>/update-field">
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <% number_format($item->$field["name"], 2, ',', ' ') %>
+                                            @endif
                                         @elseif($field["type"] == "checkbox")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <div class="text-center">

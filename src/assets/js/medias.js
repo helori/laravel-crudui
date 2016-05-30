@@ -432,7 +432,6 @@ medias.directive('uploader', ['$http', '$sce', '$timeout', function($http, $sce,
 
                     return new Blob([raw], {type: contentType});
                 }
-
                 var parts = dataURL.split(BASE64_MARKER);
                 var contentType = parts[0].split(':')[1];
                 console.log(contentType);

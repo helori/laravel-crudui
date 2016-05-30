@@ -55,8 +55,36 @@ crudui.directive('listCheckbox', ['$http', function($http){
             var url = attrs.updateUrl;
             elt.change(function(){
                 data.value = $(this).is(':checked');
+                scope.savingPosition = true;
                 $http.post(url, data).then(function(r){
+                    scope.savingPosition = false;
                     //console.log(r);
+                }).then(function(r){
+                    scope.savingPosition = false;
+                });
+            });
+        }
+    };
+}]);
+
+crudui.directive('listInput', ['$http', function($http){
+    return{
+        restrict: 'A',
+        link: function(scope, elt, attrs){
+            var data = {
+                id: attrs.itemId,
+                type: attrs.fieldType,
+                name: attrs.fieldName
+            }
+            var url = attrs.updateUrl;
+            elt.change(function(){
+                data.value = $(this).val();
+                scope.savingPosition = true;
+                $http.post(url, data).then(function(r){
+                    scope.savingPosition = false;
+                    //console.log(r);
+                }).then(function(r){
+                    scope.savingPosition = false;
                 });
             });
         }
