@@ -50,11 +50,6 @@ medias.directive('uploader', ['$http', '$sce', '$timeout', function($http, $sce,
     return{
         restrict: 'EA',
         scope: true,
-        //replace: true,
-        //templateUrl: "partials/image-manager.html",
-        controller: function ($scope) {
-            console.log($scope);
-        },
         link: function(scope, elt, attrs)
         { 
             scope.data = null;

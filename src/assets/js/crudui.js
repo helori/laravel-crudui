@@ -91,6 +91,21 @@ crudui.directive('listInput', ['$http', function($http){
     };
 }]);
 
+crudui.directive('checkbox', [function(){
+    return{
+        restrict: 'E',
+        scope: {
+            model: '='
+        },
+        template: '<div class="checkbox-wrapper" ng-class="{\'checked\': model, \'required\': required == \'true\'}"><label for="{{name}}"><input ng-required="required == \'true\'" type="checkbox" name="{{name}}" id="{{name}}" ng-model="model" ng-value="model"><div class="inside"><div class="icon"><i class="fa fa-check"></i><i class="fa fa-close"></i></div><div class="text">{{title}}</div></div></label></div>',
+        link: function(scope, elt, attrs){
+            scope.name = attrs.name;
+            scope.title = attrs.title;
+            scope.required = attrs.required;
+        }
+    };
+}]);
+
 crudui.controller('CrudListController', ['$scope', '$http', function($scope, $http)
 {
     $scope.openCreateDialog = function(e){
