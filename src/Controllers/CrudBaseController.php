@@ -59,6 +59,13 @@ class CrudBaseController extends Controller
                 $options = array_pluck($items, $field['options_model']['field'], 'id');
                 $field['options'] = $options;
             }
+            else if($field['type'] == 'multi-check' && isset($field['options_model']))
+            {
+                $model = $field['options_model']['model'];
+                $items = call_user_func(array($model, 'orderBy'), $field['options_model']['field'])->get();
+                $options = array_pluck($items, $field['options_model']['field'], 'id');
+                $field['options'] = $options;
+            }
         }
 
         $this->list_fields = array_where($this->fields, function ($key, $field){
@@ -177,6 +184,13 @@ class CrudBaseController extends Controller
             $item->$column = $value;
         }
         CrudUtilities::fillItem($request, $item, $this->create_fields);
+
+        foreach($this->create_fields as $field){
+            if($field['type'] == 'alias'){
+                $item->alias = Str::slug(($field['use_id'] ? $item->id.'-' : '').$item->$field['src'], '-');
+                $item->save();
+            }
+        }
         return redirect($this->route_url.'/items');
     }
 

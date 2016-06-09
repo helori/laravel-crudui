@@ -66,7 +66,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="text"
-                                                        value="<% $item->$field["name"] %>" 
+                                                        value="<% $item->$field['name'] %>" 
                                                         field-type="<% $field['type'] %>"
                                                         field-name="<% $field['name'] %>"
                                                         item-id="<% $item->id %>"
@@ -82,7 +82,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="number"
-                                                        value="<% $item->$field["name"] %>" 
+                                                        value="<% $item->$field['name'] %>" 
                                                         field-type="<% $field['type'] %>"
                                                         field-name="<% $field['name'] %>"
                                                         item-id="<% $item->id %>"
@@ -92,9 +92,33 @@
                                             @else
                                                 <% number_format($item->$field["name"], 2, ',', ' ') %>
                                             @endif
-                                        @elseif($field["type"] == "checkbox")
+                                        @elseif($field["type"] == "email")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <div class="text-center">
+                                                    <input list-input 
+                                                        class="form-control"
+                                                        type="email"
+                                                        value="<% $item->$field['name'] %>" 
+                                                        field-type="<% $field['type'] %>"
+                                                        field-name="<% $field['name'] %>"
+                                                        item-id="<% $item->id %>"
+                                                        update-url="<% $route_url %>/update-field">
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <% $item->$field["name"] %>
+                                            @endif
+                                        @elseif($field["type"] == "checkbox")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <checkbox 
+                                                    value="<% $item->$field['name'] ? 'true' : 'false' %>"
+                                                    title=""
+                                                    field-type="<% $field['type'] %>"
+                                                    field-name="<% $field['name'] %>"
+                                                    item-id="<% $item->id %>"
+                                                    update-url="<% $route_url %>/update-field">
+                                                </checkbox>
+                                                <!--div class="text-center">
                                                     <div class="checkbox">
                                                         <label for="<% $field['name'] %>">
                                                             <input list-checkbox 
@@ -107,7 +131,7 @@
                                                                 <% $item[$field['name']] ? 'checked' : '' %>>
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </div-->
                                             @else
                                                 @if($item->$field["name"])
                                                     <div class="text-center"><i class="fa fa-check-circle" style="font-size: 20px; color: green"></i></div>

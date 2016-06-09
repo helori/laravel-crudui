@@ -41,7 +41,17 @@ class CrudUtilities
                 $item->$field['name'] = json_decode($request->input($field['name']), true);
             }
         }
-        $item->save();
+       
+       $item->save();
+
+        foreach($fields as $field)
+        {
+            if($field['type'] == 'multi-check')
+            {
+                $ids = json_decode($request->input($field['name']), true);
+                $item->$field['name']()->sync($ids);
+            }
+        }
     }
 
     protected static function setFile(&$request, &$item, $field_name, $name_src_field)

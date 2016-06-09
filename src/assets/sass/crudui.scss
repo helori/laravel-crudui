@@ -144,6 +144,64 @@
 	}
 }
 
+// -------------------------------------------
+//  Checkbox
+// -------------------------------------------
+.checkbox-wrapper{
+  margin: 5px 0 0 0;
+  label{
+    display: block;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    font-weight: 400;
+    text-align: center;
+    input{
+      position: absolute;
+      left: -9999px;
+    }
+    .icon{
+    	float: left;
+      display: block;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      //border: 1px solid rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: white;
+      background: #DDD;
+      line-height: 20px;
+      padding-top: 0;
+      i.fa-check{
+        display: none;
+      }
+      i.fa-close{
+        display: inline-block;
+      }
+    }
+    .text{
+      margin-left: 25px;
+    }
+  }
+}
+.checkbox-wrapper.checked{
+  .icon{
+    background: #60B398;
+    i.fa-check{
+      display: inline-block;
+    }
+    i.fa-close{
+      display: none;
+    }
+  }
+}
+
+.multi-check{
+	.checkbox-wrapper label{
+		text-align: left;
+	}
+}
+
+
 // -------------------------------------------------------------
 //	Checkboxes
 // -------------------------------------------------------------

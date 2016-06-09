@@ -21,17 +21,17 @@ crudui.config(['$locationProvider', '$httpProvider', function($locationProvider,
     };
 }]);
 
-crudui.directive('sortable', ['$http', function($http){
+crudui.directive('sortable', ['$rootScope', '$http', function($rootScope, $http){
     return{
         compile: function(element, attrs){
             return function(scope, element, attrs){
-                scope.savingPosition = false;
+                $rootScope.savingPosition = false;
                 element.find("tbody").disableSelection().sortable({
                     update: function( event, ui ){
-                        scope.savingPosition = true;
+                        $rootScope.savingPosition = true;
                         //console.log(ui.item.attr('update-url'));
                         $http.post(ui.item.attr('update-url'), {id: ui.item.attr('id'), position: ui.item.index()}).then(function(r){
-                            scope.savingPosition = false;
+                            $rootScope.savingPosition = false;
                             console.log(r);
                         }, function(r){
                             console.log(r);
@@ -43,7 +43,7 @@ crudui.directive('sortable', ['$http', function($http){
     };
 }]);
 
-crudui.directive('listCheckbox', ['$http', function($http){
+/*crudui.directive('listCheckbox', ['$http', function($http){
     return{
         restrict: 'A',
         link: function(scope, elt, attrs){
@@ -55,19 +55,19 @@ crudui.directive('listCheckbox', ['$http', function($http){
             var url = attrs.updateUrl;
             elt.change(function(){
                 data.value = $(this).is(':checked');
-                scope.savingPosition = true;
+                $rootScope.savingPosition = true;
                 $http.post(url, data).then(function(r){
-                    scope.savingPosition = false;
+                    $rootScope.savingPosition = false;
                     //console.log(r);
                 }).then(function(r){
-                    scope.savingPosition = false;
+                    $rootScope.savingPosition = false;
                 });
             });
         }
     };
-}]);
+}]);*/
 
-crudui.directive('listInput', ['$http', function($http){
+crudui.directive('listInput', ['$rootScope', '$http', function($rootScope, $http){
     return{
         restrict: 'A',
         link: function(scope, elt, attrs){
@@ -79,29 +79,101 @@ crudui.directive('listInput', ['$http', function($http){
             var url = attrs.updateUrl;
             elt.change(function(){
                 data.value = $(this).val();
-                scope.savingPosition = true;
+                $rootScope.savingPosition = true;
                 $http.post(url, data).then(function(r){
-                    scope.savingPosition = false;
+                    $rootScope.savingPosition = false;
                     //console.log(r);
                 }).then(function(r){
-                    scope.savingPosition = false;
+                    $rootScope.savingPosition = false;
                 });
             });
         }
     };
 }]);
 
-crudui.directive('checkbox', [function(){
+crudui.directive('checkbox', ['$rootScope', '$http', function($rootScope, $http){
     return{
         restrict: 'E',
         scope: {
-            model: '='
+            
         },
-        template: '<div class="checkbox-wrapper" ng-class="{\'checked\': model, \'required\': required == \'true\'}"><label for="{{name}}"><input ng-required="required == \'true\'" type="checkbox" name="{{name}}" id="{{name}}" ng-model="model" ng-value="model"><div class="inside"><div class="icon"><i class="fa fa-check"></i><i class="fa fa-close"></i></div><div class="text">{{title}}</div></div></label></div>',
+        transclude: true,
+        template: '<div class="checkbox-wrapper" ng-class="{\'checked\': checked}"><label for="{{fieldName + \'-\' + itemId}}"><input type="checkbox" ng-model="checked" ng-true-value="true" ng-false-value="false" id="{{fieldName + \'-\' + itemId}}"><div class="inside"><div class="icon"><i class="fa fa-check"></i><i class="fa fa-close"></i></div><div class="text">{{title}}</div></div></label></div>',
         link: function(scope, elt, attrs){
-            scope.name = attrs.name;
             scope.title = attrs.title;
-            scope.required = attrs.required;
+            scope.itemId = attrs.itemId;
+            scope.fieldName = attrs.fieldName;
+            scope.checked = (attrs.value == 'true');
+
+            var data = {
+                id: attrs.itemId,
+                type: attrs.fieldType,
+                name: attrs.fieldName
+            };
+            var url = attrs.updateUrl;
+            elt.find('input').change(function(){
+                data.value = $(this).is(':checked');
+                $rootScope.savingPosition = true;
+                $http.post(url, data).then(function(r){
+                    $rootScope.savingPosition = false;
+                    //console.log(r);
+                }).then(function(r){
+                    $rootScope.savingPosition = false;
+                });
+            });
+        }
+    };
+}]);
+
+crudui.directive('multiCheck', ['$interval', '$filter', function($interval, $filter){
+    return{
+        restrict: 'E',
+        scope: true,
+        template: '<div class="multi-check">\
+            <div ng-repeat="opt in opts">\
+                <div class="checkbox-wrapper" ng-class="{\'checked\': opt.checked}">\
+                    <label for="{{name + \'-\' + opt.value}}">\
+                        <input type="checkbox" ng-model="opt.checked" ng-true-value="1" ng-false-value="0" ng-change="update()" id="{{name + \'-\' + opt.value}}">\
+                        <div class="inside">\
+                            <div class="icon">\
+                                <i class="fa fa-check"></i>\
+                                <i class="fa fa-close"></i>\
+                            </div>\
+                            <div class="text">{{opt.label}}</div>\
+                        </div>\
+                    </label>\
+                </div>\
+            </div>\
+            <input type="hidden" name="{{name}}" ng-value="valuesString">',
+
+        link: function(scope, elt, attrs)
+        {
+            scope.name = attrs.name;
+
+            scope.values = JSON.parse(attrs.values);
+            console.log(scope.values);
+            if(!scope.values)
+                scope.values = [];
+            
+            scope.opts = [];
+            angular.forEach(JSON.parse(attrs.options), function(v, k){
+                scope.opts.push({
+                    value: parseInt(k),
+                    label: v,
+                    checked: (scope.values.indexOf(parseInt(k)) === -1) ? 0 : 1
+                });
+            });
+
+            scope.update = function(){
+                var selected = [];
+                angular.forEach(scope.opts, function(opt){
+                    if(opt.checked){
+                        selected.push(opt.value);
+                    }
+                });
+                scope.valuesString = JSON.stringify(selected);
+            };
+            scope.update();
         }
     };
 }]);
