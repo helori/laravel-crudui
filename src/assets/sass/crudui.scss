@@ -161,8 +161,7 @@
       left: -9999px;
     }
     .icon{
-    	float: left;
-      display: block;
+      display: inline-block;
       width: 20px; height: 20px;
       border-radius: 50%;
       //border: 1px solid rgba(0, 0, 0, 0.3);
@@ -196,8 +195,14 @@
 }
 
 .multi-check{
-	.checkbox-wrapper label{
-		text-align: left;
+	.checkbox-wrapper{
+		label{
+			text-align: left;
+			.icon{
+				float: left;
+				display: block;
+			}
+		}
 	}
 }
 
