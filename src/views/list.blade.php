@@ -60,6 +60,9 @@
                             <tr class="item" id="<% $item->id %>" update-url="<% $route_url %>/update-position">
                                 @foreach($list_fields as $field)
                                     <td>
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Text -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @if($field["type"] == "text")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <div class="text-center">
@@ -76,6 +79,29 @@
                                             @else
                                                 <% $item->$field["name"] %>
                                             @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Textarea -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        @elseif($field["type"] == "textarea")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <textarea list-input 
+                                                        class="form-control"
+                                                        field-type="<% $field['type'] %>"
+                                                        field-name="<% $field['name'] %>"
+                                                        item-id="<% $item->id %>"
+                                                        update-url="<% $route_url %>/update-field">
+                                                        <% $item->$field['name'] %>
+                                                    </textarea>
+                                                </div>
+                                            @else
+                                                <% nl2br($item->$field["name"]) %>
+                                            @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Number -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "number")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <div class="text-center">
@@ -92,6 +118,10 @@
                                             @else
                                                 <% number_format($item->$field["name"], 2, ',', ' ') %>
                                             @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Emails -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "email")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <div class="text-center">
@@ -108,6 +138,32 @@
                                             @else
                                                 <% $item->$field["name"] %>
                                             @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Date -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        @elseif($field["type"] == "date" || $field["type"] == "datetime")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <input list-input 
+                                                        class="form-control"
+                                                        type="date"
+                                                        value="<% $item->$field['name']->format('Y-m-d') %>"
+                                                        field-type="<% $field['type'] %>"
+                                                        field-name="<% $field['name'] %>"
+                                                        item-id="<% $item->id %>"
+                                                        update-url="<% $route_url %>/update-field">
+                                                    </div>
+                                                </div>
+                                            @elseif($field["type"] == "date")
+                                                <% $item->$field["name"]->format('d F Y') %>
+                                            @elseif($field["type"] == "datetime")
+                                                {!! $item->$field["name"]->format('d F Y<\b\r>H:i:s') !!}
+                                            @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Checkbox -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "checkbox")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <checkbox 
@@ -139,14 +195,12 @@
                                                     <div class="text-center"><i class="fa fa-minus-circle" style="font-size: 20px; color: red"></i></div>
                                                 @endif
                                             @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Select -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "select")
                                             <% isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' %>
-                                        @elseif($field["type"] == "textarea")
-                                            <% $item->$field["name"] %>
-                                        @elseif($field["type"] == "date")
-                                            <% $item->$field["name"]->format('d F Y') %>
-                                        @elseif($field["type"] == "datetime")
-                                            {!! $item->$field["name"]->format('d F Y<\b\r>H:i:s') !!}
                                         @elseif($field["type"] == "url")
                                             <% $item->$field["name"] %>
                                         @elseif($field["type"] == "currency")

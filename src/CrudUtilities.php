@@ -33,8 +33,6 @@ class CrudUtilities
                 // done with ajax for upload progress
                 // check uploadImage()
             }
-            else if($field['type'] == 'alias')
-                $item->alias = Str::slug(($field['use_id'] ? $item->id.'-' : '').$item->$field['src'], '-');
             else if($field['type'] == 'json')
                 $item->$field['name'] = json_decode($request->input($field['name']), true);
             else if($field['type'] == 'multicheck'){
@@ -50,6 +48,25 @@ class CrudUtilities
             {
                 $ids = json_decode($request->input($field['name']), true);
                 $item->$field['name']()->sync($ids);
+            }
+        }
+    }
+    public static function updateAlias(&$request, &$item, &$fields)
+    {
+        foreach($fields as $field){
+            if($field['type'] == 'alias'){
+                if(is_array($field['src'])){
+                    $aliasParts = [];
+                    foreach($field['src'] as $src){
+                        $aliasParts[] = Str::slug($item->$src, '-');
+                    }
+                    $item->alias = implode('-', $aliasParts);
+                }
+                else{
+                    $item->alias = Str::slug($item->$field['src'], '-');
+                }
+                $item->save();
+                return;
             }
         }
     }

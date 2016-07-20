@@ -184,13 +184,8 @@ class CrudBaseController extends Controller
             $item->$column = $value;
         }
         CrudUtilities::fillItem($request, $item, $this->create_fields);
+        CrudUtilities::updateAlias($request, $item, $this->fields);
 
-        foreach($this->create_fields as $field){
-            if($field['type'] == 'alias'){
-                $item->alias = Str::slug(($field['use_id'] ? $item->id.'-' : '').$item->$field['src'], '-');
-                $item->save();
-            }
-        }
         return redirect($this->route_url.'/items');
     }
 
@@ -220,8 +215,12 @@ class CrudBaseController extends Controller
         $id = $routeParams['id'];
 
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
+
         CrudUtilities::fillItem($request, $item, $this->edit_fields);
+        CrudUtilities::updateAlias($request, $item, $this->fields);
+
         $this->onUpdateItem($request, $item);
+
         return redirect($this->route_url.'/items');
     }
 
@@ -234,12 +233,17 @@ class CrudBaseController extends Controller
         
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         
-        if($fieldType == 'text' || $fieldType == 'number'){
+        if($fieldType == 'text' || $fieldType == 'number' || $fieldType == 'textarea'){
             $item->$fieldName = $fieldValue;
         }
         else if($fieldType == 'checkbox'){
             $item->$fieldName = ($fieldValue == 'true');
         }
+        else if($fieldType == 'date' || $fieldType == 'datetime'){
+            $item->$fieldName = $fieldValue;
+        }
+        CrudUtilities::updateAlias($request, $item, $this->fields);
+        
         $item->save();
     }
 
