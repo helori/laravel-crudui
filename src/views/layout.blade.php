@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
-    <link rel="stylesheet" type="text/css" href="<% elixir('css/crudui.css') %>">
+    <link rel="stylesheet" type="text/css" href="{{ elixir('css/crudui.css') }}">
 
 </head>
 
@@ -19,6 +19,6 @@
 
 @yield('content')
 
-<script src="<% elixir("js/crudui.js") %>"></script>
+<script src="{{ elixir("js/crudui.js") }}"></script>
 
 </body>

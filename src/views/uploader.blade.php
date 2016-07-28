@@ -1,4 +1,4 @@
-<div id="<% $field['name'] %>-dialog" class="modal fade uploader-dialog" tabindex="-1" role="dialog">
+<div id="{{ $field['name'] }}-dialog" class="modal fade uploader-dialog" tabindex="-1" role="dialog">
     <div class="modal-dialog">
     	
     	<div class="modal-content">
@@ -7,24 +7,24 @@
 
 					<div class="col-left">
 
-						<input type="file" id="file-input-<% $field['name'] %>" class="file-input" autofocus>
-						<label for="file-input-<% $field['name'] %>" class="btn btn-default btn-block"><i class="fa fa-file-image-o"></i> Choisir un fichier...</label>
+						<input type="file" id="file-input-{{ $field['name'] }}" class="file-input" autofocus>
+						<label for="file-input-{{ $field['name'] }}" class="btn btn-default btn-block"><i class="fa fa-file-image-o"></i> Choisir un fichier...</label>
 
 			    		<div class="preview-wrapper">
 				    		<div class="preview">
 
 								<canvas class="canvas-back"></canvas>
 								<div class="cropper-overlay" ng-hide="!file"></div>
-								<div class="cropper" ng-hide="!file" style="left:{{modified.x * scale}}px;top:{{modified.y * scale}}px;width:{{modified.w * scale}}px;height:{{modified.h * scale}}px;">
+								<div class="cropper" ng-hide="!file" style="left:@{{modified.x * scale}}px;top:@{{modified.y * scale}}px;width:@{{modified.w * scale}}px;height:@{{modified.h * scale}}px;">
 									<div class="loading" ng-show="loading"><i class="fa fa-cog fa-spin"></i></div>
 						            <div class="progress-wrapper" ng-show="uploading">
 						            	<div class="progress">
-							                <div class="progress-bar" role="progressbar" style="width: {{100 * upload_progress / upload_total}}%;">
-							                    <span class="sr-only">{{100 * upload_progress / upload_total}}% Complete</span>
+							                <div class="progress-bar" role="progressbar" style="width: @{{100 * upload_progress / upload_total}}%;">
+							                    <span class="sr-only">@{{100 * upload_progress / upload_total}}% Complete</span>
 							                </div>
 							            </div>
 						            </div>
-									<canvas class="canvas-cropped" ng-show="file" style="left:{{-modified.x * scale}}px;top:{{-modified.y * scale}}px"></canvas>
+									<canvas class="canvas-cropped" ng-show="file" style="left:@{{-modified.x * scale}}px;top:@{{-modified.y * scale}}px"></canvas>
 									<div class="grab top-left"></div>
 									<div class="grab top-right"></div>
 									<div class="grab bottom-left"></div>
@@ -45,10 +45,10 @@
 						    	
 						    	<h2>Image originale</h2>
 						        <div class="properties">
-							        <div class="">Nom : <span ng-if="file">{{file.name}}</span></div>
-							        <div class="">Taille : <span ng-if="file">{{file.size/1000 | number:' ':''}} ko</span></div>
-							        <div class="">Dimensions : <span ng-if="file">{{original.w}} x {{original.h}} px</span></div>
-							        <div class="">Type : <span ng-if="file">{{file.type}}</span></div>
+							        <div class="">Nom : <span ng-if="file">@{{file.name}}</span></div>
+							        <div class="">Taille : <span ng-if="file">@{{file.size/1000 | number:' ':''}} ko</span></div>
+							        <div class="">Dimensions : <span ng-if="file">@{{original.w}} x @{{original.h}} px</span></div>
+							        <div class="">Type : <span ng-if="file">@{{file.type}}</span></div>
 							    </div>
 
 							    <h2>Image de sortie</h2>
@@ -107,7 +107,7 @@
 							    <div class="form-group" ng-show="width_forced">
 							    	<div class="input-group">
 							    		<span class="input-group-addon">Largeur</span>
-							    		<input type="number" name="width" min="0" max="{{modified.w}}" step="1" class="form-control"
+							    		<input type="number" name="width" min="0" max="@{{modified.w}}" step="1" class="form-control"
 							    			ng-model="width"
 							    			ng-change="updateWidthForced(); updateImage()"
 							    			ng-disabled="!file || !width_forced" 
@@ -116,12 +116,12 @@
 							    	</div>
 							    	<div ng-messages="formUpload.width.$error" role="alert">
 		                                <div class="help-block" ng-message="isValid">Ceci n'est pas un nombre.</div>
-		                                <div class="help-block" ng-message="max">Maximum : {{modified.w | number}} px</div>
+		                                <div class="help-block" ng-message="max">Maximum : @{{modified.w | number}} px</div>
 		                                <div class="help-block" ng-message="max">Minimum : 0 px</div>
 		                            </div>
 							    </div>
 							    <div class="form-group">
-							    	<div>Dimensions : {{width}} x {{height}} px</div>
+							    	<div>Dimensions : @{{width}} x @{{height}} px</div>
 							    </div>
 
 							    <h2>Filtres</h2>
@@ -147,7 +147,7 @@
 				<button type="button" ng-click="updateOutput()" class="btn btn-default" ng-disabled="!file" ng-show="file && outputNeedsRefresh">
 			        <i class="fa fa-refresh"></i> Générer l'image de sortie
 			    </button>
-				<a ng-click="download($event)" href="{{trusted_data_url}}" download="{{title}}.{{format}}" class="btn btn-default" ng-disabled="!file" ng-show="!outputNeedsRefresh">
+				<a ng-click="download($event)" href="@{{trusted_data_url}}" download="@{{title}}.@{{format}}" class="btn btn-default" ng-disabled="!file" ng-show="!outputNeedsRefresh">
 					<i class="fa fa-download"></i> Télécharger sur votre ordinateur
 				</a>
 				<button type="button" ng-click="upload($event)" class="btn btn-default" ng-disabled="!file" ng-show="!outputNeedsRefresh">

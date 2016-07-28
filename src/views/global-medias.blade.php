@@ -1,7 +1,7 @@
 @extends($layout_view)
 @section('content')   
 
-<div id="global-medias" ng-controller="GlobalMediasController" ng-init="init('<% $route_url %>')">
+<div id="global-medias" ng-controller="GlobalMediasController" ng-init="init('{{ $route_url }}')">
     <div class="container">
 
         <h1>Gestion des médias</h1>
@@ -42,8 +42,8 @@
                 <div class="media-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="file-path">Chemin : {{it.filepath}}</div>
-                            <div class="file-type">Type : {{it.mime}}</div>
+                            <div class="file-path">Chemin : @{{it.filepath}}</div>
+                            <div class="file-type">Type : @{{it.mime}}</div>
                         </div>
                         <div class="col-sm-6">
                             <div class="text-right">

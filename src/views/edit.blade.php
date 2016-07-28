@@ -4,9 +4,9 @@
 <div id="crud-form">
     <div class="container">
 
-        <h1><% $edit_title %></h1>
+        <h1>{{ $edit_title }}</h1>
 
-        <form method="post" action="<% $route_url %>/<% isset($item) ? 'update-item/'.$item->id : 'store-item' %>" class="form-horizontal" enctype="multipart/form-data">
+        <form method="post" action="{{ $route_url }}/{{ isset($item) ? 'update-item/'.$item->id : 'store-item' }}" class="form-horizontal" enctype="multipart/form-data">
             
             {!! csrf_field() !!}
 
@@ -15,11 +15,11 @@
                     <hr>
                 @elseif(view()->exists('laravel-crudui::field-'.$field["type"]))
                     <div class="form-group">
-                        <label for="<% $field['name'] %>" class="control-label col-sm-4"><% $field['title'] %> :</label>
+                        <label for="{{ $field['name'] }}" class="control-label col-sm-4">{{ $field['title'] }} :</label>
                         <div class="col-sm-8">
                             @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item])
                             @if(isset($field['help']) && $field['help'])
-                                <p class="help-block"><% $field['help'] %></p>
+                                <p class="help-block">{{ $field['help'] }}</p>
                             @endif
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i> Save
                     </button>
-                    <a type="button" class="btn btn-default" href="<% $route_url %>/items">
+                    <a type="button" class="btn btn-default" href="{{ $route_url }}/items">
                         <i class="fa fa-close"></i> Cancel / Close
                     </a>
                 </div>
