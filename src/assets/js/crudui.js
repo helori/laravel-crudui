@@ -27,12 +27,22 @@ crudui.directive('sortable', ['$rootScope', '$http', function($rootScope, $http)
             return function(scope, element, attrs){
                 $rootScope.savingPosition = false;
                 element.find("tbody").disableSelection().sortable({
+                    placeholder: "position-placeholder",
+                    opacity: 0.9,
+                    revert: true,
+                    scroll: true,
+                    scrollSensitivity: 30,
+                    scrollSpeed: 30,
                     update: function( event, ui ){
                         $rootScope.savingPosition = true;
-                        //console.log(ui.item.attr('update-url'));
-                        $http.post(ui.item.attr('update-url'), {id: ui.item.attr('id'), position: ui.item.index()}).then(function(r){
+                        var container = ui.item.parent();
+                        var beforeItem = container.children().eq(ui.item.index() - 1);
+                        var beforeItemId = (ui.item.index() > 0) ? beforeItem.attr('id') : 0;
+                        console.log(ui.item.attr('id'), beforeItemId);
+
+                        $http.post(ui.item.attr('update-url'), {id: ui.item.attr('id'), beforeItemId: beforeItemId}).then(function(r){
                             $rootScope.savingPosition = false;
-                            console.log(r);
+                            //console.log(r.data);
                         }, function(r){
                             console.log(r);
                         });

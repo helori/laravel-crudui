@@ -266,9 +266,14 @@ class CrudBaseController extends Controller
     {
         $id = intVal($request->input('id'));
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
-        
         $oldPos = $item->position;
-        $newPos = intVal($request->input('position'));
+        
+        $beforeItemId = intVal($request->input('beforeItemId'));
+        $newPos = 0;
+        if($beforeItemId != 0){
+            $beforeItem = call_user_func(array($this->class_name, 'findOrFail'), $beforeItemId);
+            $newPos = $beforeItem->position + 1;
+        }
 
         if($oldPos != $newPos)
         {
@@ -276,8 +281,6 @@ class CrudBaseController extends Controller
                 $range = [$oldPos + 1, $newPos];
             else
                 $range = [$newPos, $oldPos - 1];
-
-            //$items = DB::table('projects')->whereBetween('position', $range)
 
             $items = call_user_func(array($this->class_name, 'whereBetween'), 'position', $range);
             //$items = call_user_func(array($items, 'get'));
@@ -290,5 +293,11 @@ class CrudBaseController extends Controller
             $item->position = $newPos;
             $item->save();
         }
+        return [
+            "item-id" => $id,
+            "before-item-id" => $beforeItemId,
+            "old-pos" => $oldPos,
+            "new-pos" => $newPos,
+        ];
     }
 }
