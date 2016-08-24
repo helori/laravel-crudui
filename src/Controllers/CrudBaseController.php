@@ -242,6 +242,9 @@ class CrudBaseController extends Controller
         else if($fieldType == 'date' || $fieldType == 'datetime'){
             $item->$fieldName = $fieldValue;
         }
+        else if($fieldType == 'password' && $fieldValue != ''){
+            $item->$fieldName = bcrypt($fieldValue);
+        }
         CrudUtilities::updateAlias($request, $item, $this->fields);
         
         $item->save();
@@ -269,35 +272,33 @@ class CrudBaseController extends Controller
         $oldPos = $item->position;
         
         $beforeItemId = intVal($request->input('beforeItemId'));
-        $newPos = 0;
         if($beforeItemId != 0){
             $beforeItem = call_user_func(array($this->class_name, 'findOrFail'), $beforeItemId);
-            $newPos = $beforeItem->position + 1;
+            $beforePos = $beforeItem->position;
+        }
+        else{
+            $beforePos = -1; // debut de liste
         }
 
-        if($oldPos != $newPos)
-        {
-            if($oldPos < $newPos)
-                $range = [$oldPos + 1, $newPos];
-            else
-                $range = [$newPos, $oldPos - 1];
-
+        if($oldPos < $beforePos){
+            $range = [$oldPos + 1, $beforePos];
             $items = call_user_func(array($this->class_name, 'whereBetween'), 'position', $range);
-            //$items = call_user_func(array($items, 'get'));
-            
-            if($oldPos < $newPos){
-                $items->decrement('position');
-            }else{
-                $items->increment('position');
-            }
-            $item->position = $newPos;
-            $item->save();
+            $items->decrement('position');
+            $item->position = $beforePos;
         }
+        else if($oldPos > $beforePos + 1){
+            $range = [$beforePos + 1, $oldPos - 1];
+            $items = call_user_func(array($this->class_name, 'whereBetween'), 'position', $range);
+            $items->increment('position');
+            $item->position = $beforePos + 1;
+        }
+        $item->save();
+        
         return [
             "item-id" => $id,
             "before-item-id" => $beforeItemId,
             "old-pos" => $oldPos,
-            "new-pos" => $newPos,
+            "before-pos" => $beforePos,
         ];
     }
 }

@@ -81,6 +81,25 @@
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Password -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        @elseif($field["type"] == "password")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <input list-input 
+                                                        class="form-control"
+                                                        type="password"
+                                                        field-type="{{ $field['type'] }}"
+                                                        field-name="{{ $field['name'] }}"
+                                                        item-id="{{ $item->id }}"
+                                                        update-url="{{ $route_url }}/update-field">
+                                                    </div>
+                                                </div>
+                                            @else
+                                                (secret)
+                                            @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         <!-- Textarea -->
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "textarea")

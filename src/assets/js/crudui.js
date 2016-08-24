@@ -42,7 +42,7 @@ crudui.directive('sortable', ['$rootScope', '$http', function($rootScope, $http)
 
                         $http.post(ui.item.attr('update-url'), {id: ui.item.attr('id'), beforeItemId: beforeItemId}).then(function(r){
                             $rootScope.savingPosition = false;
-                            //console.log(r.data);
+                            console.log(r.data);
                         }, function(r){
                             console.log(r);
                         });

@@ -22,6 +22,8 @@ class CrudUtilities
                 $item->$field['name'] = $request->has($field['name']) && $request->input($field['name']) == 'true';
             else if($field['type'] == 'date' || $field['type'] == 'datetime')
                 $item->$field['name'] = $request->input($field['name']);
+            else if($field['type'] == 'password' && $request->input($field['name']) != '')
+                $item->$field['name'] = bcrypt($request->input($field['name']));
             else if($field['type'] == 'file')
                 self::setFile($request, $item, $field['name'], isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
             else if($field['type'] == 'image')
