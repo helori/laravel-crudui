@@ -115,7 +115,7 @@
                                                     </textarea>
                                                 </div>
                                             @else
-                                                {{ nl2br($item->$field["name"]) }}
+                                                {!! nl2br($item->$field["name"]) !!}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

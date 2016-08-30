@@ -5,5 +5,4 @@
 	rows="5"
 	placeholder="{{ $field['title'] }}"
 	{{ isset($field['required']) && $field['required'] ? 'required' : '' }}
-	style="resize:vertical">{{ isset($fieldData[$field['name']]) ? $fieldData[$field['name']] : '' }}
-</textarea>
+	style="resize:vertical">{{ isset($fieldData[$field['name']]) ? $fieldData[$field['name']] : '' }}</textarea>

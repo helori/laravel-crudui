@@ -68,19 +68,19 @@ class CrudBaseController extends Controller
             }
         }
 
-        $this->list_fields = array_where($this->fields, function ($key, $field){
+        $this->list_fields = array_where($this->fields, function ($field, $key){
             return isset($field['list']) && $field['list'];
         });
 
-        $this->edit_fields = array_where($this->fields, function ($key, $field){
+        $this->edit_fields = array_where($this->fields, function ($field, $key){
             return (isset($field['edit']) && $field['edit']) || $field['type'] == 'separator';
         });
 
-        $this->create_fields = array_where($this->fields, function ($key, $field){
+        $this->create_fields = array_where($this->fields, function ($field, $key){
             return (isset($field['create']) && $field['create']);
         });
 
-        $this->filters = array_where($this->fields, function ($key, $field){
+        $this->filters = array_where($this->fields, function ($field, $key){
             return isset($field['filter']) && $field['filter'];
         });
 
