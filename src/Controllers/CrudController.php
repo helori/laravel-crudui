@@ -48,6 +48,7 @@ class CrudController extends CrudBaseController
         $this->sortable = $model['sortable'];
         $this->limit = $model['limit'];
         $this->where = isset($model['where']) ? $model['where'] : [];
+        $this->where_relation = isset($model['where_relation']) ? $model['where_relation'] : [];
         $this->defaults = isset($model['defaults']) ? $model['defaults'] : [];
 
         $this->fields = $model['fields'];

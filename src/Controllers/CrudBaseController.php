@@ -39,6 +39,7 @@ class CrudBaseController extends Controller
         $this->sortable = false;
         $this->limit = 5;
         $this->where = [];
+        $this->where_relation = [];
         $this->defaults = [];
 
         $this->fields = [];
@@ -110,6 +111,13 @@ class CrudBaseController extends Controller
         foreach($this->where as $column => $value)
         {
             $items->where($column, '=', $value);
+        }
+
+        foreach($this->where_relation as $model => $id)
+        {
+            $items->whereHas($model, function ($query) use($id) {
+                $query->where('id', $id);
+            });
         }
 
         foreach($this->filters as $filter)
