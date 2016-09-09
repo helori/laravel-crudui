@@ -20,8 +20,11 @@ class CrudUtilities
                 $item->$field['name'] = $request->input($field['name']);
             else if($field['type'] == 'checkbox')
                 $item->$field['name'] = $request->has($field['name']) && $request->input($field['name']) == 'true';
-            else if($field['type'] == 'date' || $field['type'] == 'datetime')
-                $item->$field['name'] = $request->input($field['name']);
+            else if($field['type'] == 'date' || $field['type'] == 'datetime'){
+                if($request->input($field['name'])){
+                    $item->$field['name'] = $request->input($field['name']);
+                }
+            }
             else if($field['type'] == 'password' && $request->input($field['name']) != '')
                 $item->$field['name'] = bcrypt($request->input($field['name']));
             else if($field['type'] == 'file')
