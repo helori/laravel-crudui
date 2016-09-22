@@ -87,6 +87,9 @@ class MediasBaseController extends Controller
 
             $file_name = Str::slug($media->id.'_'.$title, '_');
 
+            $mime = $file->getMimeType();
+            $size = $file->getClientSize();
+
             // -----------------------------------------------------------
             //  Move the image
             // -----------------------------------------------------------
@@ -94,53 +97,58 @@ class MediasBaseController extends Controller
                 mkdir($file_path, 0777, true);
             $file->move(public_path().'/'.$file_path, $file_name.'.'.$file_ext);
 
+            $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
+
             // -----------------------------------------------------------
             //  Resize and Re-format if required
             // -----------------------------------------------------------
-            $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
-            $img = Image::make($abs_path);
-
-            /*if(false)
+            $is_image = (strpos($mime, 'image') !== false);
+            if($is_image)
             {
-                $width = isset($options['width']) ? intVal($options['width']) : null;
-                $height = isset($options['height']) ? intVal($options['height']) : null;
-                if($width !== null){
-                    $img = $img->resize($width, null, function($constraint){
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    });
-                }
-                if($height !== null){
-                    $img = $img->resize(null, $height, function($constraint){
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    });
-                }
-                if(isset($options['format'])){
-                    $quality = isset($options['quality']) ? intVal($options['quality']) : 90;
-                    $img = $img->encode($options['format'], $quality);
-                    $file_ext = trim(strtolower($options['format']));
-                    $old_abs_path = $abs_path;
-                    $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
-                }
-                $img->save($abs_path);
-                if(isset($old_abs_path) && $old_abs_path != $abs_path && is_file($old_abs_path)){
-                    unlink($old_abs_path);
-                }    
-            }*/
+                $img = Image::make($abs_path);
+
+                /*if(false)
+                {
+                    $width = isset($options['width']) ? intVal($options['width']) : null;
+                    $height = isset($options['height']) ? intVal($options['height']) : null;
+                    if($width !== null){
+                        $img = $img->resize($width, null, function($constraint){
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                    }
+                    if($height !== null){
+                        $img = $img->resize(null, $height, function($constraint){
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                    }
+                    if(isset($options['format'])){
+                        $quality = isset($options['quality']) ? intVal($options['quality']) : 90;
+                        $img = $img->encode($options['format'], $quality);
+                        $file_ext = trim(strtolower($options['format']));
+                        $old_abs_path = $abs_path;
+                        $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
+                    }
+                    $img->save($abs_path);
+                    if(isset($old_abs_path) && $old_abs_path != $abs_path && is_file($old_abs_path)){
+                        unlink($old_abs_path);
+                    }    
+                }*/
+                $media->type = 'image';
+                $media->width = $img->width();
+                $media->height = $img->height();
+            }
 
             // -----------------------------------------------------------
             //  Save the media
             // -----------------------------------------------------------
-            $media->type = 'image';
-            $media->mime = $img->mime();
-            $media->size = $file->getClientSize();
+            $media->mime = $mime;
+            $media->size = $size;
             $media->extension = $file_ext;
             $media->filename = $file_name.'.'.$file_ext;
             $media->filepath = $file_path.'/'.$file_name.'.'.$file_ext;
-            $media->width = $img->width();
-            $media->height = $img->height();
-            $media->size = filesize($abs_path);
+            //$media->size = filesize($abs_path);
 
             // -----------------------------------------------------------
             //  Associate the media to the item

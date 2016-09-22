@@ -6,6 +6,10 @@
 
         <h1>{{ $edit_title }}</h1>
 
+        @if($edit_help)
+            <div class="alert alert-success">{!! $edit_help !!}</div>
+        @endif
+
         <form method="post" action="{{ $route_url }}/{{ isset($item) ? 'update-item/'.$item->id : 'store-item' }}" class="form-horizontal" enctype="multipart/form-data">
             
             {!! csrf_field() !!}

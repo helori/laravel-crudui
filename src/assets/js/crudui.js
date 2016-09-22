@@ -5,7 +5,7 @@ var crudui = angular.module('crudui', [
 // ----------------------------------------------------------------------------------------------------
 //		Module Config (config providers here)
 // ----------------------------------------------------------------------------------------------------
-crudui.config(['$locationProvider', '$httpProvider', function($locationProvider, $httpProvider)
+crudui.config(['$locationProvider', '$httpProvider', '$compileProvider', function($locationProvider, $httpProvider, $compileProvider)
 {
     // By default, Angular sends post params as a json object in the query body.
     // It can be retreived using file_get_contents('php://input').
@@ -19,6 +19,35 @@ crudui.config(['$locationProvider', '$httpProvider', function($locationProvider,
         }
         return $.param(data);
     };
+
+    // Allow href to download data and blob
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|data|blob):/);
+
+    // $http does not provide any access to the underlying xhr object.
+    // $http does not provide any callback on the xhr's "progress" event.
+    // So, this "hack" allows us to set an additionnal "__XHR__" header on http requests doing something like :
+    //    headers: {
+    //    __XHR__: function() {
+    //        return function(xhr) {
+    //            xhr.upload.addEventListener("progress", function(event) {
+    //                console.log("uploaded " + ((event.loaded/event.total) * 100) + "%");
+    //            });
+    //        };
+    //    }
+    XMLHttpRequest.prototype.setRequestHeader = (function(sup) {
+        return function(header, value) {
+            if ((header === "__XHR__") && angular.isFunction(value))
+                value(this);
+            else
+                sup.apply(this, arguments);
+        };
+    })(XMLHttpRequest.prototype.setRequestHeader);
+}]);
+
+crudui.filter("trustedUrl", ['$sce', function($sce) {
+    return function(url){
+        return $sce.trustAsResourceUrl(url);
+    }
 }]);
 
 crudui.directive('sortable', ['$rootScope', '$http', function($rootScope, $http){

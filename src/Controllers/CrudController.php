@@ -42,6 +42,8 @@ class CrudController extends CrudBaseController
         $this->list_title = $model['list_title'];
         $this->edit_title = $model['edit_title'];
         $this->add_text = $model['add_text'];
+        $this->list_help = isset($model['list_help']) ? $model['list_help'] : "";
+        $this->edit_help = isset($model['edit_help']) ? $model['edit_help'] : "";
 
         $this->sort_by = $model['sort_by'];
         $this->sort_dir = $model['sort_dir'];

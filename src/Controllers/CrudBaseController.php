@@ -33,6 +33,8 @@ class CrudBaseController extends Controller
         $this->list_title = "Titre de la liste";
         $this->edit_title = "Éditer l'élément";
         $this->add_text = "Ajouter un élément";
+        $this->list_help = "";
+        $this->edit_help = "";
 
         $this->sort_by = "name";
         $this->sort_dir = "asc";
@@ -149,6 +151,7 @@ class CrudBaseController extends Controller
 
         $this->data['list_title'] = $this->list_title.' ('.(($items->currentPage()-1) * $items->perPage() + 1).' à '.min($items->currentPage() * $items->perPage(), $items->total()).' sur '.$items->total().')';
         $this->data['add_text'] = $this->add_text;
+        $this->data['list_help'] = $this->list_help;
 
         $this->data['sort_by'] = $this->sort_by;
         $this->data['sort_dir'] = $this->sort_dir;
@@ -175,6 +178,7 @@ class CrudBaseController extends Controller
         $this->data['edit_title'] = $this->add_text;
         $this->data['edit_fields'] = $this->edit_fields;
         $this->data['layout_view'] = $this->layout_view;
+        $this->data['edit_help'] = $this->edit_help;
 
         return view($this->edit_view, $this->data);
     }
@@ -212,6 +216,7 @@ class CrudBaseController extends Controller
         $this->data['edit_title'] = $this->edit_title;
         $this->data['edit_fields'] = $this->edit_fields;
         $this->data['layout_view'] = $this->layout_view;
+        $this->data['edit_help'] = $this->edit_help;
 
         return view($this->edit_view, $this->data);
     }
@@ -241,14 +246,12 @@ class CrudBaseController extends Controller
         
         $item = call_user_func(array($this->class_name, 'findOrFail'), $id);
         
-        if($fieldType == 'text' || $fieldType == 'number' || $fieldType == 'textarea' || $fieldType == 'email' || $fieldType == 'url'){
+        if($fieldType == 'text' || $fieldType == 'number' || $fieldType == 'textarea' || $fieldType == 'email' || $fieldType == 'url'
+            || $fieldType == 'date' || $fieldType == 'datetime' || $fieldType == 'select'){
             $item->$fieldName = $fieldValue;
         }
         else if($fieldType == 'checkbox'){
             $item->$fieldName = ($fieldValue == 'true');
-        }
-        else if($fieldType == 'date' || $fieldType == 'datetime'){
-            $item->$fieldName = $fieldValue;
         }
         else if($fieldType == 'password' && $fieldValue != ''){
             $item->$fieldName = bcrypt($fieldValue);

@@ -1,20 +1,67 @@
-<div class="row narrow">
-    @if(isset($fieldData[$field['name']]) && is_array($fieldData[$field['name']]))
-        <div class="col col-xs-4">
-            <a href="{{ isset($fieldData[$field['name']]['path']) ? $fieldData[$field['name']]['path'] : '' }}" target="_blank" class="btn btn-default btn-block">
-                <i class="fa fa-file-o"></i>
-                {{ isset($fieldData[$field['name']]['mime']) ? $fieldData[$field['name']]['mime'] : '' }}
-                | {{ isset($fieldData[$field['name']]['path']) && is_file($fieldData[$field['name']]['path']) ? floor(filesize($fieldData[$field['name']]['path'])/1000).' ko' : '' }}
-            </a>
+<file-uploader route-url="{{ $medias_url }}" item-id="{{ $fieldData['id'] }}" collection="{{ $field['name'] }}">
+
+    <div class="uploader-wrapper" ng-cloak>
+
+        <div class="row narrow">
+            <div class="col col-sm-12 col-md-4">
+                
+                <div class="thumb">
+                    <div class="thumb-inside">
+
+                        <div class="image" 
+                            ng-if="media && media.mime.indexOf('image') !== -1"
+                            style="background-image: url(@{{ trusted_url }})">
+                        </div>
+                        
+                        <video controls ng-if="media && media.mime.indexOf('video') !== -1">
+                            <source ng-src="@{{ media.filepath + '?' + decache | trustedUrl }}" type="video/mp4" />
+                        </video>
+
+                        <iframe ng-src="@{{ trusted_url }}" ng-if="media && media.mime.indexOf('pdf') !== -1"></iframe>
+                        
+                        <div class="progress-wrapper" ng-show="uploading">
+                            <div class="progress-cell">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: @{{100 * upload_progress / upload_total}}%;">
+                                        <span class="sr-only">@{{100 * upload_progress / upload_total}}% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-wrapper" ng-if="media && media.mime.indexOf('image') === -1 && media.mime.indexOf('video') === -1 && media.mime.indexOf('pdf') === -1">
+                            <div class="text">
+                                <div>Aucun aperçu</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col col-sm-6 col-md-4">
+                <div class="inputs">
+                    <input type="text" ng-model="media.title" class="form-control" placeholder="Nom du fichier..." ng-show="media">
+                    <input type="file" id="file-input-{{ $field['name'] }}" class="file-input" ng-show="!media">
+                    <label for="file-input-{{ $field['name'] }}" class="btn btn-default btn-block" ng-show="!media">
+                        <i class="fa fa-file-image-o"></i> Choisir un fichier...
+                    </label>
+                    <a ng-href="@{{media.filepath}}" download="@{{media.filename}}" class="btn btn-default btn-block" ng-if="media">
+                        <i class="fa fa-download"></i> Télécharger
+                    </a>
+                    <button type="button" class="btn btn-danger btn-block" ng-click="deleteMedia(media.id)" ng-if="media">
+                        <i class="fa fa-trash"></i> Supprimer
+                    </button>
+                </div>
+            </div>
+            <div class="col col-sm-6 col-md-4">
+                <div class="infos" ng-if="media">
+                    <div>Mime : <span>@{{media.mime}}</span></div>
+                    <div>Size : <span>@{{media.size / 1000 | number:0}} ko</span></div>
+                    <div ng-if="media.mime.indexOf('image') !== -1">Dimensions : @{{media.width}} x @{{media.height}} px</div>
+                </div>
+            </div>
         </div>
-        <div class="col col-xs-8">
-    @else
-        <div class="col col-xs-12">
-    @endif
-    <input {{ $i == 0 ? 'autofocus' : '' }}
-        type="file" 
-        id="{{ $field['name'] }}" 
-        name="{{ $field['name'] }}" 
-        class="form-control">
+
     </div>
-</div>
+
+</file-uploader>

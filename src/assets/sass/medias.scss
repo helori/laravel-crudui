@@ -10,24 +10,87 @@ $grab-side: 20px;
 }
 
 .uploader-wrapper{
-  background: #F0F0F0;
-  padding: 15px;
+  //background: #F0F0F0;
+  //padding: 15px;
   .thumb{
+    min-width: 190px;
     height: 0;
     padding-bottom: 56%;
-    background: url(/images/image-back-alpha.png) repeat left top;
   }
   .thumb-inside{
+    position: relative;
     width: 100%;
     height: 0;
     padding-bottom: 56%;
-    //background-color: black;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    background: repeating-linear-gradient(
+      45deg,
+      #606dbc,
+      #606dbc 10px,
+      #465298 10px,
+      #465298 20px
+    );
+    .image{
+      z-index: 1;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    video, iframe{
+      z-index: 1;
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+      background: black;
+      border: 0;
+      box-shadow: none;
+    }
+    .progress-wrapper{
+      z-index: 2;
+      position: absolute;
+      width: 100%; height: 100%;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+      display: table;
+      .progress-cell{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        .progress{
+          display: inline-block;
+          position: relative;
+          width: 90%; height: 30px;
+          margin: 0 auto;
+          background: white;
+          border: 1px solid black;
+          box-shadow: none;
+          .progress-bar{
+            background: green;
+          }
+        }
+      }
+    }
+    .text-wrapper{
+      display: table;
+      z-index: 2;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      .text{
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        color: white;
+      }
+    }
   }
-  .actions, .infos{
-    margin: 5px 0;
+  .inputs, .infos{
+    //margin: 5px 0;
+    min-width: 190px;
+    text-align: left;
   }
   .media{
     margin-top: 10px;
@@ -110,7 +173,13 @@ $grab-side: 20px;
     canvas{
       position: relative;
       left: 0; top: 0;
-      background: url(/images/image-back-alpha.png);
+      background: repeating-linear-gradient(
+        45deg,
+        #606dbc,
+        #606dbc 10px,
+        #465298 10px,
+        #465298 20px
+      );
     }
     .cropper-overlay{
       position: absolute;
@@ -160,6 +229,11 @@ $grab-side: 20px;
           width: 80%; height: 30px;
           top: 50%; left: 10%;
           margin-top: -15px;
+          box-shadow: none;
+          .progress-bar{
+            background-color: green;
+            box-shadow: none;
+          }
         }
       }
       .grab{

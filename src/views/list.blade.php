@@ -17,10 +17,14 @@
             <div class="col-md-12">
             @endif
 
-                <h1>{{ $list_title }}</h1>
+                <h1>{!! $list_title !!}</h1>
 
                 @if($sortable)
                     <div class="alert alert-success">Aide : Glisser / Déposer les lignes pour trier les éléments</div>
+                @endif
+
+                @if($list_help)
+                    <div class="alert alert-success">{{ $list_help }}</div>
                 @endif
 
                 <div class="items">
@@ -159,6 +163,26 @@
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- URL -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        @elseif($field["type"] == "url")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <div class="text-center">
+                                                    <input list-input 
+                                                        class="form-control"
+                                                        type="url"
+                                                        value="{{ $item->$field['name'] }}" 
+                                                        field-type="{{ $field['type'] }}"
+                                                        field-name="{{ $field['name'] }}"
+                                                        item-id="{{ $item->id }}"
+                                                        update-url="{{ $route_url }}/update-field">
+                                                    </div>
+                                                </div>
+                                            @else
+                                                {{ $item->$field["name"] }}
+                                            @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         <!-- Date -->
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "date" || $field["type"] == "datetime")
@@ -193,20 +217,6 @@
                                                     item-id="{{ $item->id }}"
                                                     update-url="{{ $route_url }}/update-field">
                                                 </checkbox>
-                                                <!--div class="text-center">
-                                                    <div class="checkbox">
-                                                        <label for="{{ $field['name'] }}">
-                                                            <input list-checkbox 
-                                                                type="checkbox"
-                                                                value="true" 
-                                                                field-type="{{ $field['type'] }}"
-                                                                field-name="{{ $field['name'] }}"
-                                                                item-id="{{ $item->id }}"
-                                                                update-url="{{ $route_url }}/update-field"
-                                                                {{ $item[$field['name']] ? 'checked' : '' }}>
-                                                        </label>
-                                                    </div>
-                                                </div-->
                                             @else
                                                 @if($item->$field["name"])
                                                     <div class="text-center"><i class="fa fa-check-circle" style="font-size: 20px; color: green"></i></div>
@@ -216,16 +226,42 @@
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- File -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        @elseif($field["type"] == "file")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item])
+                                            @else
+                                                <div class="image-wrapper">
+                                                    <div class="image" style="background-image: url({{ $item->mediaPath($field["name"]).'?'.@filemtime($item->mediaPath($field["name"])) }})"></div>
+                                                </div>
+                                            @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         <!-- Select -->
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "select")
-                                            {{ isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' }}
-                                        @elseif($field["type"] == "url")
-                                            {{ $item->$field["name"] }}
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                <select list-input 
+                                                    class="form-control"
+                                                    value="{{ $item->$field['name'] }}" 
+                                                    field-type="{{ $field['type'] }}"
+                                                    field-name="{{ $field['name'] }}"
+                                                    item-id="{{ $item->id }}"
+                                                    update-url="{{ $route_url }}/update-field">
+                                                    @if(isset($field['empty_value']))
+                                                        <option value="{{ $field['empty_value'] }}">== {{ $field['title'] }} ==</option>
+                                                    @endif
+                                                    @foreach($field['options'] as $value => $name)
+                                                        <option value="{{ $value }}" {{ (isset($item->{$field['name']}) && $item->{$field['name']} == $value) ? 'selected' : '' }}>{{ $name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                {{ isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' }}
+                                            @endif
+
                                         @elseif($field["type"] == "currency")
                                             {{ number_format($item->$field["name"], 2, ',', ' ') }} €
-                                        @elseif($field["type"] == "file")
-                                            <a class="btn btn-default btn-block" target="_blank" href="{{ $item->$field["name"] }}">Ouvrir</a>
                                         @elseif($field["type"] == "image")
                                             <div class="image-wrapper">
                                                 <div class="image">
