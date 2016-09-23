@@ -85,7 +85,7 @@
 						    		<input type="text" ng-model="title" class="form-control" required placeholder="Titre..." ng-disabled="!file">
 						    	</div>
 						    	<div class="form-group">
-							    	<select class="form-control" name="format" ng-model="format" ng-change="updateImage()" ng-disabled="!file" >
+							    	<select class="form-control" ng-model="format" ng-change="updateImage()" ng-disabled="!file" >
 							    		<option value="jpg">JPEG</option>
 							    		<option value="png">PNG</option>
 							    	</select>
@@ -107,7 +107,7 @@
 							    <div class="form-group" ng-show="width_forced">
 							    	<div class="input-group">
 							    		<span class="input-group-addon">Largeur</span>
-							    		<input type="number" name="width" min="0" max="@{{modified.w}}" step="1" class="form-control"
+							    		<input type="number" min="0" max="@{{modified.w}}" step="1" class="form-control"
 							    			ng-model="width"
 							    			ng-change="updateWidthForced(); updateImage()"
 							    			ng-disabled="!file || !width_forced" 
