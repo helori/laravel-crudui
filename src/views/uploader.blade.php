@@ -82,7 +82,7 @@
 							    </div-->
 							    
 							    <div class="form-group">
-						    		<input type="text" name="title" ng-model="title" class="form-control" required placeholder="Titre..." ng-disabled="!file">
+						    		<input type="text" ng-model="title" class="form-control" required placeholder="Titre..." ng-disabled="!file">
 						    	</div>
 						    	<div class="form-group">
 							    	<select class="form-control" name="format" ng-model="format" ng-change="updateImage()" ng-disabled="!file" >

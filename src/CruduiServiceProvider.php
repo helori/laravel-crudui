@@ -33,4 +33,9 @@ class CruduiServiceProvider extends ServiceProvider
             ], 'migrations');
         }
 	}
+
+    public static function routes()
+    {
+        require(__DIR__.'/routes.php');
+    }
 }
