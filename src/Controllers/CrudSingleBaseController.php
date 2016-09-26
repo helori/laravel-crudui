@@ -26,6 +26,7 @@ class CrudSingleBaseController extends Controller
         $this->global_medias_url = config('laravel-crudui.global_medias.route_url');
 
         $this->edit_title = "Éditer l'élément";
+        $this->edit_help = "";
         $this->fields = [];
 
         $this->layout_view = 'laravel-crudui::layout';
@@ -47,6 +48,7 @@ class CrudSingleBaseController extends Controller
         $this->data['global_medias_url'] = $this->global_medias_url;
         $this->data['page_name'] = $this->page_name;
         $this->data['edit_title'] = $this->edit_title;
+        $this->data['edit_help'] = $this->edit_help;
         $this->data['edit_fields'] = $this->fields;
         $this->data['layout_view'] = $this->layout_view;
 

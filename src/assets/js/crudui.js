@@ -44,6 +44,11 @@ crudui.config(['$locationProvider', '$httpProvider', '$compileProvider', functio
     })(XMLHttpRequest.prototype.setRequestHeader);
 }]);
 
+crudui.run(['$rootScope', function($rootScope)
+{
+    $('[data-toggle="tooltip"]').tooltip();
+}]);
+
 crudui.filter("trustedUrl", ['$sce', function($sce) {
     return function(url){
         return $sce.trustAsResourceUrl(url);

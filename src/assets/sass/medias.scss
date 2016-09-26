@@ -10,14 +10,7 @@ $grab-side: 20px;
 }
 
 .uploader-wrapper{
-  //background: #F0F0F0;
-  //padding: 15px;
   .thumb{
-    min-width: 190px;
-    height: 0;
-    padding-bottom: 56%;
-  }
-  .thumb-inside{
     position: relative;
     width: 100%;
     height: 0;
@@ -87,24 +80,36 @@ $grab-side: 20px;
       }
     }
   }
-  .inputs, .infos{
-    //margin: 5px 0;
+  .inputs{
     min-width: 190px;
     text-align: left;
   }
-  .media{
-    margin-top: 10px;
-    padding: 10px;
-    background: white;
+  .infos{
+    text-align: left;
+  }
+  // -------------------------------------------------
+  // Multiple
+  // -------------------------------------------------
+  .medias{
+    .media{
+      margin-top: 10px;
+      background: #F5F5F5;
+      .details{
+        padding: 10px;
+        .infos{
+          padding: 10px 0 0 0;
+        }
+      }
+    }
   }
   
   input.ng-invalid:not(.ng-disabled),
   select.ng-invalid:not(.ng-disabled){
-    background: #FDD4CA;
+    border-color: green;
   }
   input.ng-valid:not(.ng-disabled),
   select.ng-valid:not(.ng-disabled) {
-    background: #BFF2D0;
+    border-color: red;
   }
 
   .uploader-content{

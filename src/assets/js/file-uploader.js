@@ -11,28 +11,56 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
             scope.upload_progress = 0;
             scope.upload_total = 0;
             scope.decache = new Date().getTime();
-            scope.trusted_url = '';
-            
-            // -------------------------------------------------------
-            //  Récupérer le média
-            // -------------------------------------------------------
-            scope.media = {};
-            $http.get(attrs.routeUrl + '/media/' + attrs.itemId + '/' + attrs.collection).then(function(r){
-                console.log('loaded', r.data);
-                scope.media = r.data;
-                scope.decache = new Date().getTime();
-                scope.trusted_url = $sce.trustAsResourceUrl(scope.media.filepath + '?' + scope.decache);
+            scope.saving_position = false;
 
-                // -------------------------------------------------------
-                //  File input 
-                // -------------------------------------------------------
-                scope.input = elt.find('.file-input');
-                scope.input.change(function(){
-                    scope.file = this.files[0];
-                    scope.title = scope.file.name.replace(/\.[^/.]+$/, "");
-                    scope.$apply();
-                    scope.upload();
+            // -------------------------------------------------------
+            //  File input 
+            // -------------------------------------------------------
+            scope.input = elt.find('.file-input');
+            console.log(scope.input);
+            scope.input.change(function(){
+                scope.file = this.files[0];
+                scope.title = scope.file.name.replace(/\.[^/.]+$/, "");
+                console.log(scope.file);
+                scope.$apply();
+                scope.upload();
+            });
+
+            // -------------------------------------------------------
+            //  Get single medias
+            // -------------------------------------------------------
+            if(!attrs.multiple)
+            {
+                $http.get(attrs.routeUrl + '/media/' + attrs.itemId + '/' + attrs.collection).then(function(r){
+                    scope.media = r.data;
                 });
+            }
+
+            // -------------------------------------------------------
+            //  Get multiple medias
+            // -------------------------------------------------------
+            if(attrs.multiple)
+            {
+                scope.medias = {};
+                $http.get(attrs.routeUrl + '/medias/' + attrs.itemId + '/' + attrs.collection).then(function(r){
+                    scope.medias = r.data;
+                });
+            }
+
+            // -------------------------------------------------------
+            //  Multiple medias ordering
+            // -------------------------------------------------------
+            var medias = elt.find('.medias > .row');
+            medias.disableSelection().sortable({
+                update: function( event, ui ){
+                    scope.saving_position = true;
+                    $http.post(attrs.routeUrl + '/update-medias-position', {id: attrs.itemId, mediaId: ui.item.attr('media-id'), position: ui.item.index()}).then(function(r){
+                        scope.saving_position = false;
+                        //console.log(r);
+                    }, function(r){
+                        scope.saving_position = false;
+                    });
+                }
             });
 
             // -------------------------------------------------------
@@ -53,7 +81,7 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
 
                 $http({
                     method: 'POST',
-                    url: attrs.routeUrl + '/upload-media',
+                    url: attrs.routeUrl + (attrs.multiple ? '/upload-medias' : '/upload-media'),
                     headers: {
                         'Content-Type': undefined, // Manually setting ‘Content-Type’: multipart/form-data will fail to fill in the boundary parameter of the request.
                         '__XHR__': function(){
@@ -80,9 +108,11 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
                 .then(function (r) {
                     console.log('upload completed', r.data);
                     scope.uploading = false;
-                    scope.media = r.data;
+                    if(attrs.multiple)
+                        scope.medias = r.data;
+                    else
+                        scope.media = r.data;
                     scope.decache = new Date().getTime();
-                    scope.trusted_url = $sce.trustAsResourceUrl(scope.media.filepath + '?' + scope.decache);
                     scope.input[0].value = "";
                 }, function (r) {
                     console.log('upload error', r);
@@ -94,9 +124,11 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
             scope.deleteMedia = function(mediaId)
             {
                 $http.post(attrs.routeUrl + '/delete-media', {id: attrs.itemId, mediaId: mediaId}).then(function(r){
-                    scope.media = null;
+                    if(attrs.multiple)
+                        scope.medias = r.data;
+                    else
+                        scope.media = null;
                     scope.decache = new Date().getTime();
-                    scope.trusted_url = null;
                 });
             }
         }
