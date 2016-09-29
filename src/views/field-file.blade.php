@@ -10,14 +10,14 @@
 
                         <div class="image" 
                             ng-if="media && media.mime.indexOf('image') !== -1"
-                            style="background-image: url(@{{ trusted_url }})">
+                            style="background-image: url(@{{ media.filepath + '?' + decache | trustedUrl }})">
                         </div>
                         
                         <video controls ng-if="media && media.mime.indexOf('video') !== -1">
                             <source ng-src="@{{ media.filepath + '?' + decache | trustedUrl }}" type="video/mp4" />
                         </video>
 
-                        <iframe ng-src="@{{ trusted_url }}" ng-if="media && media.mime.indexOf('pdf') !== -1"></iframe>
+                        <iframe ng-src="@{{ media.filepath + '?' + decache | trustedUrl }}" ng-if="media && media.mime.indexOf('pdf') !== -1"></iframe>
                         
                         <div class="progress-wrapper" ng-show="uploading">
                             <div class="progress-cell">
