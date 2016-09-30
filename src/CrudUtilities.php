@@ -122,6 +122,26 @@ class CrudUtilities
                 $result['size'] = filesize($abs_path);
                 $result['width'] = $img->width();
                 $result['height'] = $img->height();
+                
+                // ----------------------------------------------------
+                //  Optimize image.
+                //  Use package ps/image-optimizer instead of writing command lines ?
+                //  WILL NOT WORK ON OVH MUTUALISE ANYWAY !!!
+                // ----------------------------------------------------
+                if(false)
+                {
+                    $png_exe = 'optipng';
+                    $img_path = 'images/_test.png';
+                    $img_path_abs = base_path($img_path);
+                    
+                    $mime_info = finfo_open(FILEINFO_MIME_TYPE);
+                    $mime = finfo_file($mime_info, $img_path);
+                    if($mime == 'image/png'){
+                        $cmd = $png_exe.' '.$img_path_abs;
+                        passthru($png_exe);
+                    }
+                }
+                // ----------------------------------------------------
             }
 
             $item->$field_name = $result;
