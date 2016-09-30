@@ -73,7 +73,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="text"
-                                                        value="{{ $item->$field['name'] }}" 
+                                                        value="{{ $item->{$field['name']} }}" 
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -115,7 +115,7 @@
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
                                                         update-url="{{ $route_url }}/update-field">
-                                                        {{ $item->$field['name'] }}
+                                                        {{ $item->{$field['name']} }}
                                                     </textarea>
                                                 </div>
                                             @else
@@ -131,7 +131,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="number"
-                                                        value="{{ $item->$field['name'] }}" 
+                                                        value="{{ $item->{$field['name']} }}" 
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -151,7 +151,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="email"
-                                                        value="{{ $item->$field['name'] }}" 
+                                                        value="{{ $item->{$field['name']} }}" 
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -171,7 +171,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="url"
-                                                        value="{{ $item->$field['name'] }}" 
+                                                        value="{{ $item->{$field['name']} }}" 
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -191,7 +191,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="date"
-                                                        value="{{ $item->$field['name']->format('Y-m-d') }}"
+                                                        value="{{ $item->{$field['name']}->format('Y-m-d') }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -210,7 +210,7 @@
                                         @elseif($field["type"] == "checkbox")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <checkbox 
-                                                    value="{{ $item->$field['name'] ? 'true' : 'false' }}"
+                                                    value="{{ $item->{$field['name']} ? 'true' : 'false' }}"
                                                     title=""
                                                     field-type="{{ $field['type'] }}"
                                                     field-name="{{ $field['name'] }}"
@@ -244,7 +244,7 @@
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 <select list-input 
                                                     class="form-control"
-                                                    value="{{ $item->$field['name'] }}" 
+                                                    value="{{ $item->{$field['name']} }}" 
                                                     field-type="{{ $field['type'] }}"
                                                     field-name="{{ $field['name'] }}"
                                                     item-id="{{ $item->id }}"

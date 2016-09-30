@@ -15,18 +15,18 @@ class CrudUtilities
         foreach($fields as $field)
         {
             if($field['type'] == 'text' || $field['type'] == 'url' || $field['type'] == 'textarea' || $field['type'] == 'editor' || $field['type'] == 'email')
-                $item->$field['name'] = $request->input($field['name']);
+                $item->{$field['name']} = $request->input($field['name']);
             else if($field['type'] == 'select')
-                $item->$field['name'] = $request->input($field['name']);
+                $item->{$field['name']} = $request->input($field['name']);
             else if($field['type'] == 'checkbox')
-                $item->$field['name'] = $request->has($field['name']) && $request->input($field['name']) == 'true';
+                $item->{$field['name']} = $request->has($field['name']) && $request->input($field['name']) == 'true';
             else if($field['type'] == 'date' || $field['type'] == 'datetime'){
                 if($request->input($field['name'])){
-                    $item->$field['name'] = $request->input($field['name']);
+                    $item->{$field['name']} = $request->input($field['name']);
                 }
             }
             else if($field['type'] == 'password' && $request->input($field['name']) != '')
-                $item->$field['name'] = bcrypt($request->input($field['name']));
+                $item->{$field['name']} = bcrypt($request->input($field['name']));
             else if($field['type'] == 'file')
                 self::setFile($request, $item, $field['name'], isset($field['name_src_field']) ? $field['name_src_field'] : 'id');
             else if($field['type'] == 'image')
@@ -39,9 +39,9 @@ class CrudUtilities
                 // check uploadImage()
             }
             else if($field['type'] == 'json')
-                $item->$field['name'] = json_decode($request->input($field['name']), true);
+                $item->{$field['name']} = json_decode($request->input($field['name']), true);
             else if($field['type'] == 'multicheck'){
-                $item->$field['name'] = json_decode($request->input($field['name']), true);
+                $item->{$field['name']} = json_decode($request->input($field['name']), true);
             }
         }
        
@@ -52,7 +52,7 @@ class CrudUtilities
             if($field['type'] == 'multi-check')
             {
                 $ids = json_decode($request->input($field['name']), true);
-                $item->$field['name']()->sync($ids);
+                $item->{$field['name']}()->sync($ids);
             }
         }
     }
