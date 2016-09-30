@@ -122,7 +122,7 @@ class CrudUtilities
                 $result['size'] = filesize($abs_path);
                 $result['width'] = $img->width();
                 $result['height'] = $img->height();
-                
+
                 // ----------------------------------------------------
                 //  Optimize image.
                 //  Use package ps/image-optimizer instead of writing command lines ?

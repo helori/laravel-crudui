@@ -81,7 +81,7 @@
                                                     </div>
                                                 </div>
                                             @else
-                                                {{ $item->$field["name"] }}
+                                                {{ $item->{$field['name']} }}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -119,7 +119,7 @@
                                                     </textarea>
                                                 </div>
                                             @else
-                                                {!! nl2br($item->$field["name"]) !!}
+                                                {!! nl2br($item->{$field['name']}) !!}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -139,7 +139,7 @@
                                                     </div>
                                                 </div>
                                             @else
-                                                {{ number_format($item->$field["name"], 2, ',', ' ') }}
+                                                {{ number_format($item->{$field['name']}, 2, ',', ' ') }}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -159,7 +159,7 @@
                                                     </div>
                                                 </div>
                                             @else
-                                                {{ $item->$field["name"] }}
+                                                {{ $item->{$field['name']} }}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -179,7 +179,7 @@
                                                     </div>
                                                 </div>
                                             @else
-                                                {{ $item->$field["name"] }}
+                                                {{ $item->{$field['name']} }}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -199,9 +199,9 @@
                                                     </div>
                                                 </div>
                                             @elseif($field["type"] == "date")
-                                                {{ $item->$field["name"]->format('d F Y') }}
+                                                {{ $item->{$field['name']}->format('d F Y') }}
                                             @elseif($field["type"] == "datetime")
-                                                {!! $item->$field["name"]->format('d F Y<\b\r>H:i:s') !!}
+                                                {!! $item->{$field['name']}->format('d F Y<\b\r>H:i:s') !!}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -218,7 +218,7 @@
                                                     update-url="{{ $route_url }}/update-field">
                                                 </checkbox>
                                             @else
-                                                @if($item->$field["name"])
+                                                @if($item->{$field['name']})
                                                     <div class="text-center"><i class="fa fa-check-circle" style="font-size: 20px; color: green"></i></div>
                                                 @else
                                                     <div class="text-center"><i class="fa fa-minus-circle" style="font-size: 20px; color: red"></i></div>
@@ -257,11 +257,11 @@
                                                     @endforeach
                                                 </select>
                                             @else
-                                                {{ isset($field["options"][$item->$field["name"]]) ? $field["options"][$item->$field["name"]] : '' }}
+                                                {{ isset($field["options"][$item->{$field['name']}]) ? $field["options"][$item->{$field['name']}] : '' }}
                                             @endif
 
                                         @elseif($field["type"] == "currency")
-                                            {{ number_format($item->$field["name"], 2, ',', ' ') }} €
+                                            {{ number_format($item->{$field['name']}, 2, ',', ' ') }} €
                                         @elseif($field["type"] == "image")
                                             <div class="image-wrapper">
                                                 <div class="image">
