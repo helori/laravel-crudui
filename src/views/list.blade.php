@@ -262,6 +262,7 @@
 
                                         @elseif($field["type"] == "currency")
                                             {{ number_format($item->{$field['name']}, 2, ',', ' ') }} €
+                                        
                                         @elseif($field["type"] == "image")
                                             <div class="image-wrapper">
                                                 <div class="image">
@@ -290,7 +291,7 @@
                                                     $related = $related->$relation;
                                                 }
                                             ?>
-                                            {{ $related->$field["name"] }}
+                                            {{ $related->{$field["name"]} }}
                                         @endif
                                     </td>
                                 @endforeach

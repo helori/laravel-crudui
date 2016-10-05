@@ -45,7 +45,7 @@ class CrudUtilities
             }
         }
        
-       $item->save();
+        $item->save();
 
         foreach($fields as $field)
         {
@@ -68,7 +68,7 @@ class CrudUtilities
                     $item->alias = implode('-', $aliasParts);
                 }
                 else{
-                    $item->alias = Str::slug($item->$field['src'], '-');
+                    $item->alias = Str::slug($item->{$field['src']}, '-');
                 }
                 $item->save();
                 return;
