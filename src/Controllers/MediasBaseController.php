@@ -191,6 +191,33 @@ class MediasBaseController extends Controller
         return $item->getMedias($collection);
     }
 
+    public function postRenameMedia(Request $request)
+    {
+        $itemId = $request->input('id');
+        $mediaId = $request->input('mediaId');
+        $title = $request->input('title');
+
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $itemId);
+        $media = $item->medias()->where('id', $mediaId)->first();
+        $collection = $media->collection;
+
+        if($media){
+            $file_dir = dirname($media->filepath);
+            $file_name = Str::slug($media->id.'_'.$title, '_').'.'.$media->extension;
+            $new_path = $file_dir.'/'.$file_name;
+
+            if(file_exists(public_path().'/'.$media->filepath)){
+                rename(public_path().'/'.$media->filepath, public_path().'/'.$new_path);
+            }
+            
+            $media->title = $title;
+            $media->filename = $file_name;
+            $media->filepath = $new_path;
+            $media->save();
+        }
+        return $media;
+    }
+
     public function postUpdateMediasPosition(Request $request)
     {
         $itemId = intVal($request->input('id'));

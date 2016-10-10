@@ -26,6 +26,7 @@ Route::post('/ru/{model}/update-item/{id}', ['uses' => $crudui_path.'\CrudSingle
 Route::post('/medias/{model}/upload-media', ['uses' => $crudui_path.'\MediasController@postUploadMedia']);
 Route::post('/medias/{model}/upload-medias', ['uses' => $crudui_path.'\MediasController@postUploadMedias']);
 Route::post('/medias/{model}/delete-media', ['uses' => $crudui_path.'\MediasController@postDeleteMedia']);
+Route::post('/medias/{model}/rename-media', ['uses' => $crudui_path.'\MediasController@postRenameMedia']);
 Route::get('/medias/{model}/media/{id}/{collection}', ['uses' => $crudui_path.'\MediasController@getMedia']);
 Route::get('/medias/{model}/medias/{id}/{collection}', ['uses' => $crudui_path.'\MediasController@getMedias']);
 Route::post('/medias/{model}/update-medias-position', ['uses' => $crudui_path.'\MediasController@postUpdateMediasPosition']);

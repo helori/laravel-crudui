@@ -6,7 +6,6 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
         link: function(scope, elt, attrs)
         { 
             scope.media = null;
-            scope.title = '';
             scope.uploading = false;
             scope.upload_progress = 0;
             scope.upload_total = 0;
@@ -121,6 +120,9 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
                 });
             }
 
+            // -------------------------------------------------------
+            //  Delete
+            // -------------------------------------------------------
             scope.deleteMedia = function(mediaId)
             {
                 $http.post(attrs.routeUrl + '/delete-media', {id: attrs.itemId, mediaId: mediaId}).then(function(r){
@@ -128,6 +130,17 @@ crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $
                         scope.medias = r.data;
                     else
                         scope.media = null;
+                    scope.decache = new Date().getTime();
+                });
+            }
+
+            // -------------------------------------------------------
+            //  Rename
+            // -------------------------------------------------------
+            scope.renameMedia = function(media, title)
+            {
+                $http.post(attrs.routeUrl + '/rename-media', {id: attrs.itemId, mediaId: media.id, title: title}).then(function(r){
+                    angular.copy(r.data, media);
                     scope.decache = new Date().getTime();
                 });
             }
