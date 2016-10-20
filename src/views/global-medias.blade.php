@@ -30,10 +30,10 @@
         <div ng-repeat="it in items track by $index" class="media-upload">
             <div class="media">
                 <div class="media-left">
-                    <a ng-href="{{it.filepath}}" target="_blank">
+                    <a ng-href="@{{it.filepath}}" target="_blank">
                         <div class="image">
                             <img  class="media-object"
-                                  ng-src="{{it.filepath + '?' + decache}}"
+                                  ng-src="@{{it.filepath + '?' + decache}}"
                                  ng-if="it.filepath != '' && (it.mime == 'image/png' || it.mime == 'image/jpeg')" />
                             <div ng-if="it.mime == 'application/pdf'">PDF</div>
                         </div>
