@@ -1,4 +1,4 @@
-<div ng-controller="JsonController" ng-init="initItems('{{ $field['name'] }}', '{{ isset($fieldData) ? json_encode($fieldData->$field['name']) : '' }}')">
+<div ng-controller="JsonController" ng-init="initItems('{{ $field['name'] }}', '{{ isset($fieldData) ? json_encode($fieldData->{$field['name']}) : '' }}')">
     <div class="row narrow" style="margin-bottom: 5px">
         <div class="col col-xs-9">
             <div class="row narrow">
