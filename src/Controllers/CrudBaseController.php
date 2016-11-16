@@ -58,8 +58,31 @@ class CrudBaseController extends Controller
             if($field['type'] == 'select' && isset($field['options_model']))
             {
                 $model = $field['options_model']['model'];
-                $items = call_user_func(array($model, 'orderBy'), $field['options_model']['field'])->get();
-                $options = array_pluck($items, $field['options_model']['field'], 'id');
+
+                $orderBy = 'id';
+                if(is_array($field['options_model']['field'])){
+                    $orderBy = $field['options_model']['field'][0];
+                }
+                else{
+                    $orderBy = $field['options_model']['field'];
+                }
+                $items = call_user_func(array($model, 'orderBy'), $orderBy)->get();
+
+                $options = [];
+                foreach($items as $item){
+                    $options[$item->id] = [];
+                    if(is_array($field['options_model']['field'])){
+                        foreach($field['options_model']['field'] as $field_name){
+                            $options[$item->id][] = $item->{$field_name};
+                        }
+                    }
+                    else{
+                        $options[$item->id][] = $item->{$field['options_model']['field']};
+                    }
+                    $options[$item->id] = implode(' ', $options[$item->id]);
+                }
+
+                //$options = array_pluck($items, $field['options_model']['field'], 'id');
                 $field['options'] = $options;
             }
             else if($field['type'] == 'multi-check' && isset($field['options_model']))

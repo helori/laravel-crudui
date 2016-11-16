@@ -249,12 +249,23 @@
                                                     field-name="{{ $field['name'] }}"
                                                     item-id="{{ $item->id }}"
                                                     update-url="{{ $route_url }}/update-field">
+
                                                     @if(isset($field['empty_value']))
-                                                        <option value="{{ $field['empty_value'] }}">== {{ $field['title'] }} ==</option>
+                                                        @if(is_array($field['empty_value']))
+                                                            @foreach($field['empty_value'] as $value => $text)
+                                                                <option value="{{ $value }}">== {{ $text }} ==</option>
+                                                            @endforeach
+                                                        @else
+                                                            <option value="{{ $field['empty_value'] }}">== {{ $field['title'] }} ==</option>
+                                                        @endif
+                                                    @else
+                                                        <option value="">== {{ $field['title'] }} ==</option>
                                                     @endif
+                                                    
                                                     @foreach($field['options'] as $value => $name)
-                                                        <option value="{{ $value }}" {{ (isset($item->{$field['name']}) && $item->{$field['name']} == $value) ? 'selected' : '' }}>{{ $name }}</option>
+                                                        <option value="{{ $value }}" {{ (isset($item[$field['name']]) && $item[$field['name']] == $value) ? 'selected' : '' }}>{{ $name }}</option>
                                                     @endforeach
+
                                                 </select>
                                             @else
                                                 {{ isset($field["options"][$item->{$field['name']}]) ? $field["options"][$item->{$field['name']}] : '' }}
