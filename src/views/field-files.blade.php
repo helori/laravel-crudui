@@ -52,6 +52,12 @@
                                 <div>Type : @{{m.mime}}</div>
                                 <div>Poids : @{{m.size / 1000 | number:0}} ko</div>
                                 <div>Taille : <span ng-if="m && m.mime.indexOf('image') !== -1">@{{m.width}} x @{{m.height}} px</span></div>
+                                <input type="text" 
+                                    ng-model="m.title" 
+                                    ng-change="renameMedia(m, m.title)"
+                                    ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 300, 'blur': 0 } }"
+                                    class="form-control" 
+                                    placeholder="Nom du fichier...">
                             </div>
                         </div>
                     </div>

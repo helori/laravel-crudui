@@ -145,6 +145,7 @@ class MediasBaseController extends Controller
             // -----------------------------------------------------------
             $media->mime = $mime;
             $media->size = $size;
+            $media->title = $title;
             $media->extension = $file_ext;
             $media->filename = $file_name.'.'.$file_ext;
             $media->filepath = $file_path.'/'.$file_name.'.'.$file_ext;
