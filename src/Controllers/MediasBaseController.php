@@ -56,7 +56,7 @@ class MediasBaseController extends Controller
 
         if($request->hasFile($collection) && $request->file($collection)->isValid())
         {
-            $file_path = 'uploads/medias';
+            $file_path = 'storage/medias';
             // -----------------------------------------------------------
             //  Save item to be able to read its id and name_src_field
             // -----------------------------------------------------------

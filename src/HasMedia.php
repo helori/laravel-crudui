@@ -39,9 +39,14 @@ trait HasMedia
 
     public function mediaUrl($collection)
     {
+        return asset($this->mediaPath($collection));
+    }
+
+    public function mediaUrlDecached($collection)
+    {
         $media = $this->getMedia($collection);
         if($media && is_file($media->filepath)){
-            return url($media->filepath.'?'.filemtime($media->filepath));
+            return asset($media->filepath.'?'.filemtime($media->filepath));
         }
     }
 
