@@ -10,9 +10,20 @@
 			<div class="row narrow">
 				<div class="col col-sm-4 col-md-3" ng-repeat="m in medias" media-id="@{{m.id}}">
 					<div class="media">
+						
 						<div class="thumb">
-							<div class="thumb-inside" style="background-image: url(@{{m.filepath}}?@{{decache}})"></div>
-						</div>
+                                
+                            <div class="image" 
+                                ng-if="m && m.mime.indexOf('image') !== -1"
+                                style="background-image: url(@{{ m.filepath + '?' + decache | trustedUrl }})">
+                            </div>
+                            
+                            <video controls ng-if="m && m.mime.indexOf('video') !== -1">
+                                <source ng-src="@{{ m.filepath + '?' + decache | trustedUrl }}" type="video/mp4" />
+                            </video>
+                            
+                        </div>
+						
 						<div class="actions">
 							<div class="row narrow">
 								<div class="col col-xs-6">
