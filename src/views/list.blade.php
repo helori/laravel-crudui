@@ -303,6 +303,8 @@
                                                 }
                                             ?>
                                             {{ $related->{$field["name"]} }}
+                                        @else
+                                            {{ $item->{$field['name']} }}
                                         @endif
                                     </td>
                                 @endforeach
