@@ -1,4 +1,4 @@
-crudui.directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $sce, $timeout)
+angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout', function($http, $sce, $timeout)
 {
     return{
         restrict: 'EA',
