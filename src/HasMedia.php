@@ -32,7 +32,7 @@ trait HasMedia
     public function mediaPath($collection)
     {
         $media = $this->getMedia($collection);
-        if($media && is_file($media->filepath)){
+        if($media){
             return $media->filepath;
         }
     }

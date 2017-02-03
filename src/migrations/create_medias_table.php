@@ -10,18 +10,22 @@ class CreateMediasTable extends Migration
         Schema::create('medias', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->morphs('mediable');
-            $table->string('collection');
+            
+            //$table->morphs('mediable');
+            $table->string('mediable_id')->default(0);
+            $table->string('mediable_type')->nullable()->default(null);
+
             $table->integer('position')->unsigned()->default(0);
-            $table->string('filepath');
-            $table->string('filename');
-            $table->string('title');
-            $table->string('type');
-            $table->string('mime');
-            $table->string('extension');
-            $table->integer('size');
-            $table->integer('width');
-            $table->integer('height');
+            $table->string('collection')->nullable()->default(null);
+            $table->string('filepath')->nullable()->default(null);
+            $table->string('filename')->nullable()->default(null);
+            $table->string('title')->nullable()->default(null);
+            $table->string('type')->nullable()->default(null);
+            $table->string('mime')->nullable()->default(null);
+            $table->string('extension')->nullable()->default(null);
+            $table->string('size')->default(0);
+            $table->string('width')->default(0);
+            $table->string('height')->default(0);
         });
     }
 
