@@ -74,6 +74,7 @@
                                                         class="form-control"
                                                         type="text"
                                                         value="{{ $item->{$field['name']} }}" 
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -93,6 +94,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="password"
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -114,9 +116,8 @@
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
-                                                        update-url="{{ $route_url }}/update-field">
-                                                        {{ $item->{$field['name']} }}
-                                                    </textarea>
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
+                                                        update-url="{{ $route_url }}/update-field">{{ $item->{$field['name']} }}</textarea>
                                                 </div>
                                             @else
                                                 {!! nl2br($item->{$field['name']}) !!}
@@ -132,6 +133,7 @@
                                                         class="form-control"
                                                         type="number"
                                                         value="{{ $item->{$field['name']} }}" 
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -152,6 +154,7 @@
                                                         class="form-control"
                                                         type="email"
                                                         value="{{ $item->{$field['name']} }}" 
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -172,6 +175,7 @@
                                                         class="form-control"
                                                         type="url"
                                                         value="{{ $item->{$field['name']} }}" 
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
@@ -192,6 +196,7 @@
                                                         class="form-control"
                                                         type="date"
                                                         value="{{ $item->{$field['name']}->format('Y-m-d') }}"
+                                                        placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
                                                         item-id="{{ $item->id }}"
