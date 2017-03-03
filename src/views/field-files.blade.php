@@ -1,6 +1,6 @@
 <file-uploader route-url="{{ $medias_url }}" item-id="{{ $fieldData['id'] }}" collection="{{ $field['name'] }}" multiple="true">
 
-    <div class="uploader-wrapper">
+    <div class="uploader-wrapper" ng-cloak>
 
         <input type="file" id="file-input-{{ $field['name'] }}" class="file-input" ng-show="!media">
         <label for="file-input-{{ $field['name'] }}" class="btn btn-default btn-block" ng-show="!media">

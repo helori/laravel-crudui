@@ -279,6 +279,10 @@
                                         @elseif($field["type"] == "currency")
                                             {{ number_format($item->{$field['name']}, 2, ',', ' ') }} €
                                         
+                                        @elseif($field["type"] == "json")
+                                            
+                                            @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item, 'jsonList' => true])
+
                                         @elseif($field["type"] == "image")
                                             <div class="image-wrapper">
                                                 <div class="image">

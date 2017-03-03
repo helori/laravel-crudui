@@ -121,9 +121,15 @@ crudui.directive('listInput', ['$rootScope', '$http', function($rootScope, $http
                 name: attrs.fieldName
             }
             var url = attrs.updateUrl;
+            
             elt.change(function(){
                 data.value = $(this).val();
                 $rootScope.savingPosition = true;
+
+                if(attrs.fieldType == 'json'){
+                    console.log('list-input change', attrs.fieldType, data.value);
+                }
+
                 $http.post(url, data).then(function(r){
                     $rootScope.savingPosition = false;
                     //console.log(r);
@@ -246,13 +252,13 @@ crudui.controller('JsonController', ['$scope', function($scope)
         $scope.items = JSON.parse(items);
         if(!angular.isArray($scope.items))
             $scope.items = [];
-        $scope.updateItems();
+        $("#" + $scope.fieldname).val(JSON.stringify($scope.items));
     };
     $scope.addItem = function(){
         $scope.items.push({});
     }
     $scope.updateItems = function(){
-        $("#" + $scope.fieldname).val(JSON.stringify($scope.items));
+        $("#" + $scope.fieldname).val(JSON.stringify($scope.items)).trigger('change');
     }
     $scope.removeItem = function(item){
         var idx = $scope.items.indexOf(item);

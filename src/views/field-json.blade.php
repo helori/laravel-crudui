@@ -15,8 +15,7 @@
             <div class="row narrow">
                 @foreach($field['columns'] as $colIdx => $column)
                     <div class="col col-xs-{{ 12 / count($field['columns']) }}">
-                        <input {{ ($i == 0 && $colIdx == 0) ? 'autofocus' : '' }}
-                            type="text" 
+                        <input type="text" 
                             ng-model="item.{{ $column['name'] }}" 
                             class="form-control" 
                             ng-change="updateItems()">
@@ -30,5 +29,14 @@
     </div>
 
     <button type="button" class="btn btn-default btn-block" ng-click="addItem()"><i class="fa fa-plus"></i> Ajouter</button>
-    <input type="hidden" name="{{ $field['name'] }}" id="{{ $field['name'] }}">
+    <input type="hidden" 
+        @if(isset($jsonList) && $jsonList)
+            list-input 
+            field-type="{{ $field['type'] }}"
+            field-name="{{ $field['name'] }}"
+            item-id="{{ $fieldData->id }}"
+            update-url="{{ $route_url }}/update-field"
+        @endif
+        name="{{ $field['name'] }}" 
+        id="{{ $field['name'] }}">
 </div>

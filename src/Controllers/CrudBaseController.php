@@ -279,6 +279,9 @@ class CrudBaseController extends Controller
         else if($fieldType == 'password' && $fieldValue != ''){
             $item->$fieldName = bcrypt($fieldValue);
         }
+        else if($fieldType == 'json'){
+            $item->$fieldName = json_decode($fieldValue, true);
+        }
         CrudUtilities::updateAlias($request, $item, $this->fields);
         
         $item->save();
