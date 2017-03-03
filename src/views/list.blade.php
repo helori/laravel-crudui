@@ -325,7 +325,7 @@
                                             @endif
                                             @if($can_delete)
                                             <div class="col col-xs-{{ $can_update ? '6' : '12' }}">
-                                                <a href="{{ $route_url }}/delete-item/{{ $item->id }}" class="btn btn-danger icon-only btn-block" onclick="confirm('Êtes-vous sûr?')">
+                                                <a class="btn btn-danger icon-only btn-block" ng-click="destroy('{{ $route_url }}', '{{ $item->id }}')">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </div>

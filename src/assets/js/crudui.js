@@ -222,11 +222,17 @@ crudui.directive('multiCheck', ['$interval', '$filter', function($interval, $fil
     };
 }]);
 
-crudui.controller('CrudListController', ['$scope', '$http', function($scope, $http)
+crudui.controller('CrudListController', ['$scope', '$window', function($scope, $window)
 {
     $scope.openCreateDialog = function(e){
         e.preventDefault();
         $("#create-dialog").modal('show');
+    };
+
+    $scope.destroy = function(route_url, item_id){
+        if(confirm('Êtes-vous sûr ?')){
+            $window.location.href = route_url + '/delete-item/' + item_id;
+        }
     };
 }]);
 
