@@ -195,7 +195,7 @@
                                                     <input list-input 
                                                         class="form-control"
                                                         type="date"
-                                                        value="{{ $item->{$field['name']}->format('Y-m-d') }}"
+                                                        value="{{ $item->{$field['name']} ? $item->{$field['name']}->format('Y-m-d') : null }}"
                                                         placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
                                                         field-type="{{ $field['type'] }}"
                                                         field-name="{{ $field['name'] }}"
@@ -204,9 +204,9 @@
                                                     </div>
                                                 </div>
                                             @elseif($field["type"] == "date")
-                                                {{ $item->{$field['name']}->format('d F Y') }}
+                                                {{ $item->{$field['name']} ? $item->{$field['name']}->format('d F Y') : 'pas de date' }}
                                             @elseif($field["type"] == "datetime")
-                                                {!! $item->{$field['name']}->format('d F Y<\b\r>H:i:s') !!}
+                                                {!! $item->{$field['name']} ? $item->{$field['name']}->format('d F Y<\b\r>H:i:s') : 'pas de date' !!}
                                             @endif
 
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
