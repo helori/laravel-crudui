@@ -11,18 +11,38 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
             scope.upload_total = 0;
             scope.decache = new Date().getTime();
             scope.saving_position = false;
+            scope.loaded = false;
+            scope.error = null;
 
             // -------------------------------------------------------
             //  File input 
             // -------------------------------------------------------
-            scope.input = elt.find('.file-input');
-            console.log(scope.input);
+            /*scope.input = elt.find('.file-input');
+            //console.log(scope.input);
             scope.input.change(function(){
                 scope.file = this.files[0];
                 scope.title = scope.file.name.replace(/\.[^/.]+$/, "");
-                console.log(scope.file);
+                //console.log(scope.file);
                 scope.$apply();
                 scope.upload();
+            });*/
+
+            elt.on('change', '.file-input', function(e){
+                scope.file = e.target.files[0];
+                scope.title = scope.file.name.replace(/\.[^/.]+$/, "");
+
+                scope.files = [];
+                scope.titles = [];
+                for(var i=0; i<e.target.files.length; ++i){
+                    scope.files.push(e.target.files[i]);
+                    scope.titles.push(e.target.files[i].name.replace(/\.[^/.]+$/, ""));
+                }
+
+                scope.$apply();
+                scope.upload();
+                this.value = null;
+            }).on('click', '.file-input', function(e){
+                this.value = null;
             });
 
             // -------------------------------------------------------
@@ -32,6 +52,7 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
             {
                 $http.get(attrs.routeUrl + '/media/' + attrs.itemId + '/' + attrs.collection).then(function(r){
                     scope.media = r.data;
+                    scope.loaded = true;
                 });
             }
 
@@ -43,19 +64,20 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
                 scope.medias = {};
                 $http.get(attrs.routeUrl + '/medias/' + attrs.itemId + '/' + attrs.collection).then(function(r){
                     scope.medias = r.data;
+                    scope.loaded = true;
                 });
             }
 
             // -------------------------------------------------------
             //  Multiple medias ordering
             // -------------------------------------------------------
-            var medias = elt.find('.medias > .row');
+            var medias = elt.find('.medias');
             medias.disableSelection().sortable({
                 update: function( event, ui ){
                     scope.saving_position = true;
                     $http.post(attrs.routeUrl + '/update-medias-position', {id: attrs.itemId, mediaId: ui.item.attr('media-id'), position: ui.item.index()}).then(function(r){
                         scope.saving_position = false;
-                        //console.log(r);
+                        scope.medias = r.data;
                     }, function(r){
                         scope.saving_position = false;
                     });
@@ -67,15 +89,18 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
             // -------------------------------------------------------
             scope.upload = function()
             {
+                //console.log('upload id', attrs.itemId);
                 scope.uploading = true;
                 scope.upload_progress = 0;
                 scope.upload_total = 0;
+                scope.error = null;
 
                 var data = {
                     id: attrs.itemId,
                     collection: attrs.collection,
                     mime: scope.file.type,
-                    title: scope.title
+                    //title: scope.title,
+                    titles: scope.titles
                 };
 
                 $http({
@@ -99,8 +124,12 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
                         var formData = new FormData();
                         angular.forEach(data, function (value, key) {
                             formData.append(key, value);
-                        }); 
+                        });
+                        console.log('request', scope.file, scope.files);
                         formData.append(attrs.collection, scope.file, scope.file.name);
+                        for(var i=0; i<scope.files.length; ++i){
+                            formData.append(attrs.collection + i, scope.files[i], scope.files[i].name);
+                        }
                         return formData;
                     }
                 })
@@ -112,11 +141,10 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
                     else
                         scope.media = r.data;
                     scope.decache = new Date().getTime();
-                    scope.input[0].value = "";
                 }, function (r) {
                     console.log('upload error', r);
                     scope.uploading = false;
-                    scope.input[0].value = "";
+                    scope.error = r;
                 });
             }
 

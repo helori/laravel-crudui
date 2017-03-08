@@ -1,5 +1,9 @@
 @import "medias.scss";
 
+[ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
 #crud-table{
 	h1{
 		margin: 0 0 15px 0;

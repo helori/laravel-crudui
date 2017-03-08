@@ -63,7 +63,7 @@
                         @foreach($items as $item)
                             <tr class="item" id="{{ $item->id }}" update-url="{{ $route_url }}/update-position">
                                 @foreach($list_fields as $field)
-                                    <td>
+                                    <td class="cell-{{ $field['type'] }}">
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         <!-- Text -->
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -234,6 +234,18 @@
                                         <!-- File -->
                                         <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
                                         @elseif($field["type"] == "file")
+                                            @if(isset($field['list-input']) && $field['list-input'])
+                                                @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item])
+                                            @else
+                                                <div class="image-wrapper">
+                                                    <div class="image" style="background-image: url({{ $item->mediaPath($field["name"]).'?'.@filemtime($item->mediaPath($field["name"])) }})"></div>
+                                                </div>
+                                            @endif
+
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        <!-- Files -->
+                                        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+                                        @elseif($field["type"] == "files")
                                             @if(isset($field['list-input']) && $field['list-input'])
                                                 @include('laravel-crudui::field-'.$field["type"], ['fieldData' => $item])
                                             @else
