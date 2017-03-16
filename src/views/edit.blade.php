@@ -33,10 +33,10 @@
             <div class="form-group">
                 <div class="col-sm-8 col-sm-offset-4">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Save
+                        <i class="fa fa-save"></i> Enregistrer
                     </button>
                     <a type="button" class="btn btn-default" href="{{ $route_url }}/items">
-                        <i class="fa fa-close"></i> Cancel / Close
+                        <i class="fa fa-close"></i> Fermer
                     </a>
                 </div>
             </div>
