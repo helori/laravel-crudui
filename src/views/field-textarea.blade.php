@@ -3,6 +3,6 @@
 	name="{{ $field['name'] }}" 
 	class="form-control" 
 	rows="5"
-	placeholder="{{ $field['title'] }}"
+	placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
 	{{ isset($field['required']) && $field['required'] ? 'required' : '' }}
 	style="resize:vertical">{{ isset($fieldData[$field['name']]) ? $fieldData[$field['name']] : '' }}</textarea>

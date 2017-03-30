@@ -3,5 +3,5 @@
 	id="{{ $field['name'] }}" 
 	name="{{ $field['name'] }}" 
 	class="form-control" 
-	placeholder="{{ $field['title'] }}"
+	placeholder="{{ isset($field['placeholder']) ? $field['placeholder'] : '' }}"
 	{{ isset($field['required']) && $field['required'] ? 'required' : '' }} >
