@@ -37,6 +37,6 @@
             item-id="{{ $fieldData->id }}"
             update-url="{{ $route_url }}/update-field"
         @endif
-        name="{{ $field['name'] }}-{{ $fieldData->id }}" 
+        name="{{ $field['name'] }}" 
         id="{{ $field['name'] }}-{{ $fieldData->id }}">
 </div>
