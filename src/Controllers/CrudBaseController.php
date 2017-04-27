@@ -61,13 +61,20 @@ class CrudBaseController extends Controller
                 $model = $field['options_model']['model'];
 
                 $orderBy = 'id';
-                if(is_array($field['options_model']['field'])){
+                if(isset($field['options_model']['orderBy'])){
+                    $orderBy = $field['options_model']['orderBy'];
+                }
+                else if(is_array($field['options_model']['field'])){
                     $orderBy = $field['options_model']['field'][0];
                 }
                 else{
                     $orderBy = $field['options_model']['field'];
                 }
-                $items = call_user_func(array($model, 'orderBy'), $orderBy)->get();
+                $items = call_user_func(array($model, 'orderBy'), $orderBy);
+                if(isset($field['options_model']['where'])) {
+                    $items->where($field['options_model']['where']);
+                }
+                $items = $items->get();
 
                 $options = [];
                 foreach($items as $item){
