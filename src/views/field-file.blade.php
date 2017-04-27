@@ -42,8 +42,6 @@
                         <a ng-href="@{{media.filepath}}" 
                             download="@{{media.filename}}" 
                             class="btn btn-default icon-only"
-                            data-toggle="tooltip" 
-                            data-placement="top" 
                             title="Récupérer le fichier">
                             <i class="fa fa-download"></i>
                         </a>
@@ -55,8 +53,6 @@
                         </a>
                         <button type="button" 
                             class="btn btn-danger icon-only" 
-                            data-toggle="tooltip" 
-                            data-placement="top" 
                             title="Supprimer le fichier"
                             ng-click="deleteMedia(media.id)">
                             <i class="fa fa-trash"></i>
