@@ -202,28 +202,34 @@ class MediasBaseController extends Controller
             'png' => '--ext=.png --force',
         ];
 
-        if(in_array($media->mime, array_keys($mimes)) && function_exists('exec'))
+        if(in_array($media->mime, array_keys($mimes)))
         {
-            // on VPS, usually placed in /usr/bin/
-            // on local machine, usually placed in /usr/local/bin/
-
-            $type = $mimes[$media->mime];
-            $cmd = $cmds[$type];
-            $opt = $opts[$type];
-            $abs_path = public_path().'/'.$media->filepath;
-            
-            $cmd_test = exec($cmd.' --version', $output, $result_code);
-            
-            if($result_code === 0)
+            if(function_exists('exec'))
             {
-                exec($cmd.' '.$opt.' '.escapeshellarg($abs_path), $output, $result_code);
-                if($result_code !== 0){
-                    throw new \Exception('Unable to optimise '.$type.' image, result code : '.$result_code);
+                // on VPS, usually placed in /usr/bin/
+                // on local machine, usually placed in /usr/local/bin/
+
+                $type = $mimes[$media->mime];
+                $cmd = $cmds[$type];
+                $opt = $opts[$type];
+                $abs_path = public_path().'/'.$media->filepath;
+
+                $cmd_test = exec($cmd.' --version', $output, $result_code);
+                
+                if($result_code === 0)
+                {
+                    exec($cmd.' '.$opt.' '.escapeshellarg($abs_path), $output, $result_code);
+                    if($result_code !== 0){
+                        throw new \Exception('Unable to optimise '.$type.' image, result code : '.$result_code);
+                    }
+                    $media->size = filesize($abs_path);
                 }
-                $media->size = filesize($abs_path);
+                else{
+                    throw new \Exception($cmd.' version returned invalid result code : '.$result_code);
+                }
             }
             else{
-                throw new \Exception($cmd.' version returned invalid result code : '.$result_code);
+                throw new \Exception('"exec" command is not available. This may be due to a shared host...');
             }
         }
     }
