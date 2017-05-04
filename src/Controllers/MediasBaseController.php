@@ -190,10 +190,16 @@ class MediasBaseController extends Controller
             'image/x-png' => 'png',
         ];
 
-        $commands = [
-            'gif' => 'gifsicle -b -O2 ',
-            'jpg' => 'jpegoptim --strip-all ',
-            'png' => 'pngquant --ext=.png --force ',
+        $cmds = [
+            'gif' => 'gifsicle',
+            'jpg' => 'jpegoptim',
+            'png' => 'pngquant',
+        ];
+
+        $opts = [
+            'gif' => '-b -O2',
+            'jpg' => '--strip-all',
+            'png' => '--ext=.png --force',
         ];
 
         if(in_array($media->mime, array_keys($mimes)) && function_exists('exec'))
@@ -202,15 +208,23 @@ class MediasBaseController extends Controller
             // on local machine, usually placed in /usr/local/bin/
 
             $type = $mimes[$media->mime];
-            $command = $commands[$type];
+            $cmd = $cmds[$type];
+            $opt = $opts[$type];
             $abs_path = public_path().'/'.$media->filepath;
-
-            exec($command.escapeshellarg($abs_path), $output, $result_code);
-            if($result_code !== 0){
-                throw new Exception('Unable to optimise '.$type.' image, result code : '.$result_code);
+            
+            $cmd_test = exec($cmd.' --version', $output, $result_code);
+            
+            if($result_code === 0)
+            {
+                exec($cmd.' '.$opt.' '.escapeshellarg($abs_path), $output, $result_code);
+                if($result_code !== 0){
+                    throw new \Exception('Unable to optimise '.$type.' image, result code : '.$result_code);
+                }
+                $media->size = filesize($abs_path);
             }
-
-            $media->size = filesize($abs_path);
+            else{
+                throw new \Exception($cmd.' version returned invalid result code : '.$result_code);
+            }
         }
     }
 
