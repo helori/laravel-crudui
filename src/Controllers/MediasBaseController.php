@@ -197,9 +197,9 @@ class MediasBaseController extends Controller
         ];
 
         $opts = [
-            'gif' => '-b -O2',
-            'jpg' => '--strip-all',
-            'png' => '--ext=.png --force',
+            'gifsicle' => '-b -O2',
+            'jpegoptim' => '-m90 --strip-all',
+            'pngquant' => '--ext=.png --force',
         ];
 
         if(in_array($media->mime, array_keys($mimes)))
@@ -211,7 +211,7 @@ class MediasBaseController extends Controller
 
                 $type = $mimes[$media->mime];
                 $cmd = $cmds[$type];
-                $opt = $opts[$type];
+                $opt = $opts[$cmd];
                 $abs_path = public_path().'/'.$media->filepath;
 
                 $cmd_test = exec($cmd.' --version', $output, $result_code);
