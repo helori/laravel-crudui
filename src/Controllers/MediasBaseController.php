@@ -193,15 +193,16 @@ class MediasBaseController extends Controller
         $cmds = [
             'gif' => 'gifsicle',
             'jpg' => 'jpegoptim',
-            'png' => 'pngquant',
+            'png' => 'optipng',
         ];
 
         $opts = [
             'gifsicle' => '-b -O2',
             'jpegoptim' => '-m90 --strip-all',
             'pngquant' => '--ext=.png --force',
+            'optipng' => '-o5 -strip all',
         ];
-
+        
         if(in_array($media->mime, array_keys($mimes)))
         {
             if(function_exists('exec'))
