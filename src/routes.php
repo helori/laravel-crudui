@@ -30,6 +30,7 @@ Route::post('/medias/{model}/rename-media', ['uses' => $crudui_path.'\MediasCont
 Route::get('/medias/{model}/media/{id}/{collection}', ['uses' => $crudui_path.'\MediasController@getMedia']);
 Route::get('/medias/{model}/medias/{id}/{collection}', ['uses' => $crudui_path.'\MediasController@getMedias']);
 Route::post('/medias/{model}/update-medias-position', ['uses' => $crudui_path.'\MediasController@postUpdateMediasPosition']);
+Route::post('/medias/{model}/optimize-media', ['uses' => $crudui_path.'\MediasController@postOptimizeMedia']);
 
 Route::get('/global-medias', ['uses' => $crudui_path.'\GlobalMediasController@index']);
 Route::get('/global-medias/read-all', ['uses' => $crudui_path.'\GlobalMediasController@readAll']);

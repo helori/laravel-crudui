@@ -11,6 +11,8 @@ use Helori\LaravelCrudui\CrudUtilities;
 use Helori\LaravelCrudui\Media;
 use Image;
 
+use Intervention\Image\ImageManager;
+
 class MediasBaseController extends Controller
 {
     protected $class_name;
@@ -55,6 +57,7 @@ class MediasBaseController extends Controller
         $format = $request->input('format');
 
         $i = 0;
+
         while($request->hasFile($collection.$i))
         {
             if($request->file($collection.$i)->isValid())
@@ -95,66 +98,45 @@ class MediasBaseController extends Controller
                 $mime = $file->getMimeType();
                 $size = $file->getClientSize();
 
-                // -----------------------------------------------------------
-                //  Move the image
-                // -----------------------------------------------------------
-                if(!is_dir($file_path))
-                    mkdir($file_path, 0777, true);
-                $file->move(public_path().'/'.$file_path, $file_name.'.'.$file_ext);
+                $media->mime = $mime;
+                $media->size = $size;
+                $media->filename = $file_name.'.'.$file_ext;
+                $media->filepath = $file_path.'/'.$file_name.'.'.$file_ext;
+                $media->title = $title;
+                $media->extension = $file_ext;
 
-                $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
+                // -----------------------------------------------------------
+                //  Create directory if needed
+                // -----------------------------------------------------------
+                if(!is_dir($file_path)){
+                    mkdir($file_path, 0777, true);
+                }
+
+                // -----------------------------------------------------------
+                //  Move the file
+                // -----------------------------------------------------------
+                $file->move(public_path().'/'.$file_path, $media->filename);
+                $abs_path = public_path().'/'.$media->filepath;
+
+                $media->size = filesize($abs_path);
 
                 // -----------------------------------------------------------
                 //  Resize and Re-format if required
                 // -----------------------------------------------------------
                 $is_image = (strpos($mime, 'image') !== false);
+
                 if($is_image)
                 {
-                    $img = Image::make($abs_path);
+                    //$this->resizeImage($media, 1000);
+                    //$this->optimizeImage($media);
 
-                    /*if(false)
-                    {
-                        $width = isset($options['width']) ? intVal($options['width']) : null;
-                        $height = isset($options['height']) ? intVal($options['height']) : null;
-                        if($width !== null){
-                            $img = $img->resize($width, null, function($constraint){
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            });
-                        }
-                        if($height !== null){
-                            $img = $img->resize(null, $height, function($constraint){
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            });
-                        }
-                        if(isset($options['format'])){
-                            $quality = isset($options['quality']) ? intVal($options['quality']) : 90;
-                            $img = $img->encode($options['format'], $quality);
-                            $file_ext = trim(strtolower($options['format']));
-                            $old_abs_path = $abs_path;
-                            $abs_path = public_path().'/'.$file_path.'/'.$file_name.'.'.$file_ext;
-                        }
-                        $img->save($abs_path);
-                        if(isset($old_abs_path) && $old_abs_path != $abs_path && is_file($old_abs_path)){
-                            unlink($old_abs_path);
-                        }    
-                    }*/
+                    $info = getimagesize($abs_path);
                     $media->type = 'image';
-                    $media->width = $img->width();
-                    $media->height = $img->height();
+                    $media->width = isset($info[0]) ? $info[0] : 0;
+                    $media->height = isset($info[1]) ? $info[1] : 0;
+                    //$media->mime = isset($info['mime']) ? $info['mime'] : '';
+                    //$media->size = filesize($abs_path);
                 }
-
-                // -----------------------------------------------------------
-                //  Save the media
-                // -----------------------------------------------------------
-                $media->mime = $mime;
-                $media->size = $size;
-                $media->title = $title;
-                $media->extension = $file_ext;
-                $media->filename = $file_name.'.'.$file_ext;
-                $media->filepath = $file_path.'/'.$file_name.'.'.$file_ext;
-                //$media->size = filesize($abs_path);
 
                 // -----------------------------------------------------------
                 //  Associate the media to the item
@@ -182,6 +164,75 @@ class MediasBaseController extends Controller
         else{
             return $item->getMedia($collection);
         }
+    }
+
+    protected function postOptimizeMedia(Request $request)
+    {
+        $itemId = $request->input('id');
+        $mediaId = $request->input('mediaId');
+
+        $item = call_user_func(array($this->class_name, 'findOrFail'), $itemId);
+        $media = $item->medias()->findOrFail($mediaId);
+        
+        $this->optimizeImage($media);
+        $media->save();
+
+        return $media;
+    }
+
+    protected function optimizeImage(&$media)
+    {
+        $mimes = [
+            'image/gif' => 'gif',
+            'image/jpeg' => 'jpg',
+            'image/pjpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/x-png' => 'png',
+        ];
+
+        $commands = [
+            'gif' => 'gifsicle -b -O2 ',
+            'jpg' => 'jpegoptim --strip-all ',
+            'png' => 'pngquant --ext=.png --force ',
+        ];
+
+        if(in_array($media->mime, array_keys($mimes)) && function_exists('exec'))
+        {
+            // on VPS, usually placed in /usr/bin/
+            // on local machine, usually placed in /usr/local/bin/
+
+            $type = $mimes[$media->mime];
+            $command = $commands[$type];
+            $abs_path = public_path().'/'.$media->filepath;
+
+            exec($command.escapeshellarg($abs_path), $output, $result_code);
+            if($result_code !== 0){
+                throw new Exception('Unable to optimise '.$type.' image, result code : '.$result_code);
+            }
+
+            $media->size = filesize($abs_path);
+        }
+    }
+
+    protected function resizeImage(&$media, $width = null, $height = null)
+    {
+        $abs_path = public_path().'/'.$media->filepath;
+
+        Image::configure(['driver' => 'imagick']);
+        $img = Image::make($abs_path);
+
+        if($width){
+            $img->widen($width);
+        }
+        else if($height){
+            $img->heighten($height);
+        }
+        $img->save($abs_path);
+
+        $media->width = $img->width();
+        $media->height = $img->height();
+        $media->size = $img->filesize();
+        $media->save();
     }
 
     public function postDeleteMedia(Request $request)

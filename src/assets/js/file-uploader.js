@@ -172,6 +172,17 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
                     scope.decache = new Date().getTime();
                 });
             }
+
+            // -------------------------------------------------------
+            //  Optimize
+            // -------------------------------------------------------
+            scope.optimizeMedia = function(media)
+            {
+                $http.post(attrs.routeUrl + '/optimize-media', {id: attrs.itemId, mediaId: media.id}).then(function(r){
+                    angular.copy(r.data, media);
+                    scope.decache = new Date().getTime();
+                });
+            }
         }
     }
 }]);

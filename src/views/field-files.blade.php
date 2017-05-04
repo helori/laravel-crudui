@@ -57,6 +57,13 @@
                                 <i class="fa fa-eye"></i>
                             </a>
                             <button type="button" 
+                                ng-if="m && m.mime.indexOf('image') !== -1"
+                                class="btn btn-default icon-only" 
+                                title="Compresser le fichier"
+                                ng-click="optimizeMedia(m)">
+                                <i class="fa fa-file-zip-o"></i>
+                            </button>
+                            <button type="button" 
                                 class="btn btn-danger icon-only" 
                                 title="Supprimer le fichier"
                                 ng-click="deleteMedia(m.id)">
@@ -77,6 +84,7 @@
                         <span>| @{{m.size / 1000 | number:0}} ko</span>
                         <span ng-if="m && m.mime.indexOf('image') !== -1">| @{{m.width}} x @{{m.height}} px</span>
                         <span ng-if="false">| position : @{{m.position}}</span>
+                        <span>| @{{m.filename}}</span>
                     </div>
                 </div>
             </div>
