@@ -190,19 +190,22 @@ class MediasBaseController extends Controller
             'image/x-png' => 'png',
         ];
 
-        $cmds = [
+        $cmds_default = [
             'gif' => 'gifsicle',
             'jpg' => 'jpegoptim',
-            'png' => 'optipng',
+            'png' => 'pngquant',
         ];
 
-        $opts = [
+        $opts_default = [
             'gifsicle' => '-b -O2',
             'jpegoptim' => '-m90 --strip-all',
             'pngquant' => '--ext=.png --force',
             'optipng' => '-o5 -strip all',
         ];
-        
+
+        $cmds = config('laravel-crudui.images_cmds', $cmds_default);
+        $opts = config('laravel-crudui.images_cmds_opts', $opts_default);        
+
         if(in_array($media->mime, array_keys($mimes)))
         {
             if(function_exists('exec'))
