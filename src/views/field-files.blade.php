@@ -4,8 +4,9 @@
 
         <div ng-show="!uploading">
             <input type="file" id="file-input-{{ $field['name'] }}-{{ $fieldData['id'] }}" class="file-input" ng-show="!media" multiple>
-            <label for="file-input-{{ $field['name'] }}-{{ $fieldData['id'] }}" class="btn btn-primary" ng-show="!media">
-                <i class="fa fa-plus"></i> Choisir un fichier...
+            <label for="file-input-{{ $field['name'] }}-{{ $fieldData['id'] }}" ng-show="!media" class="filedrop">
+                <h2>Charger de nouveaux fichiers</h2>
+                <p>Glisser-déposer les fichiers (ou cliquer) dans cette zone</p>
             </label>
             <div class="loading" ng-if="!loaded || saving_position">
                 <i class="fa fa-spinner fa-spin fa-pulse"></i>

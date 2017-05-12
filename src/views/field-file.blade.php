@@ -31,8 +31,9 @@
                     </div>
                     <div ng-show="!media && !uploading">
                         <input type="file" id="file-input-{{ $field['name'] }}-{{ $fieldData['id'] }}" class="file-input" ng-show="!media">
-                        <label for="file-input-{{ $field['name'] }}-{{ $fieldData['id'] }}" class="btn btn-primary" ng-show="!media">
-                            <i class="fa fa-plus"></i> Choisir un fichier...
+                        <label for="file-input-{{ $field['name'] }}-{{ $fieldData['id'] }}" ng-show="!media" class="filedrop">
+                            <h2>Charger de nouveaux fichiers</h2>
+                            <p>Glisser-déposer les fichiers (ou cliquer) dans cette zone</p>
                         </label>
                         <span class="error" ng-if="error" ng-cloak>
                             <i class="fa fa-warning"></i> @{{ error.statusText }}

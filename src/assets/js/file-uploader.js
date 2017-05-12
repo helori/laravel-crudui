@@ -15,35 +15,56 @@ angular.module('crudui').directive('fileUploader', ['$http', '$sce', '$timeout',
             scope.error = null;
 
             // -------------------------------------------------------
-            //  File input 
+            //  File input
             // -------------------------------------------------------
-            /*scope.input = elt.find('.file-input');
-            //console.log(scope.input);
-            scope.input.change(function(){
-                scope.file = this.files[0];
-                scope.title = scope.file.name.replace(/\.[^/.]+$/, "");
-                //console.log(scope.file);
-                scope.$apply();
-                scope.upload();
-            });*/
-
             elt.on('change', '.file-input', function(e){
-                scope.file = e.target.files[0];
+                e.preventDefault();
+                e.stopPropagation();
+                scope.uploadFromEvent(e.target);
+            }).on('click', '.file-input', function(e){
+                this.value = null;
+            });
+
+            // -------------------------------------------------------
+            //  Prevent from openning file in browser on drop
+            // -------------------------------------------------------
+            window.addEventListener("dragover", function(e){
+                e.preventDefault();
+            }, false);
+
+            window.addEventListener("drop", function(e){
+                e.preventDefault();
+            }, false);
+
+            // -------------------------------------------------------
+            //  Drag and drop
+            // -------------------------------------------------------
+            elt.on('drop', '.filedrop', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                console.log(e);
+                scope.uploadFromEvent(e.originalEvent.dataTransfer);
+            });
+
+            // -------------------------------------------------------
+            //  Files loading
+            // -------------------------------------------------------
+            scope.uploadFromEvent = function(event_target)
+            {
+                scope.file = event_target.files[0];
                 scope.title = scope.file.name.replace(/\.[^/.]+$/, "");
 
                 scope.files = [];
                 scope.titles = [];
-                for(var i=0; i<e.target.files.length; ++i){
-                    scope.files.push(e.target.files[i]);
-                    scope.titles.push(e.target.files[i].name.replace(/\.[^/.]+$/, ""));
+                for(var i=0; i<event_target.files.length; ++i){
+                    scope.files.push(event_target.files[i]);
+                    scope.titles.push(event_target.files[i].name.replace(/\.[^/.]+$/, ""));
                 }
 
                 scope.$apply();
                 scope.upload();
                 this.value = null;
-            }).on('click', '.file-input', function(e){
-                this.value = null;
-            });
+            };
 
             // -------------------------------------------------------
             //  Get single medias
