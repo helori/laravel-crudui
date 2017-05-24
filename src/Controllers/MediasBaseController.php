@@ -60,7 +60,7 @@ class MediasBaseController extends Controller
 
         while($request->hasFile($collection.$i))
         {
-            if($request->file($collection.$i)->isValid())
+            //if($request->file($collection.$i)->isValid())
             {
                 $file_path = 'storage/medias';
                 // -----------------------------------------------------------
