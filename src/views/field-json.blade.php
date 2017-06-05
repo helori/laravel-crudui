@@ -10,7 +10,7 @@
         <div class="col col-xs-3"></div>
     </div>
 
-    <div class="row narrow" style="margin-bottom: 5px" ng-repeat="item in items | orderBy:{{ isset($field['orderBy']) ? $field['orderBy'] : $field['columns'][0]['name'] }}:{{ isset($field['orderDir']) && $field['orderDir'] == 'desc' ? 'true' : 'false' }}">
+    <div class="row narrow" style="margin-bottom: 5px" ng-repeat="item in items | orderBy:{{ isset($field['orderBy']) ? $field['orderBy'] : $field['columns'][0]['name'] }}:{{ isset($field['orderDir']) && $field['orderDir'] == 'desc' ? 'true' : 'false' }} track by $index">
         <div class="col col-xs-9">
             <div class="row narrow">
                 @foreach($field['columns'] as $colIdx => $column)
