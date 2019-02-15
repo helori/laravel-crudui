@@ -72,7 +72,7 @@ class MediasBaseController extends Controller
                 //  Get uploaded file infos
                 // -----------------------------------------------------------
                 $file = $request->file($collection.$i);
-                $file_ext = $file->guessExtension();
+                $file_ext = $file->getClientOriginalExtension();
                 $title = $titles[$i];
 
                 // -----------------------------------------------------------
