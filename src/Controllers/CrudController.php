@@ -26,7 +26,7 @@ class CrudController extends CrudBaseController
             $parent_id = $routeParams['parent_id'];
         }
 
-        parent::__construct($model['model_class'], $parent_model['model_class']);
+        parent::__construct($model['model_class'], $parent_model ? $parent_model['model_class'] : null);
 
         $this->page_name = $model['page_name'];
         $this->route_url = $model['route_url'];

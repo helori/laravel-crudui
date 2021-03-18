@@ -47,22 +47,22 @@
                         <div class="inputs-left">
                             <a ng-href="@{{m.filepath}}" 
                                 download="@{{m.filename}}" 
-                                class="btn btn-default icon-only"
+                                class="btn btn-secondary icon-only"
                                 title="Récupérer le fichier">
                                 <i class="fa fa-download"></i>
                             </a>
                             <a ng-href="@{{m.filepath}}" 
                                 target="_blank"
-                                class="btn btn-default icon-only"
+                                class="btn btn-secondary icon-only"
                                 title="Ouvrir le fichier">
                                 <i class="fa fa-eye"></i>
                             </a>
                             <button type="button" 
                                 ng-if="m && m.mime.indexOf('image') !== -1"
-                                class="btn btn-default icon-only" 
+                                class="btn btn-secondary icon-only" 
                                 title="Compresser le fichier"
                                 ng-click="optimizeMedia(m)">
-                                <i class="fa fa-file-zip-o"></i>
+                                <i class="fa fa-file-archive"></i>
                             </button>
                             <button type="button" 
                                 class="btn btn-danger icon-only" 

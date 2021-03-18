@@ -101,7 +101,7 @@ class CrudUtilities
 
             $result = [];
             $result['mime'] = $file->getMimeType();
-            $result['size'] = $file->getClientSize();
+            $result['size'] = $file->getSize();
             $result['ext'] = $file_ext;
             $result['path'] = $file_path.'/'.$file_name;
 

@@ -30,7 +30,8 @@
 				cursor: move;
 			}
 			.actions{
-				width: 100px;
+				min-width: 100px;
+				max-width: 500px;
 			}
 		}
 		.position-placeholder{
@@ -127,31 +128,7 @@
 	}
 }
 
-.btn{
-  position: relative;
-  padding-left: 46px;
-  font-weight: 300;
-  height: 34px;
-  //letter-spacing: 0.025em;
-  i{
-    display: block;
-    position: absolute;
-    left: 0; top: 0;
-    width: 34px;
-    height: 100%;
-    line-height: 34px;
-    font-size: 18px;
-    background: rgba(0, 0, 0, 0.1);
-  }
-}
-.btn.icon-only{
-	min-width: 36px;
-	padding-left: 0;
-	overflow: hidden;
-	i{
-		width: 100%;
-	}
-}
+
 
 // -------------------------------------------
 //  Checkbox
@@ -182,7 +159,7 @@
       i.fa-check{
         display: none;
       }
-      i.fa-close{
+      i.fa-times{
         display: inline-block;
       }
     }
@@ -197,7 +174,7 @@
     i.fa-check{
       display: inline-block;
     }
-    i.fa-close{
+    i.fa-times{
       display: none;
     }
   }

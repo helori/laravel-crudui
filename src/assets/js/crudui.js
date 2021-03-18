@@ -148,7 +148,7 @@ crudui.directive('checkbox', ['$rootScope', '$http', function($rootScope, $http)
             
         },
         transclude: true,
-        template: '<div class="checkbox-wrapper" ng-class="{\'checked\': checked}"><label for="{{fieldName + \'-\' + itemId}}"><input type="checkbox" ng-model="checked" ng-true-value="true" ng-false-value="false" id="{{fieldName + \'-\' + itemId}}"><div class="inside"><div class="icon"><i class="fa fa-check"></i><i class="fa fa-close"></i></div><div class="text">{{title}}</div></div></label></div>',
+        template: '<div class="checkbox-wrapper" ng-class="{\'checked\': checked}"><label for="{{fieldName + \'-\' + itemId}}"><input type="checkbox" ng-model="checked" ng-true-value="true" ng-false-value="false" id="{{fieldName + \'-\' + itemId}}"><div class="inside"><div class="icon"><i class="fa fa-check"></i><i class="fa fa-times"></i></div><div class="text">{{title}}</div></div></label></div>',
         link: function(scope, elt, attrs){
             scope.title = attrs.title;
             scope.itemId = attrs.itemId;
@@ -187,7 +187,7 @@ crudui.directive('multiCheck', ['$interval', '$filter', function($interval, $fil
                         <div class="inside">\
                             <div class="icon">\
                                 <i class="fa fa-check"></i>\
-                                <i class="fa fa-close"></i>\
+                                <i class="fa fa-times"></i>\
                             </div>\
                             <div class="text">{{opt.label}}</div>\
                         </div>\

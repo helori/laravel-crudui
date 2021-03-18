@@ -12,10 +12,10 @@
 			</div>
 			<div class="col-sm-6 col-md-4">
 				<div class="actions">
-					<button type="button" class="btn btn-default btn-block" ng-click="openImageUploader('{{ $field['name'] }}')">
+					<button type="button" class="btn btn-secondary btn-block" ng-click="openImageUploader('{{ $field['name'] }}')">
 						<i class="fa fa-file-image-o"></i> Choisir...
 					</button>
-					<a ng-href="@{{media.filepath}}" download="@{{media.filename}}" class="btn btn-default btn-block" ng-if="media">
+					<a ng-href="@{{media.filepath}}" download="@{{media.filename}}" class="btn btn-secondary btn-block" ng-if="media">
 						<i class="fa fa-download"></i> Télécharger
 					</a>
 					<button type="button" class="btn btn-danger btn-block" ng-click="deleteMedia(media.id)" ng-if="media">

@@ -35,8 +35,8 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-save"></i> Enregistrer
                     </button>
-                    <a type="button" class="btn btn-default" href="{{ $route_url }}/items">
-                        <i class="fa fa-close"></i> Fermer
+                    <a type="button" class="btn btn-secondary" href="{{ $route_url }}/items">
+                        <i class="fa fa-times"></i> Fermer
                     </a>
                 </div>
             </div>

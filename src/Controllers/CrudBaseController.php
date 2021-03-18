@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Route;
 
 use Helori\LaravelCrudui\CrudUtilities;
@@ -90,31 +91,30 @@ class CrudBaseController extends Controller
                     $options[$item->id] = implode(' ', $options[$item->id]);
                 }
 
-                //$options = array_pluck($items, $field['options_model']['field'], 'id');
                 $field['options'] = $options;
             }
             else if($field['type'] == 'multi-check' && isset($field['options_model']))
             {
                 $model = $field['options_model']['model'];
                 $items = call_user_func(array($model, 'orderBy'), $field['options_model']['field'])->get();
-                $options = array_pluck($items, $field['options_model']['field'], 'id');
+                $options = Arr::pluck($items, $field['options_model']['field'], 'id');
                 $field['options'] = $options;
             }
         }
 
-        $this->list_fields = array_where($this->fields, function ($field, $key){
+        $this->list_fields = Arr::where($this->fields, function ($field, $key){
             return isset($field['list']) && $field['list'];
         });
 
-        $this->edit_fields = array_where($this->fields, function ($field, $key){
+        $this->edit_fields = Arr::where($this->fields, function ($field, $key){
             return (isset($field['edit']) && $field['edit']) || $field['type'] == 'separator';
         });
 
-        $this->create_fields = array_where($this->fields, function ($field, $key){
+        $this->create_fields = Arr::where($this->fields, function ($field, $key){
             return (isset($field['create']) && $field['create']);
         });
 
-        $this->filters = array_where($this->fields, function ($field, $key){
+        $this->filters = Arr::where($this->fields, function ($field, $key){
             return isset($field['filter']) && $field['filter'];
         });
 

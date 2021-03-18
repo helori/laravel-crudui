@@ -380,7 +380,7 @@
                                 </button>
                             </div>
                             <div class="col col-xs-6">
-                                <a class="btn btn-default btn-block" href="{{ $route_url }}/items">
+                                <a class="btn btn-secondary btn-block" href="{{ $route_url }}/items">
                                     <i class="fa fa-refresh"></i> Ré-initialiser
                                 </a>
                             </div>
@@ -418,8 +418,8 @@
                         @endforeach
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            <i class="fa fa-close"></i> Annuler
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Annuler
                         </button>
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-save"></i> Enregistrer

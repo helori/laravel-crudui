@@ -8,7 +8,7 @@
 					<div class="col-left">
 
 						<input type="file" id="file-input-{{ $field['name'] }}" class="file-input" autofocus>
-						<label for="file-input-{{ $field['name'] }}" class="btn btn-default btn-block"><i class="fa fa-file-image-o"></i> Choisir un fichier...</label>
+						<label for="file-input-{{ $field['name'] }}" class="btn btn-secondary btn-block"><i class="fa fa-file-image-o"></i> Choisir un fichier...</label>
 
 			    		<div class="preview-wrapper">
 				    		<div class="preview">
@@ -144,17 +144,17 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" ng-click="updateOutput()" class="btn btn-default" ng-disabled="!file" ng-show="file && outputNeedsRefresh">
+				<button type="button" ng-click="updateOutput()" class="btn btn-secondary" ng-disabled="!file" ng-show="file && outputNeedsRefresh">
 			        <i class="fa fa-refresh"></i> Générer l'image de sortie
 			    </button>
-				<a ng-click="download($event)" href="@{{trusted_data_url}}" download="@{{title}}.@{{format}}" class="btn btn-default" ng-disabled="!file" ng-show="!outputNeedsRefresh">
+				<a ng-click="download($event)" href="@{{trusted_data_url}}" download="@{{title}}.@{{format}}" class="btn btn-secondary" ng-disabled="!file" ng-show="!outputNeedsRefresh">
 					<i class="fa fa-download"></i> Télécharger sur votre ordinateur
 				</a>
-				<button type="button" ng-click="upload($event)" class="btn btn-default" ng-disabled="!file" ng-show="!outputNeedsRefresh">
+				<button type="button" ng-click="upload($event)" class="btn btn-secondary" ng-disabled="!file" ng-show="!outputNeedsRefresh">
 			        <i class="fa fa-upload"></i> Envoyer sur le site
 			    </button>
-				<button type="button" data-dismiss="modal" class="btn btn-default">
-			        <i class="fa fa-close"></i> Fermer
+				<button type="button" data-dismiss="modal" class="btn btn-secondary">
+			        <i class="fa fa-times"></i> Fermer
 			    </button>
 	        </div>
 

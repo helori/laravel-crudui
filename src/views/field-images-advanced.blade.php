@@ -2,7 +2,7 @@
 
 	<div class="uploader-wrapper">
 
-		<button type="button" class="btn btn-default btn-block" ng-click="openImageUploader('{{ $field['name'] }}')">
+		<button type="button" class="btn btn-secondary btn-block" ng-click="openImageUploader('{{ $field['name'] }}')">
 			<i class="fa fa-file-image-o"></i> Choisir...
 		</button>
 
@@ -27,7 +27,7 @@
 						<div class="actions">
 							<div class="row narrow">
 								<div class="col col-xs-6">
-									<a ng-href="@{{m.filepath}}" download="@{{m.filename}}" class="btn btn-default btn-block icon-only">
+									<a ng-href="@{{m.filepath}}" download="@{{m.filename}}" class="btn btn-secondary btn-block icon-only">
 										<i class="fa fa-download"></i>
 									</a>
 								</div>

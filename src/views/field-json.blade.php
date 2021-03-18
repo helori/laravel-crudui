@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <button type="button" class="btn btn-default btn-block" ng-click="addItem()"><i class="fa fa-plus"></i> Ajouter</button>
+    <button type="button" class="btn btn-secondary btn-block" ng-click="addItem()"><i class="fa fa-plus"></i> Ajouter</button>
     <input type="hidden" 
         @if(isset($jsonList) && $jsonList)
             list-input 

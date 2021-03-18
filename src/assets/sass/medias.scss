@@ -62,13 +62,14 @@ td.cell-files{
     font-weight: bold;
   }
   .media{
+    display: flex;
+    width: 100%;
     margin: 0;
     background: white;
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     .thumb{
-      float: left;
       position: relative;
       width: 100px;
       height: 60px;
@@ -143,15 +144,14 @@ td.cell-files{
       }
     }
     .content{
-      margin-left: 100px;
       padding: 5px 5px 3px 5px;
       .inputs{
         .inputs-left{
           float: left;
-          width: 160px;
+          width: 200px;
         }
         .inputs-right{
-          margin-left: 160px;
+          margin-left: 200px;
         }
       }
       .desc{

@@ -64,7 +64,7 @@ class GlobalMediasController extends Controller
             //  Save the media
             // -----------------------------------------------------------
             $media->mime = $file->getMimeType();
-            $media->size = $file->getClientSize();
+            $media->size = $file->getSize();
             $media->extension = $file_ext;
             $media->filename = $file_name.'.'.$file_ext;
             $media->title = $file_name;

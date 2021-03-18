@@ -96,7 +96,7 @@ class MediasBaseController extends Controller
                 $file_name = Str::slug($media->id.'_'.$title, '_');
 
                 $mime = $file->getMimeType();
-                $size = $file->getClientSize();
+                $size = $file->getSize();
 
                 $media->mime = $mime;
                 $media->size = $size;
