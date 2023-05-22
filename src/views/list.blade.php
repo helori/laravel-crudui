@@ -3,8 +3,11 @@
 
 <div id="crud-table" ng-controller="CrudListController">
 
-    <div id="saving" ng-class="{'active': savingPosition}">
-        <i class="fa fa-cog fa-spin"></i> Saving...
+    <div id="saving" ng-class="{'active': savingPosition}">    
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
+        </svg>
+        Saving...
     </div>
 
     <div class="container-fluid">
@@ -37,9 +40,13 @@
                                             <a href="{{ $route_url }}/items?{{ $sort_query }}&sort_by={{ $field['name'] }}&sort_dir={{ $sort_dir == 'asc' ? 'desc' : 'asc' }}">{{ $field['title'] }}
                                                 @if($sort_by == $field['name'])
                                                     @if($sort_dir == 'asc')
-                                                        <i class="fa fa-arrow-down"></i>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+                                                    </svg>                                                      
                                                     @else
-                                                        <i class="fa fa-arrow-up"></i>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                                                    </svg>                                                      
                                                     @endif
                                                 @endif
                                             </a>
@@ -52,7 +59,10 @@
                                     <th>
                                         @if($can_create)
                                            <a ng-click="openCreateDialog($event)" href="{{ $route_url }}/create-item" class="btn btn-primary btn-block">
-                                                <i class="fa fa-plus"></i> {{ $add_text }}
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                                </svg>
+                                                {{ $add_text }}
                                             </a>
                                         @endif
                                     </th>
@@ -224,9 +234,17 @@
                                                 </checkbox>
                                             @else
                                                 @if($item->{$field['name']})
-                                                    <div class="text-center"><i class="fa fa-check-circle" style="font-size: 20px; color: green"></i></div>
+                                                    <div class="text-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; color: green">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </div>
                                                 @else
-                                                    <div class="text-center"><i class="fa fa-minus-circle" style="font-size: 20px; color: red"></i></div>
+                                                    <div class="text-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px; color: red">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>                                                          
+                                                    </div>
                                                 @endif
                                             @endif
 
@@ -313,7 +331,10 @@
                                             </div>
                                         @elseif($field["type"] == "link")
                                             <a href="{{ $route_url.'/'.$item->id.'/'.$field['model'].'/items' }}" class="btn btn-primary btn-block">
-                                                <i class="fa fa-arrow-right"></i> {{ $field['title'] }}
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                                </svg>                                                  
+                                                {{ $field['title'] }}
                                             </a>
                                         @elseif($field["type"] == "relation")
                                             <?php
@@ -335,14 +356,18 @@
                                             @if($can_update)
                                             <div class="col col-xs-{{ $can_delete ? '6' : '12' }}">
                                                 <a href="{{ $route_url }}/edit-item/{{ $item->id }}" class="btn btn-success icon-only btn-block">
-                                                    <i class="fa fa-edit"></i>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                    </svg>                                                      
                                                 </a>
                                             </div>
                                             @endif
                                             @if($can_delete)
                                             <div class="col col-xs-{{ $can_update ? '6' : '12' }}">
                                                 <a class="btn btn-danger icon-only btn-block" ng-click="destroy('{{ $route_url }}', '{{ $item->id }}')">
-                                                    <i class="fa fa-trash"></i>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                    </svg>                                                      
                                                 </a>
                                             </div>
                                             @endif
@@ -376,12 +401,18 @@
                         <div class="row narrow">
                             <div class="col col-xs-6">
                                 <button type="submit" class="btn btn-primary btn-block">
-                                    <i class="fa fa-search"></i> Rechercher
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                    </svg>                                      
+                                    Rechercher
                                 </button>
                             </div>
                             <div class="col col-xs-6">
                                 <a class="btn btn-secondary btn-block" href="{{ $route_url }}/items">
-                                    <i class="fa fa-refresh"></i> Ré-initialiser
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 18px">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                    </svg>                                      
+                                    Ré-initialiser
                                 </a>
                             </div>
                         </div>
