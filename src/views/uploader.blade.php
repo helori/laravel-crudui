@@ -8,7 +8,10 @@
 					<div class="col-left">
 
 						<input type="file" id="file-input-{{ $field['name'] }}" class="file-input" autofocus>
-						<label for="file-input-{{ $field['name'] }}" class="btn btn-secondary btn-block"><i class="fa fa-file-image-o"></i> Choisir un fichier...</label>
+						<label for="file-input-{{ $field['name'] }}" class="btn btn-secondary btn-block">
+							<i class="fa fa-file-image-o"></i> 
+							Choisir un fichier...
+						</label>
 
 			    		<div class="preview-wrapper">
 				    		<div class="preview">
@@ -148,7 +151,10 @@
 			        <i class="fa fa-refresh"></i> Générer l'image de sortie
 			    </button>
 				<a ng-click="download($event)" href="@{{trusted_data_url}}" download="@{{title}}.@{{format}}" class="btn btn-secondary" ng-disabled="!file" ng-show="!outputNeedsRefresh">
-					<i class="fa fa-download"></i> Télécharger sur votre ordinateur
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" style="width: 18px">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+					</svg>
+					Télécharger sur votre ordinateur
 				</a>
 				<button type="button" ng-click="upload($event)" class="btn btn-secondary" ng-disabled="!file" ng-show="!outputNeedsRefresh">
 			        <i class="fa fa-upload"></i> Envoyer sur le site
